@@ -59,6 +59,7 @@ void Polygon2D::Uninit()
 	m_Texture->Release();
 
 	m_VertexLayout->Release();
+	m_VertexShader->Release();
 	m_PixelShader->Release();
 
 
@@ -82,5 +83,16 @@ void Polygon2D::Draw()
 	Renderer::SetWorldViewProjection2D();
 
 	// 頂点バッファ設定
+	UINT stride = sizeof(VERTEX_3D);
+	UINT offset = 0;
+	Renderer::GetDeviceContext()->IASetVertexBuffers(0, 1, &m_VertexBuffer, &stride, &offset);
 
+	// テクスチャ設定
+	Renderer::GetDeviceContext()->PSSetShaderResources(0, 1, &m_Texture);
+
+	// プリミティブトポロジ設定
+	Renderer::GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+
+	// ポリゴン描画
+	Renderer::GetDeviceContext()->Draw(4, 0);
 }
