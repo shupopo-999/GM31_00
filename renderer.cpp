@@ -241,6 +241,7 @@ void Renderer::Init()
 	MATERIAL material{};
 	material.Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	material.Ambient = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	material.TextureEnable = true;
 	SetMaterial(material);
 
 
