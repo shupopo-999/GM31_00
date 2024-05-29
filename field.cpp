@@ -1,32 +1,31 @@
 #include "main.h"
 #include "renderer.h"
-#include "polygon2D.h"
+#include "field.h"
 
-void Polygon2D::Init()
+void Field::Init()
 {
 	VERTEX_3D vertex[4];
 
-	vertex[0].Position	= XMFLOAT3(0.0f, 0.0f, 0.0f);
+	vertex[0].Position	= XMFLOAT3(-100.0f, 0.0f, 100.0f);
 	vertex[0].Normal	= XMFLOAT3(0.0f, 0.0f, 0.0f);
 	vertex[0].Diffuse	= XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	vertex[0].TexCoord	= XMFLOAT2(0.0f, 0.0f);
 
-	vertex[1].Position	= XMFLOAT3(200.0f, 0.0f, 0.0f);
+	vertex[1].Position	= XMFLOAT3(100.0f, 0.0f, 100.0f);
 	vertex[1].Normal	= XMFLOAT3(0.0f, 0.0f, 0.0f);
 	vertex[1].Diffuse	= XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	vertex[1].TexCoord	= XMFLOAT2(1.0f, 0.0f);
 
-	vertex[2].Position	= XMFLOAT3(0.0f, 200.0f, 0.0f);
+	vertex[2].Position	= XMFLOAT3(-100.0f, 0.0f, -100.0f);
 	vertex[2].Normal	= XMFLOAT3(0.0f, 0.0f, 0.0f);
 	vertex[2].Diffuse	= XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	vertex[2].TexCoord	= XMFLOAT2(0.0f, 1.0f);
 
-	vertex[3].Position	= XMFLOAT3(200.0f, 200.0f, 0.0f);
+	vertex[3].Position	= XMFLOAT3(100.0f, 0.0f, -100.0f);
 	vertex[3].Normal	= XMFLOAT3(0.0f, 0.0f, 0.0f);
 	vertex[3].Diffuse	= XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	vertex[3].TexCoord	= XMFLOAT2(1.0f, 1.0f);
 
-	
 
 	// 頂点バッファ生成
 	D3D11_BUFFER_DESC bd{};
@@ -35,9 +34,10 @@ void Polygon2D::Init()
 	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	bd.CPUAccessFlags = 0;
 
-	D3D11_SUBRESOURCE_DATA sd{};
-	sd.pSysMem = vertex;
 
+	D3D11_SUBRESOURCE_DATA sd{};
+	ZeroMemory(&sd,sizeof(sd));
+	sd.pSysMem = vertex;
 	Renderer::GetDevice()->CreateBuffer(&bd, &sd, &m_VertexBuffer);
 
 
@@ -54,7 +54,7 @@ void Polygon2D::Init()
 		"shader\\unlitTexturePS.cso");
 }
 
-void Polygon2D::Uninit()
+void Field::Uninit()
 {
 	m_VertexBuffer->Release();
 	m_Texture->Release();
@@ -66,12 +66,12 @@ void Polygon2D::Uninit()
 
 }
 
-void Polygon2D::Update()
+void Field::Update()
 {
 
 }
 
-void Polygon2D::Draw()
+void Field::Draw()
 {
 	// 入力レイアウト設定
 	Renderer::GetDeviceContext()->IASetInputLayout(m_VertexLayout);
@@ -80,10 +80,15 @@ void Polygon2D::Draw()
 	Renderer::GetDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
 	Renderer::GetDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
 
-	// マトリックス設定
-	Renderer::SetWorldViewProjection2D();
+	// ワールドマトリクス設定
+	XMMATRIX world, scale, rot, trans;
+	scale = XMMatrixScaling(m_Scale.x,m_Scale.y,m_Scale.z);
+	rot = XMMatrixRotationRollPitchYaw(m_Rotation.x, m_Rotation.y, m_Rotation.z);
+	trans = XMMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
+	world = scale * rot * trans;
+	Renderer::SetWorldMatrix(world);
 
-	// マテリアル設定
+	// マトリックス設定
 	MATERIAL material;
 	ZeroMemory(&material, sizeof(material));
 	material.Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -94,7 +99,7 @@ void Polygon2D::Draw()
 	UINT stride = sizeof(VERTEX_3D);
 	UINT offset = 0;
 	Renderer::GetDeviceContext()->IASetVertexBuffers(0, 1, &m_VertexBuffer, &stride, &offset);
-
+	
 	// テクスチャ設定
 	Renderer::GetDeviceContext()->PSSetShaderResources(0, 1, &m_Texture);
 

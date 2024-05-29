@@ -2,8 +2,7 @@
 
 #include "gameobject.h"
 
-
-class Polygon2D : public GameObject{
+class Field : public GameObject{
 private:
 	ID3D11Buffer*				m_VertexBuffer = nullptr;
 	ID3D11ShaderResourceView*	m_Texture = nullptr;
