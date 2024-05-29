@@ -26,6 +26,7 @@ void Polygon2D::Init()
 	vertex[3].Diffuse	= XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	vertex[3].TexCoord	= XMFLOAT2(1.0f, 1.0f);
 
+	
 
 	// 頂点バッファ生成
 	D3D11_BUFFER_DESC bd{};
@@ -81,6 +82,13 @@ void Polygon2D::Draw()
 
 	// マトリックス設定
 	Renderer::SetWorldViewProjection2D();
+
+	// マテリアル設定
+	MATERIAL material;
+	ZeroMemory(&material, sizeof(material));
+	material.Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	material.TextureEnable = true;
+	Renderer::SetMaterial(material);
 
 	// 頂点バッファ設定
 	UINT stride = sizeof(VERTEX_3D);

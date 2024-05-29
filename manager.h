@@ -3,7 +3,7 @@
 
 class Manager
 {
-
+#define COUNT	(4)
 public:
 	static void Init();
 	static void Uninit();
