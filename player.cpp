@@ -2,6 +2,9 @@
 #include "renderer.h"
 #include "player.h"
 #include "modelRenderer.h"
+#include "input.h"
+
+Input* input;
 
 void Player::Init()
 {
@@ -17,6 +20,8 @@ void Player::Init()
 
 void Player::Uninit()
 {
+	delete m_Component;
+
 	m_VertexLayout->Release();
 	m_VertexShader->Release();
 	m_PixelShader->Release();
@@ -26,7 +31,14 @@ void Player::Uninit()
 
 void Player::Update()
 {
+	float speed = 0.5f;
+
 	m_Component->Update();
+	if (Input::GetKeyPress(VK_LSHIFT))speed *= 1.5;
+	if (Input::GetKeyPress('W'))m_Position.z += -speed;
+	if (Input::GetKeyPress('A'))m_Position.x += -speed;
+	if (Input::GetKeyPress('S'))m_Position.z += speed;
+	if (Input::GetKeyPress('D'))m_Position.x += speed;
 }
 
 void Player::Draw()
