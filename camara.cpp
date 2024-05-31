@@ -2,6 +2,8 @@
 #include "manager.h"
 #include "renderer.h"
 #include "camara.h"
+#include "player.h"
+#include "scene.h"
 
 void Camara::Init()
 {
@@ -16,7 +18,13 @@ void Camara::Uninit()
 
 void Camara::Update()
 {
+	Scene* scene;
+	scene = Manager::GetScene();
 
+	Player* player;
+	player = scene->GetGameObject<Player>();
+
+	m_Target = player->GetPosition();
 }
 
 void Camara::Draw()

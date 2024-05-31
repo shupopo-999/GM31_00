@@ -11,4 +11,8 @@ public:
 	virtual void Uninit() = 0;
 	virtual void Update() = 0;
 	virtual void Draw() = 0;
+
+	XMFLOAT3 GetPosition() { return m_Position; }
+	XMFLOAT3 GetRotation() { return m_Rotation; }
+	XMFLOAT3 GetScale() { return m_Scale; }
 };
