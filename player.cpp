@@ -1,8 +1,10 @@
 #include "main.h"
+#include "manager.h"
 #include "renderer.h"
 #include "player.h"
 #include "modelRenderer.h"
 #include "input.h"
+#include "camara.h"
 
 Input* input;
 
@@ -31,14 +33,37 @@ void Player::Uninit()
 
 void Player::Update()
 {
-	float speed = 0.5f;
+	XMFLOAT3 forward = GetForward();
+
+	Scene* scene;
+	scene = Manager::GetScene();
+	float speed = 0.3f;
 
 	m_Component->Update();
+
 	if (Input::GetKeyPress(VK_LSHIFT))speed *= 1.5;
-	if (Input::GetKeyPress('W'))m_Position.z += -speed;
-	if (Input::GetKeyPress('A'))m_Position.x += -speed;
-	if (Input::GetKeyPress('S'))m_Position.z += speed;
-	if (Input::GetKeyPress('D'))m_Position.x += speed;
+
+	if (Input::GetKeyTrigger(VK_SPACE)) {
+		Bullet* bullet = scene->AddGameObject<Bullet>();
+		bullet->SetPosition(m_Position);
+	}
+
+	if (Input::GetKeyPress('W')) {
+		m_Position.x += forward.x * 0.3f;
+		m_Position.y += forward.y * 0.3f;
+		m_Position.z += forward.z * 0.3f;
+	}
+	if (Input::GetKeyPress('S')) {
+		m_Position.x -= forward.x * 0.3f;
+		m_Position.y -= forward.y * 0.3f;
+		m_Position.z -= forward.z * 0.3f;
+	}
+	if (Input::GetKeyPress('D')){
+		m_Rotation.y += speed;
+	}
+	if (Input::GetKeyPress('A')) {
+		m_Rotation.y -= speed;
+	}
 }
 
 void Player::Draw()
@@ -53,7 +78,7 @@ void Player::Draw()
 	// ワールドマトリクス設定
 	XMMATRIX world, scale, rot, trans;
 	scale = XMMatrixScaling(m_Scale.x,m_Scale.y,m_Scale.z);
-	rot = XMMatrixRotationRollPitchYaw(m_Rotation.x, m_Rotation.y, m_Rotation.z);
+	rot = XMMatrixRotationRollPitchYaw(m_Rotation.x, m_Rotation.y + XM_PI, m_Rotation.z);
 	trans = XMMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
 	world = scale * rot * trans;
 	Renderer::SetWorldMatrix(world);

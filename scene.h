@@ -7,6 +7,7 @@
 #include "polygon2D.h"
 #include "field.h"
 #include "camara.h"
+#include "bullet.h"
 
 class Scene {
 private:
@@ -14,9 +15,6 @@ private:
 
 protected:
 
-	// GameObject* m_GameObject[4]{};
-	
-	// listÇ…ïœçXÅI
 	std::list<GameObject*> m_GameObject;
 
 public:
@@ -24,7 +22,7 @@ public:
 		AddGameObject<Camara>();
 		AddGameObject<Field>();
 		AddGameObject<Player>();
-		AddGameObject<Polygon2D>();
+		// AddGameObject<Polygon2D>();
 	}
 
 	template <typename T>
@@ -58,6 +56,8 @@ public:
 		for (GameObject* object : m_GameObject) {
 			object->Update();
 		}
+
+		m_GameObject.remove_if([](GameObject* object) {return object->Destroy(); });
 	}
 
 	virtual void Draw() {
