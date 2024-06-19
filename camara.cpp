@@ -16,15 +16,21 @@ void Camara::Uninit()
 
 }
 
+
 void Camara::Update()
 {
-	Scene* scene;
-	scene = Manager::GetScene();
+	GetCursorPos(&m_po);
 
-	Player* player;
-	player = scene->GetGameObject<Player>();
+	Scene* scene = Manager::GetScene();
 
+	Player* player = scene->GetGameObject<Player>();
 	m_Target = player->GetPosition();
+	m_Target.y += 1.0f;
+
+	m_Position.x = m_Target.x;
+	m_Position.y = m_Target.y + 10.0f;
+	m_Position.z = m_Target.z + -10.0f;
+
 }
 
 void Camara::Draw()
