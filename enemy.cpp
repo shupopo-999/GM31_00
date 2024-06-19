@@ -1,15 +1,14 @@
 #include "main.h"
 #include "manager.h"
 #include "renderer.h"
-#include "scene.h"
-#include "bullet.h"
+#include "player.h"
+#include "enemy.h"
 #include "modelRenderer.h"
 
-
-void Bullet::Init()
+void Enemy::Init()
 {
 	m_Component = new ModelRenderer(this);
-   	((ModelRenderer*)m_Component)->Load("asset\\model\\bullet.obj");
+	((ModelRenderer*)m_Component)->Load("asset\\model\\player.obj");
 
 
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout,
@@ -17,10 +16,10 @@ void Bullet::Init()
 	Renderer::CreatePixelShader(&m_PixelShader,
 		"shader\\unlitTexturePS.cso");
 
-
+	m_Position.x = 5.0f;
 }
 
-void Bullet::Uninit()
+void Enemy::Uninit()
 {
 	delete m_Component;
 
@@ -31,26 +30,16 @@ void Bullet::Uninit()
 
 }
 
-void Bullet::Update()
+void Enemy::Update()
 {
-	Scene* scene;
-	scene = Manager::GetScene();
+	Player* player;
 
-	/*float old_player;
-	Player* player{};
-	old_player = player->GetPosition().z;*/
-
-	m_Position.z += 0.3f;
-
-	if (m_Position.z > 10.0f) {
-		SetDestroy();
-		Explosion* explosion = scene->AddGameObject<Explosion>();
-		explosion->SetPosition(m_Position);
-	}
+	// m_Rotation = player->GetPosition();
 }
 
-void Bullet::Draw()
+void Enemy::Draw()
 {
+
 	// 入力レイアウト設定
 	Renderer::GetDeviceContext()->IASetInputLayout(m_VertexLayout);
 
@@ -61,7 +50,7 @@ void Bullet::Draw()
 	// ワールドマトリクス設定
 	XMMATRIX world, scale, rot, trans;
 	scale = XMMatrixScaling(m_Scale.x,m_Scale.y,m_Scale.z);
-	rot = XMMatrixRotationRollPitchYaw(m_Rotation.x, m_Rotation.y, m_Rotation.z);
+	rot = XMMatrixRotationRollPitchYaw(m_Rotation.x, m_Rotation.y + XM_PI, m_Rotation.z);
 	trans = XMMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
 	world = scale * rot * trans;
 	Renderer::SetWorldMatrix(world);

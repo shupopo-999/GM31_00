@@ -5,6 +5,7 @@
 #include "modelRenderer.h"
 #include "input.h"
 #include "camara.h"
+#include "explosion.h"
 
 Input* input;
 
@@ -18,6 +19,8 @@ void Player::Init()
 		"shader\\unlitTextureVS.cso");
 	Renderer::CreatePixelShader(&m_PixelShader,
 		"shader\\unlitTexturePS.cso");
+
+	m_Position.x = 5.0f;
 }
 
 void Player::Uninit()
@@ -38,6 +41,7 @@ void Player::Update()
 	Scene* scene;
 	scene = Manager::GetScene();
 	float speed = 0.3f;
+	float rot = 0.1f;
 
 	m_Component->Update();
 
@@ -47,22 +51,35 @@ void Player::Update()
 		Bullet* bullet = scene->AddGameObject<Bullet>();
 		bullet->SetPosition(m_Position);
 	}
+	if (Input::GetKeyTrigger('F')) {
+		Explosion* exp = scene->AddGameObject<Explosion>();
+	}
 
 	if (Input::GetKeyPress('W')) {
-		m_Position.x += forward.x * 0.3f;
-		m_Position.y += forward.y * 0.3f;
-		m_Position.z += forward.z * 0.3f;
+		m_Position.x += forward.x * speed;
+		m_Position.y += forward.y * speed;
+		m_Position.z += forward.z * speed;
 	}
 	if (Input::GetKeyPress('S')) {
-		m_Position.x -= forward.x * 0.3f;
-		m_Position.y -= forward.y * 0.3f;
-		m_Position.z -= forward.z * 0.3f;
+		m_Position.x -= forward.x * speed;
+		m_Position.y -= forward.y * speed;
+		m_Position.z -= forward.z * speed;
 	}
-	if (Input::GetKeyPress('D')){
-		m_Rotation.y += speed;
+	if (Input::GetKeyPress('D')) {
+		m_Position.x += forward.z * speed;
+		m_Position.y += forward.y * speed;
+		m_Position.z += forward.x * speed;
 	}
 	if (Input::GetKeyPress('A')) {
-		m_Rotation.y -= speed;
+		m_Position.x -= forward.z * speed;
+		m_Position.y -= forward.y * speed;
+		m_Position.z -= forward.x * speed;
+	}
+	if (Input::GetKeyPress('E')){
+		m_Rotation.y += rot;
+	}
+	if (Input::GetKeyPress('Q')) {
+		m_Rotation.y -= rot;
 	}
 }
 

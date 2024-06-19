@@ -8,6 +8,8 @@
 #include "field.h"
 #include "camara.h"
 #include "bullet.h"
+#include "explosion.h"
+#include "enemy.h"
 
 class Scene {
 private:
@@ -22,7 +24,7 @@ public:
 		AddGameObject<Camara>();
 		AddGameObject<Field>();
 		AddGameObject<Player>();
-		// AddGameObject<Polygon2D>();
+		AddGameObject<Enemy>();
 	}
 
 	template <typename T>

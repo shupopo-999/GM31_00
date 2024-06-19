@@ -28,8 +28,8 @@ void Camara::Update()
 	m_Target.y += 1.0f;
 
 	m_Position.x = m_Target.x;
-	m_Position.y = m_Target.y + 5.0f;
-	m_Position.z = m_Target.z + -20.0f;
+	m_Position.y = m_Target.y + 10.0f;
+	m_Position.z = m_Target.z + -10.0f;
 
 }
 

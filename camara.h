@@ -24,4 +24,8 @@ public:
 	void Uninit()override;
 	void Update()override;
 	void Draw()override;
+
+	XMMATRIX GetViewMatrix() {
+		return XMLoadFloat4x4(&m_ViewMatrix);
+	}
 };
