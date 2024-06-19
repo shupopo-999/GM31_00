@@ -32,9 +32,7 @@ void Enemy::Uninit()
 
 void Enemy::Update()
 {
-	Player* player;
 
-	// m_Rotation = player->GetPosition();
 }
 
 void Enemy::Draw()

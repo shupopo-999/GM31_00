@@ -5,6 +5,7 @@
 #include "modelRenderer.h"
 #include "input.h"
 #include "camara.h"
+#include "enemy.h"
 #include "explosion.h"
 
 Input* input;
@@ -47,12 +48,15 @@ void Player::Update()
 
 	if (Input::GetKeyPress(VK_LSHIFT))speed *= 1.5;
 
-	if (Input::GetKeyTrigger(VK_SPACE)) {
-		Bullet* bullet = scene->AddGameObject<Bullet>(1);
+	if (Input::GetKeyPress(VK_SPACE)) {
+		Bullet* bullet = scene->AddGameObject<Bullet>(2);
 		bullet->SetPosition(m_Position);
 	}
 	if (Input::GetKeyTrigger('F')) {
-		Explosion* exp = scene->AddGameObject<Explosion>(1);
+		Explosion* exp = scene->AddGameObject<Explosion>(2);
+	}
+	if (Input::GetKeyTrigger('R')) {
+		Enemy* ene = scene->AddGameObject<Enemy>(1);
 	}
 
 	if (Input::GetKeyPress('W')) {

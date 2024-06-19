@@ -13,19 +13,18 @@
 
 class Scene {
 private:
-#define COUNT (4)
+#define OBJECT_COUNT (4)
 
 protected:
 
-	std::list<GameObject*> m_GameObject[COUNT];
+	std::list<GameObject*> m_GameObject[OBJECT_COUNT];
 
 public:
 	virtual void Init() {
 		AddGameObject<Camara>(0);
 		AddGameObject<Field>(1);
 		AddGameObject<Player>(1);
-		AddGameObject<Enemy>(1);
-		AddGameObject<Polygon2D>(2);
+		AddGameObject<Polygon2D>(3);
 	}
 
 	template <typename T>

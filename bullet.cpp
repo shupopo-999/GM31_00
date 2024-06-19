@@ -3,6 +3,7 @@
 #include "renderer.h"
 #include "scene.h"
 #include "bullet.h"
+#include "player.h"
 #include "modelRenderer.h"
 
 
@@ -36,13 +37,10 @@ void Bullet::Update()
 	Scene* scene;
 	scene = Manager::GetScene();
 
-	/*float old_player;
-	Player* player{};
-	old_player = player->GetPosition().z;*/
+	m_Position.z += m_Speed;
+	m_Position.y = 1.0f;
 
-	m_Position.z += 0.3f;
-
-	if (m_Position.z > 10.0f) {
+	if (m_Position.z> 10.0f) {
 		SetDestroy();
 		Explosion* explosion = scene->AddGameObject<Explosion>(1);
 		explosion->SetPosition(m_Position);

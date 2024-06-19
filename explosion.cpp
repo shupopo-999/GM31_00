@@ -107,11 +107,11 @@ void Explosion::Draw()
 	vertex[2].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	vertex[2].TexCoord = XMFLOAT2(x, y + 0.25f);
 
-	vertex[3].Position = XMFLOAT3(1.0f, 1.0f, 0.0f);
+	vertex[3].Position = XMFLOAT3(1.0f, -1.0f, 0.0f);
 	vertex[3].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
 	vertex[3].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	vertex[3].TexCoord = XMFLOAT2(x + 0.25f, y + 0.25f);
-
+	
 	Renderer::GetDeviceContext()->Unmap(m_VertexBuffer,0);
 
 	// 入力レイアウト設定

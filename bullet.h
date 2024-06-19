@@ -11,6 +11,8 @@ private:
 	ID3D11PixelShader*			m_PixelShader{};
 	ID3D11InputLayout*			m_VertexLayout{};
 
+	float						m_Speed = 1.0f;
+
 public:
 	void Init()override;
 	void Uninit()override;
