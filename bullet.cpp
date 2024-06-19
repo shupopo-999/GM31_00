@@ -44,7 +44,7 @@ void Bullet::Update()
 
 	if (m_Position.z > 10.0f) {
 		SetDestroy();
-		Explosion* explosion = scene->AddGameObject<Explosion>();
+		Explosion* explosion = scene->AddGameObject<Explosion>(1);
 		explosion->SetPosition(m_Position);
 	}
 }

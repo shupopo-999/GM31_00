@@ -48,11 +48,11 @@ void Player::Update()
 	if (Input::GetKeyPress(VK_LSHIFT))speed *= 1.5;
 
 	if (Input::GetKeyTrigger(VK_SPACE)) {
-		Bullet* bullet = scene->AddGameObject<Bullet>();
+		Bullet* bullet = scene->AddGameObject<Bullet>(1);
 		bullet->SetPosition(m_Position);
 	}
 	if (Input::GetKeyTrigger('F')) {
-		Explosion* exp = scene->AddGameObject<Explosion>();
+		Explosion* exp = scene->AddGameObject<Explosion>(1);
 	}
 
 	if (Input::GetKeyPress('W')) {

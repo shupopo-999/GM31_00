@@ -13,58 +13,66 @@
 
 class Scene {
 private:
-	#define COUNT (4)
+#define COUNT (4)
 
 protected:
 
-	std::list<GameObject*> m_GameObject;
+	std::list<GameObject*> m_GameObject[COUNT];
 
 public:
 	virtual void Init() {
-		AddGameObject<Camara>();
-		AddGameObject<Field>();
-		AddGameObject<Player>();
-		AddGameObject<Enemy>();
+		AddGameObject<Camara>(0);
+		AddGameObject<Field>(1);
+		AddGameObject<Player>(1);
+		AddGameObject<Enemy>(1);
+		AddGameObject<Polygon2D>(2);
 	}
 
 	template <typename T>
-	T* AddGameObject() {
+	T* AddGameObject(int Layer) {
 		T* l_GameObject = new T();
 		l_GameObject->Init();
-		m_GameObject.push_back(l_GameObject);
+		m_GameObject[Layer].push_back(l_GameObject);
 
 		return l_GameObject;
 	}
 
 	template <typename T>
 	T* GetGameObject() {
-		for (GameObject* object : m_GameObject) {
-			T* ret = dynamic_cast<T*>(object);
+		for (int i = 0; i < 3; i++) {
+			for (GameObject* object : m_GameObject[i]) {
+				T* ret = dynamic_cast<T*>(object);
 
-			if (ret != nullptr) return ret;
+				if (ret != nullptr) return ret;
+			}
 		}
 		return nullptr;
 	}
 
 	virtual void Uninit() {
-		for (GameObject* object : m_GameObject) {
-			object->Uninit();
-			delete object;
+		for (int i = 0; i < 3; i++) {
+			for (GameObject* object : m_GameObject[i]) {
+				object->Uninit();
+				delete object;
+			}
+			m_GameObject[i].clear();
 		}
-		m_GameObject.clear();
 	}
 
 	virtual void Update() {
-		for (GameObject* object : m_GameObject) {
-			object->Update();
+		for (int i = 0; i < 3; i++) {
+			for (GameObject* object : m_GameObject[i]) {
+				object->Update();
+			}
+			m_GameObject[i].remove_if([](GameObject* object) {return object->Destroy(); });
 		}
-
-		m_GameObject.remove_if([](GameObject* object) {return object->Destroy(); });
 	}
 
 	virtual void Draw() {
-		for (GameObject* object : m_GameObject) {
-			object->Draw();
+		for (int i = 0; i < 3; i++) {
+			for (GameObject* object : m_GameObject[i]) {
+				object->Draw();
+			}
 		}
 	}
 
