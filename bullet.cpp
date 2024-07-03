@@ -17,7 +17,7 @@ void Bullet::Init()
 		"shader\\unlitTextureVS.cso");
 	Renderer::CreatePixelShader(&m_PixelShader,
 		"shader\\unlitTexturePS.cso");
-
+	m_Position.y = 1.0f;
 
 }
 
@@ -34,16 +34,54 @@ void Bullet::Uninit()
 
 void Bullet::Update()
 {
+	Player player;
+	m_Rotation = player.GetRotation();
+
+	XMFLOAT3 forward = GetForward();
+
+
+	m_Position.x += forward.x * m_Speed;
+	m_Position.y += forward.y * m_Speed;
+	m_Position.z += forward.z * m_Speed;
+
+
+	if (m_Position.x || m_Position.y || m_Position.z > 10.0f) {
+		
+		
+		SetDestroy();
+	}
+	BulletCollision();
+	
+}
+
+void Bullet::BulletCollision() {
 	Scene* scene;
 	scene = Manager::GetScene();
 
-	m_Position.z += m_Speed;
-	m_Position.y = 1.0f;
+	auto enemyList = scene->GetGameObjects<Enemy>();
 
-	if (m_Position.z> 10.0f) {
-		SetDestroy();
-		Explosion* explosion = scene->AddGameObject<Explosion>(1);
-		explosion->SetPosition(m_Position);
+	for (Enemy* enemy : enemyList) {
+		XMFLOAT3 enemyPosition = enemy->GetPosition();
+
+		XMFLOAT3 direction;
+		direction.x = enemyPosition.x - m_Position.x;
+		direction.y = enemyPosition.y - m_Position.y;
+		direction.z = enemyPosition.z - m_Position.z;
+
+		float length;
+		length = sqrtf(direction.x * direction.x
+			+ direction.y * direction.y
+			+ direction.z * direction.z);
+
+		if (length < 3.0f) {
+			Explosion* explosion = scene->AddGameObject<Explosion>(1);
+			explosion->SetPosition(m_Position);
+
+			enemy->SetDestroy();
+			SetDestroy();
+
+			return;
+		}
 	}
 }
 

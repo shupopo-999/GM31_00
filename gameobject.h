@@ -9,6 +9,7 @@ protected:
 	XMFLOAT3 m_Scale = XMFLOAT3(1.0f, 1.0f, 1.0f);
 
 public:
+	virtual ~GameObject() {};
 	virtual void Init() = 0;
 	virtual void Uninit() = 0;
 	virtual void Update() = 0;

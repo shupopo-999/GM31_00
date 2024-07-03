@@ -1,7 +1,7 @@
 #pragma once
 
 #include <list>
-
+#include <vector>
 #include "gameobject.h"
 #include "player.h"
 #include "polygon2D.h"
@@ -20,14 +20,14 @@ protected:
 	std::list<GameObject*> m_GameObject[OBJECT_COUNT];
 
 public:
+
+	virtual ~Scene() {};
+
 	virtual void Init() {
-		AddGameObject<Camara>(0);
-		AddGameObject<Field>(1);
-		AddGameObject<Player>(1);
-		AddGameObject<Polygon2D>(3);
+		
 	}
 
-	template <typename T>
+	template <typename T>			// テンプレート関数
 	T* AddGameObject(int Layer) {
 		T* l_GameObject = new T();
 		l_GameObject->Init();
@@ -48,6 +48,20 @@ public:
 		return nullptr;
 	}
 
+	template <typename T>
+	std::vector<T*> GetGameObjects() {
+		std::vector<T*> objectList;
+		for (int i = 0; i < 3; i++) {
+			for (GameObject* object : m_GameObject[i]) {
+				T* ret = dynamic_cast<T*>(object);
+
+				if (ret != nullptr)
+					objectList.push_back(ret);
+			}
+		}
+		return objectList;
+	}
+
 	virtual void Uninit() {
 		for (int i = 0; i < 3; i++) {
 			for (GameObject* object : m_GameObject[i]) {
@@ -63,7 +77,7 @@ public:
 			for (GameObject* object : m_GameObject[i]) {
 				object->Update();
 			}
-			m_GameObject[i].remove_if([](GameObject* object) {return object->Destroy(); });
+			m_GameObject[i].remove_if([](GameObject* object) {	return object->Destroy(); });
 		}
 	}
 

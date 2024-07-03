@@ -6,7 +6,9 @@
 #include "input.h"
 #include "camara.h"
 #include "enemy.h"
+#include "cylinder.h"
 #include "explosion.h"
+#include "title.h"
 
 Input* input;
 
@@ -22,6 +24,7 @@ void Player::Init()
 		"shader\\unlitTexturePS.cso");
 
 	m_Position.x = 5.0f;
+	groundFlag = true;
 }
 
 void Player::Uninit()
@@ -48,15 +51,20 @@ void Player::Update()
 
 	if (Input::GetKeyPress(VK_LSHIFT))speed *= 1.5;
 
-	if (Input::GetKeyPress(VK_SPACE)) {
+	if (Input::GetKeyPress('F')) {
 		Bullet* bullet = scene->AddGameObject<Bullet>(2);
 		bullet->SetPosition(m_Position);
 	}
-	if (Input::GetKeyTrigger('F')) {
-		Explosion* exp = scene->AddGameObject<Explosion>(2);
-	}
 	if (Input::GetKeyTrigger('R')) {
 		Enemy* ene = scene->AddGameObject<Enemy>(1);
+		ene->SetPosition(m_Position);
+	}
+	if (Input::GetKeyTrigger('T')) {
+		Cylinder* cy = scene->AddGameObject<Cylinder>(1);
+		cy->SetPosition(m_Position);
+	}
+	if (Input::GetKeyTrigger(VK_RETURN)) {
+		Manager::SetScene<Title>();
 	}
 
 	if (Input::GetKeyPress('W')) {
@@ -84,6 +92,53 @@ void Player::Update()
 	}
 	if (Input::GetKeyPress('Q')) {
 		m_Rotation.y -= rot;
+	}
+	if (Input::GetKeyTrigger(VK_SPACE)) {
+		m_Velocity.y = 1.5f;
+	}
+
+	if (!groundFlag) {
+		m_Velocity.y -= 0.1f;
+		m_Position.y += m_Velocity.y;
+	}
+
+	// ’n–Ê‚Æ‚Ì“–‚½‚è”»’è
+	if (m_Position.y < groundHeight && groundFlag) {
+		m_Position.y = groundHeight;
+		m_Velocity.y = 0.0f;
+	}
+	PlayerCollision();
+}
+
+void Player::PlayerCollision() {
+	XMFLOAT3 oldPos = m_Position;
+
+	Scene* scene;
+	scene = Manager::GetScene();
+
+	auto cyList = scene->GetGameObjects<Cylinder>();
+	for (Cylinder* cy : cyList) {
+		XMFLOAT3 cyPosition = cy->GetPosition();
+		XMFLOAT3 cyScale = cy->GetScale();
+
+		XMFLOAT3 direction;
+		direction.x = cyPosition.x - m_Position.x;
+		direction.y = cyPosition.y - m_Position.y;
+		direction.z = cyPosition.z - m_Position.z;
+
+		float length;
+		length = sqrtf(direction.x * direction.x
+			+ direction.z * direction.z);
+
+		if (length < cyScale.x) {
+			if (-direction.y > cyScale.y - 0.1) {
+				groundHeight = cyPosition.y + cyScale.y;
+			}
+			else {
+				m_Position.x = oldPos.x;
+				m_Position.z = oldPos.z;
+			}
+		}
 	}
 }
 
