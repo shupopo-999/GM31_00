@@ -19,7 +19,7 @@ void Cylinder::Init()
 	m_Position.x = 5.0f;
 }
 
-void Cylinder::Uninit()
+void Cylinder::UnInit()
 {
 	delete m_Component;
 

@@ -62,10 +62,10 @@ public:
 		return objectList;
 	}
 
-	virtual void Uninit() {
+	virtual void UnInit() {
 		for (int i = 0; i < 3; i++) {
 			for (GameObject* object : m_GameObject[i]) {
-				object->Uninit();
+				object->UnInit();
 				delete object;
 			}
 			m_GameObject[i].clear();

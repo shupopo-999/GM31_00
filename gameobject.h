@@ -11,7 +11,7 @@ protected:
 public:
 	virtual ~GameObject() {};
 	virtual void Init() = 0;
-	virtual void Uninit() = 0;
+	virtual void UnInit() = 0;
 	virtual void Update() = 0;
 	virtual void Draw() = 0;
 
@@ -27,7 +27,7 @@ public:
 
 	bool Destroy() {
 		if (m_Destroy) {
-			Uninit();
+			UnInit();
 			delete this;
 			return this;
 		}

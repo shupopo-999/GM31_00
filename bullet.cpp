@@ -21,7 +21,7 @@ void Bullet::Init()
 
 }
 
-void Bullet::Uninit()
+void Bullet::UnInit()
 {
 	delete m_Component;
 

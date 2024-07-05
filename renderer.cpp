@@ -250,7 +250,7 @@ void Renderer::Init()
 
 
 
-void Renderer::Uninit()
+void Renderer::UnInit()
 {
 
 	m_WorldBuffer->Release();

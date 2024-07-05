@@ -19,7 +19,3 @@ void Title::Update()
 	}
 }
 
-void Title::Draw()
-{
-
-}

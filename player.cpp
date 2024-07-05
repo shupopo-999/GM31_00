@@ -27,7 +27,7 @@ void Player::Init()
 	groundFlag = true;
 }
 
-void Player::Uninit()
+void Player::UnInit()
 {
 	delete m_Component;
 
@@ -103,7 +103,7 @@ void Player::Update()
 	}
 
 	// ’n–Ê‚Æ‚Ì“–‚½‚è”»’è
-	if (m_Position.y < groundHeight && groundFlag) {
+	if (m_Position.y < groundHeight) {
 		m_Position.y = groundHeight;
 		m_Velocity.y = 0.0f;
 	}
