@@ -19,7 +19,7 @@ void Enemy::Init()
 	m_Position.x = 5.0f;
 }
 
-void Enemy::Uninit()
+void Enemy::UnInit()
 {
 	delete m_Component;
 

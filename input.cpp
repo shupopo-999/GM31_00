@@ -16,7 +16,7 @@ void Input::Init()
 
 }
 
-void Input::Uninit()
+void Input::UnInit()
 {
 
 

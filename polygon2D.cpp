@@ -54,7 +54,7 @@ void Polygon2D::Init()
 		"shader\\unlitTexturePS.cso");
 }
 
-void Polygon2D::Uninit()
+void Polygon2D::UnInit()
 {
 	m_VertexBuffer->Release();
 	m_Texture->Release();

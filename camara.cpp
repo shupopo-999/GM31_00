@@ -11,7 +11,7 @@ void Camara::Init()
 	m_Target = XMFLOAT3(0.0f, 0.0f, 0.0f);
 }
 
-void Camara::Uninit()
+void Camara::UnInit()
 {
 
 }

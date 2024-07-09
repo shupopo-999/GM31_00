@@ -4,6 +4,9 @@
 #include "input.h"
 #include "game.h"
 #include "result.h"
+#include "title.h"
+#include "particleemitter.h"
+
 
 void Game::Init()
 {
@@ -13,6 +16,8 @@ void Game::Init()
 	AddGameObject<Polygon2D>(2);
 
 	AddGameObject<Enemy>(1)->SetPosition(XMFLOAT3(0.0f,0.0f,0.0f));
+
+	AddGameObject<ParticleEmitter>(1)->SetPosition(XMFLOAT3(0.0f, 3.0f, 5.0f));
 }
 
 void Game::Update()

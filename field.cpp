@@ -54,7 +54,7 @@ void Field::Init()
 		"shader\\unlitTexturePS.cso");
 }
 
-void Field::Uninit()
+void Field::UnInit()
 {
 	m_VertexBuffer->Release();
 	m_Texture->Release();
