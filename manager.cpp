@@ -20,13 +20,13 @@ void Manager::Init()
 }
 
 
-void Manager::Uninit()
+void Manager::UnInit()
 {
-	m_Scene->Uninit();
+	m_Scene->UnInit();
 	delete m_Scene;
 
-	Input::Uninit();
-	Renderer::Uninit();
+	Input::UnInit();
+	Renderer::UnInit();
 }
 
 void Manager::Update()
@@ -44,7 +44,7 @@ void Manager::Draw()
 	if (m_NextScene != nullptr)
 	{
 		if (m_Scene) {
-			m_Scene->Uninit();
+			m_Scene->UnInit();
 			delete m_Scene;
 		}
 		m_Scene = m_NextScene;

@@ -8,7 +8,7 @@
 #include "enemy.h"
 #include "cylinder.h"
 #include "explosion.h"
-#include "title.h"
+#include "result.h"
 
 Input* input;
 
@@ -27,7 +27,7 @@ void Player::Init()
 	groundFlag = true;
 }
 
-void Player::Uninit()
+void Player::UnInit()
 {
 	delete m_Component;
 
@@ -64,7 +64,7 @@ void Player::Update()
 		cy->SetPosition(m_Position);
 	}
 	if (Input::GetKeyTrigger(VK_RETURN)) {
-		Manager::SetScene<Title>();
+		Manager::SetScene<Result>();
 	}
 
 	if (Input::GetKeyPress('W')) {
@@ -103,7 +103,7 @@ void Player::Update()
 	}
 
 	// ’n–Ê‚Æ‚Ì“–‚½‚è”»’è
-	if (m_Position.y < groundHeight && groundFlag) {
+	if (m_Position.y < groundHeight) {
 		m_Position.y = groundHeight;
 		m_Velocity.y = 0.0f;
 	}

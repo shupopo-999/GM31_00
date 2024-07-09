@@ -67,7 +67,7 @@ private:
 
 public:
 	static void Init();
-	static void Uninit();
+	static void UnInit();
 	static void Begin();
 	static void End();
 

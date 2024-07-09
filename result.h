@@ -2,7 +2,8 @@
 
 #include "gameobject.h"
 
-class Explosion : public GameObject {
+
+class Result : public Scene {
 private:
 	ID3D11Buffer* m_VertexBuffer = nullptr;
 	ID3D11ShaderResourceView* m_Texture = nullptr;
@@ -10,9 +11,6 @@ private:
 	ID3D11VertexShader* m_VertexShader;
 	ID3D11PixelShader* m_PixelShader;
 	ID3D11InputLayout* m_VertexLayout;
-
-	int m_Count{};
-
 public:
 	void Init()override;
 	void UnInit()override;
