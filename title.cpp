@@ -7,7 +7,12 @@
 
 void Title::Init()
 {
-	AddGameObject<Polygon2D>(3);
+	AddGameObject<Polygon2D>(2);
+}
+
+void Title::Uninit() 
+{
+	Scene::Uninit();
 }
 
 void Title::Update()
@@ -21,5 +26,5 @@ void Title::Update()
 
 void Title::Draw()
 {
-
+	Scene::Draw();
 }

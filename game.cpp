@@ -10,7 +10,7 @@ void Game::Init()
 	AddGameObject<Camara>(0);
 	AddGameObject<Field>(1);
 	AddGameObject<Player>(1);
-	AddGameObject<Polygon2D>(3);
+	AddGameObject<Polygon2D>(2);
 
 	AddGameObject<Enemy>(1)->SetPosition(XMFLOAT3(0.0f,0.0f,0.0f));
 }
