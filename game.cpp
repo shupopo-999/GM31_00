@@ -3,7 +3,7 @@
 #include "renderer.h"
 #include "input.h"
 #include "game.h"
-#include "title.h"
+#include "result.h"
 
 void Game::Init()
 {
@@ -20,12 +20,12 @@ void Game::Update()
 	Scene::Update();
 
 	if (Input::GetKeyTrigger(VK_RETURN)) {
-		Manager::SetScene<Title>();
+		Manager::SetScene<Result>();
 	}
 
 	auto enemyList = GetGameObjects<Enemy>();
 	if (enemyList.size() == 0) {
-		Manager::SetScene<Title>();
+		Manager::SetScene<Result>();
 	}
 
 }
