@@ -34,19 +34,9 @@ void Bullet::UnInit()
 
 void Bullet::Update()
 {
-	Player player;
-	m_Rotation = player.GetRotation();
-
-	XMFLOAT3 forward = GetForward();
-
-
-	m_Position.x += forward.x * m_Speed;
-	m_Position.y += forward.y * m_Speed;
-	m_Position.z += forward.z * m_Speed;
-
-
-	if (m_Position.x || m_Position.y || m_Position.z > 10.0f) {
-		
+	m_Position.z += 1.0f;
+	
+	if (m_Position.z > 10.0f) {
 		
 		SetDestroy();
 	}
@@ -73,7 +63,7 @@ void Bullet::BulletCollision() {
 			+ direction.y * direction.y
 			+ direction.z * direction.z);
 
-		if (length < 3.0f) {
+		if (length < 1.0f) {
 			Explosion* explosion = scene->AddGameObject<Explosion>(1);
 			explosion->SetPosition(m_Position);
 

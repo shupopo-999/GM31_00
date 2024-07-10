@@ -2,6 +2,7 @@
 
 #include <xaudio2.h>
 #include "gameObject.h"
+#include "component.h"
 
 
 class Audio : public Component

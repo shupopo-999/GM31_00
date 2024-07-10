@@ -9,6 +9,7 @@
 #include "cylinder.h"
 #include "explosion.h"
 #include "result.h"
+#include "audio.h"
 
 Input* input;
 
@@ -25,11 +26,18 @@ void Player::Init()
 
 	m_Position.x = 5.0f;
 	groundFlag = true;
+
+	// Œø‰Ê‰¹‚ðƒ[ƒh
+	m_SE = new Audio(this);
+	m_SE->Load("asset\\audio\\wan.wav");
 }
 
 void Player::UnInit()
 {
 	delete m_Component;
+
+	m_SE->Uninit();
+	delete m_SE;
 
 	m_VertexLayout->Release();
 	m_VertexShader->Release();
@@ -54,6 +62,7 @@ void Player::Update()
 	if (Input::GetKeyPress('F')) {
 		Bullet* bullet = scene->AddGameObject<Bullet>(2);
 		bullet->SetPosition(m_Position);
+		m_SE->Play();
 	}
 	if (Input::GetKeyTrigger('R')) {
 		Enemy* ene = scene->AddGameObject<Enemy>(1);

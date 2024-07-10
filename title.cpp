@@ -4,6 +4,7 @@
 #include "title.h"
 #include "input.h"
 #include "game.h"
+#include "audio.h"
 
 void Title::Init()
 {
@@ -57,10 +58,17 @@ void Title::Init()
 		"shader\\unlitTextureVS.cso");
 	Renderer::CreatePixelShader(&m_PixelShader,
 		"shader\\unlitTexturePS.cso");
+
+	m_BGM = new Audio(this);
+	m_BGM->Load("asset\\audio\\bgm.wav");
+	m_BGM->Play(true);
 }
 
 void Title::UnInit() 
 {
+	m_BGM->Uninit();
+	delete m_BGM;
+
 	m_VertexBuffer->Release();
 	m_Texture->Release();
 
