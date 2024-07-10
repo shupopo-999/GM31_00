@@ -2,16 +2,14 @@
 #include "manager.h"
 #include "renderer.h"
 #include "scene.h"
-#include "bullet.h"
-#include "player.h"
 #include "modelRenderer.h"
+#include "bullet.h"
 
 
 void Bullet::Init()
 {
 	m_Component = new ModelRenderer(this);
    	((ModelRenderer*)m_Component)->Load("asset\\model\\bullet.obj");
-
 
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout,
 		"shader\\unlitTextureVS.cso");

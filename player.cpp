@@ -60,7 +60,7 @@ void Player::Update()
 	if (Input::GetKeyPress(VK_LSHIFT))speed *= 1.5;
 
 	if (Input::GetKeyPress('F')) {
-		Bullet* bullet = scene->AddGameObject<Bullet>(2);
+		Bullet* bullet = scene->AddGameObject<Bullet>(1);
 		bullet->SetPosition(m_Position);
 		m_SE->Play();
 	}
