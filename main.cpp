@@ -1,5 +1,3 @@
-
-
 #include "main.h"
 #include "manager.h"
 #include <thread>
@@ -52,6 +50,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	CoInitializeEx(nullptr, COINITBASE_MULTITHREADED);
 
 
+
+
 	Manager::Init();
 
 
@@ -92,7 +92,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 			if((dwCurrentTime - dwExecLastTime) >= (1000 / 60))
 			{
 				dwExecLastTime = dwCurrentTime;
-
+			
 				Manager::Update();
 				Manager::Draw();
 			}
