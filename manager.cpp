@@ -1,6 +1,8 @@
 #include "main.h"
 #include "manager.h"
 #include "renderer.h"
+#include "modelRenderer.h"
+#include "audio.h"
 #include "scene.h"
 #include "game.h"
 #include "title.h"
@@ -15,6 +17,8 @@ void Manager::Init()
 	Renderer::Init();
 	Input::Init();
 
+	Audio::InitMaster();
+
 	m_Scene = new Title;
 	m_Scene->Init();
 }
@@ -25,6 +29,9 @@ void Manager::UnInit()
 	m_Scene->UnInit();
 	delete m_Scene;
 
+	ModelRenderer::UnloadAll();
+
+	Audio::UninitMaster();
 	Input::UnInit();
 	Renderer::UnInit();
 }
@@ -47,6 +54,8 @@ void Manager::Draw()
 			m_Scene->UnInit();
 			delete m_Scene;
 		}
+		ModelRenderer::UnloadAll();
+
 		m_Scene = m_NextScene;
 		m_Scene->Init();
 
