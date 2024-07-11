@@ -15,6 +15,7 @@ private:
 	float						groundHeight = 0.0f;
 	bool						groundFlag;
 
+	class Audio* m_SE{};
 
 public:
 	void Init()override;
