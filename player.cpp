@@ -94,15 +94,15 @@ void Player::Update()
 		m_Rot = XM_PI;
 	}
 	if (Input::GetKeyPress('D')) {
-		m_Position.x += right.z * speed;
-		m_Position.y += right.y * speed;
-		m_Position.z += right.x * speed;
+		m_Position.x += forward.z * speed;
+		m_Position.y += forward.y * speed;
+		m_Position.z += forward.x * speed;
 		m_Rot = XM_PI / 2;
 	}
 	if (Input::GetKeyPress('A')) {
-		m_Position.x -= right.z * speed;
-		m_Position.y -= right.y * speed;
-		m_Position.z -= right.x * speed;
+		m_Position.x -= forward.z * speed;
+		m_Position.y -= forward.y * speed;
+		m_Position.z -= forward.x * speed;
 		m_Rot = -XM_PI / 2;
 	}
 

@@ -15,11 +15,10 @@ void Game::Init()
 	AddGameObject<Field>(1);
 	AddGameObject<Player>(1);
 	AddGameObject<Score>(2);
-	// AddGameObject<Polygon2D>(2);
 
 	AddGameObject<Enemy>(1)->SetPosition(XMFLOAT3(0.0f,0.0f,0.0f));
 
-	AddGameObject<ParticleEmitter>(1)->SetPosition(XMFLOAT3(0.0f, 3.0f, 5.0f));
+	AddGameObject<ParticleEmitter>(1)->SetPosition(XMFLOAT3(0.0f, 0.1f, 5.0f));
 }
 
 void Game::Update()
