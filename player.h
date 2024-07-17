@@ -14,6 +14,7 @@ private:
 	XMFLOAT3					m_Velocity{};
 	float						groundHeight = 0.0f;
 	bool						groundFlag;
+	float						m_Rot;
 
 	class Audio* m_SE{};
 

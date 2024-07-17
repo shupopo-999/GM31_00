@@ -9,6 +9,7 @@
 #include "cylinder.h"
 #include "explosion.h"
 #include "result.h"
+#include "camara.h"
 #include "audio.h"
 
 Input* input;
@@ -27,7 +28,7 @@ void Player::Init()
 	m_Position.x = 5.0f;
 	groundFlag = true;
 
-	// Œø‰Ê‰¹‚ğƒ[ƒh
+	// ï¿½ï¿½ï¿½Ê‰ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½h
 	m_SE = new Audio(this);
 	m_SE->Load("asset\\audio\\wan.wav");
 }
@@ -48,10 +49,14 @@ void Player::UnInit()
 
 void Player::Update()
 {
-	XMFLOAT3 forward = GetForward();
 
 	Scene* scene;
 	scene = Manager::GetScene();
+
+	Camara* camera = scene->GetGameObject<Camara>();
+	XMFLOAT3 forward = camera->GetForward();
+	XMFLOAT3 right = camera->GetRight();
+
 	float speed = 0.3f;
 	float rot = 0.1f;
 
@@ -80,28 +85,27 @@ void Player::Update()
 		m_Position.x += forward.x * speed;
 		m_Position.y += forward.y * speed;
 		m_Position.z += forward.z * speed;
+		m_Rot = 0.0f;
 	}
 	if (Input::GetKeyPress('S')) {
 		m_Position.x -= forward.x * speed;
 		m_Position.y -= forward.y * speed;
 		m_Position.z -= forward.z * speed;
+		m_Rot = XM_PI;
 	}
 	if (Input::GetKeyPress('D')) {
-		m_Position.x += forward.z * speed;
-		m_Position.y += forward.y * speed;
-		m_Position.z += forward.x * speed;
+		m_Position.x += right.z * speed;
+		m_Position.y += right.y * speed;
+		m_Position.z += right.x * speed;
+		m_Rot = XM_PI / 2;
 	}
 	if (Input::GetKeyPress('A')) {
-		m_Position.x -= forward.z * speed;
-		m_Position.y -= forward.y * speed;
-		m_Position.z -= forward.x * speed;
+		m_Position.x -= right.z * speed;
+		m_Position.y -= right.y * speed;
+		m_Position.z -= right.x * speed;
+		m_Rot = -XM_PI / 2;
 	}
-	if (Input::GetKeyPress('E')){
-		m_Rotation.y += rot;
-	}
-	if (Input::GetKeyPress('Q')) {
-		m_Rotation.y -= rot;
-	}
+
 	if (Input::GetKeyTrigger(VK_SPACE)) {
 		m_Velocity.y = 1.5f;
 	}
@@ -111,12 +115,14 @@ void Player::Update()
 		m_Position.y += m_Velocity.y;
 	}
 
-	// ’n–Ê‚Æ‚Ì“–‚½‚è”»’è
+	// groundHeight = 0.0f;
+	PlayerCollision();
+
+	// ï¿½nï¿½Ê‚Æ‚Ì“ï¿½ï¿½ï¿½ï¿½è”»ï¿½ï¿½
 	if (m_Position.y < groundHeight) {
 		m_Position.y = groundHeight;
 		m_Velocity.y = 0.0f;
 	}
-	PlayerCollision();
 }
 
 void Player::PlayerCollision() {
@@ -153,14 +159,14 @@ void Player::PlayerCollision() {
 
 void Player::Draw()
 {
-	// “ü—ÍƒŒƒCƒAƒEƒgİ’è
+	// ï¿½ï¿½ï¿½Íƒï¿½ï¿½Cï¿½Aï¿½Eï¿½gï¿½İ’ï¿½
 	Renderer::GetDeviceContext()->IASetInputLayout(m_VertexLayout);
 
-	// ƒVƒF[ƒ_İ’è
+	// ï¿½Vï¿½Fï¿½[ï¿½_ï¿½İ’ï¿½
 	Renderer::GetDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
 	Renderer::GetDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
 
-	// ƒ[ƒ‹ƒhƒ}ƒgƒŠƒNƒXİ’è
+	// ï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½hï¿½}ï¿½gï¿½ï¿½ï¿½Nï¿½Xï¿½İ’ï¿½
 	XMMATRIX world, scale, rot, trans;
 	scale = XMMatrixScaling(m_Scale.x,m_Scale.y,m_Scale.z);
 	rot = XMMatrixRotationRollPitchYaw(m_Rotation.x, m_Rotation.y + XM_PI, m_Rotation.z);

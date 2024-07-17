@@ -4,11 +4,13 @@
 #include "camara.h"
 #include "player.h"
 #include "scene.h"
+#include "input.h"
 
 void Camara::Init()
 {
 	m_Position = XMFLOAT3(0.0f, 5.0f, -10.0f);
 	m_Target = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_Rot = 0.1f;
 }
 
 void Camara::UnInit()
@@ -27,9 +29,16 @@ void Camara::Update()
 	m_Target = player->GetPosition();
 	m_Target.y += 1.0f;
 
-	m_Position.x = m_Target.x;
-	m_Position.y = m_Target.y + 10.0f;
-	m_Position.z = m_Target.z + -10.0f;
+	if (Input::GetKeyPress('E')) {
+		m_Rotation.y += m_Rot;
+	}
+	if (Input::GetKeyPress('Q')) {
+		m_Rotation.y -= m_Rot;
+	}
+
+	m_Position.x = m_Target.x - sinf(m_Rotation.y) * 6.0f;
+	m_Position.y = m_Target.y + 4.0f;
+	m_Position.z = m_Target.z - cosf(m_Rotation.y) * 6.0f;
 
 }
 

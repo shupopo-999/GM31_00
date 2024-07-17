@@ -155,6 +155,7 @@
     <ClInclude Include="renderer.h" />
     <ClInclude Include="result.h" />
     <ClInclude Include="scene.h" />
+    <ClInclude Include="score.h" />
     <ClInclude Include="title.h" />
   </ItemGroup>
   <ItemGroup>
@@ -182,6 +183,7 @@
     <ClCompile Include="polygon2D.cpp" />
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="result.cpp" />
+    <ClCompile Include="score.cpp" />
     <ClCompile Include="title.cpp" />
   </ItemGroup>
   <ItemGroup>

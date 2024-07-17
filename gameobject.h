@@ -42,4 +42,13 @@ public:
 		XMStoreFloat3(&forward, rotationMatrix.r[2]);
 		return forward;
 	}
+	XMFLOAT3 GetRight() {
+		// オイラー角から回転行列を生成
+		XMMATRIX rotationMatrix;
+		rotationMatrix = XMMatrixRotationRollPitchYaw(m_Rotation.x, m_Rotation.y, m_Rotation.z);
+
+		XMFLOAT3 forward;
+		XMStoreFloat3(&forward, rotationMatrix.r[3]);
+		return forward;
+	}
 };

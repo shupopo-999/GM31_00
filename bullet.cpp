@@ -2,6 +2,9 @@
 #include "manager.h"
 #include "renderer.h"
 #include "scene.h"
+#include "bullet.h"
+#include "player.h"
+#include "score.h"
 #include "modelRenderer.h"
 #include "bullet.h"
 
@@ -64,6 +67,7 @@ void Bullet::BulletCollision() {
 		if (length < 1.0f) {
 			Explosion* explosion = scene->AddGameObject<Explosion>(1);
 			explosion->SetPosition(m_Position);
+			scene->GetGameObject<Score>()->AddCount(1);
 
 			enemy->SetDestroy();
 			SetDestroy();
@@ -75,14 +79,14 @@ void Bullet::BulletCollision() {
 
 void Bullet::Draw()
 {
-	// “ü—ÍƒŒƒCƒAƒEƒgİ’è
+	// ï¿½ï¿½ï¿½Íƒï¿½ï¿½Cï¿½Aï¿½Eï¿½gï¿½İ’ï¿½
 	Renderer::GetDeviceContext()->IASetInputLayout(m_VertexLayout);
 
-	// ƒVƒF[ƒ_İ’è
+	// ï¿½Vï¿½Fï¿½[ï¿½_ï¿½İ’ï¿½
 	Renderer::GetDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
 	Renderer::GetDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
 
-	// ƒ[ƒ‹ƒhƒ}ƒgƒŠƒNƒXİ’è
+	// ï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½hï¿½}ï¿½gï¿½ï¿½ï¿½Nï¿½Xï¿½İ’ï¿½
 	XMMATRIX world, scale, rot, trans;
 	scale = XMMatrixScaling(m_Scale.x,m_Scale.y,m_Scale.z);
 	rot = XMMatrixRotationRollPitchYaw(m_Rotation.x, m_Rotation.y, m_Rotation.z);
