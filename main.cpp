@@ -1,5 +1,6 @@
 #include "main.h"
 #include "manager.h"
+#include "renderer.h"
 #include "imgui.h"
 #include "imgui_impl_win32.h"
 #include "imgui_impl_dx11.h"
@@ -8,9 +9,8 @@
 const char* CLASS_NAME = "AppClass";
 const char* WINDOW_NAME = "DX31ÉQÅ[ÉÄ";
 
-
-static ID3D11Device* g_pd3dDevice = nullptr;
-static ID3D11DeviceContext* g_pd3dDeviceContext = nullptr;
+static ID3D11Device* g_pd3dDevice = Renderer::GetDevice();
+static ID3D11DeviceContext* g_pd3dDeviceContext = Renderer::GetDeviceContext();
 static IDXGISwapChain* g_pSwapChain = nullptr;
 static UINT                     g_ResizeWidth = 0, g_ResizeHeight = 0;
 static ID3D11RenderTargetView* g_mainRenderTargetView = nullptr;
@@ -123,7 +123,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		{
 			ImGui::Begin("Hey");
 			if (ImGui::Button("Button")) clickCount++;
-			ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
+			ImGui::ColorEdit3("clear color", (float*)&clear_color);
 			ImGui::Text("counter = %d", clickCount);
 			ImGui::End();
 		}
