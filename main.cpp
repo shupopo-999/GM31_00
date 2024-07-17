@@ -29,10 +29,8 @@ HWND GetWindow()
 	return g_Window;
 }
 
-
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-
 
 	WNDCLASSEX wcex;
 	{
@@ -62,17 +60,24 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	CoInitializeEx(nullptr, COINITBASE_MULTITHREADED);
 
 
-
-
 	Manager::Init();
-
 
 
 	ShowWindow(g_Window, nCmdShow);
 	UpdateWindow(g_Window);
 
+	// Setup Dear ImGui context
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
+	// Setup Dear ImGui style
+	ImGui::StyleColorsDark();
 
+	ImGui_ImplWin32_Init(g_Window);
+	ImGui_ImplDX11_Init(g_pd3dDevice, g_pd3dDeviceContext);
 
 	DWORD dwExecLastTime;
 	DWORD dwCurrentTime;
@@ -80,11 +85,22 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	dwExecLastTime = timeGetTime();
 	dwCurrentTime = 0;
 
-
+	int clickCount = 0;
 
 	MSG msg;
 	while(1)
 	{
+		ImGui_ImplDX11_NewFrame();
+		ImGui_ImplWin32_NewFrame();
+		ImGui::NewFrame();
+
+		{
+			ImGui::Begin("Hey");
+			if (ImGui::Button("Button")) clickCount++;
+			ImGui::Text("counter = %d", clickCount);
+			ImGui::End();
+			ImGui::Render();
+		}
         if(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
 		{
 			if(msg.message == WM_QUIT)
@@ -110,6 +126,11 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 			}
 		}
 	}
+
+	// ImGuiÇÃÉÅÉÇÉäâï˙
+	ImGui_ImplDX11_Shutdown();
+	ImGui_ImplWin32_Shutdown();
+	ImGui::DestroyContext();
 
 	timeEndPeriod(1);
 

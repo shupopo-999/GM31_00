@@ -1,33 +1,30 @@
 #include "main.h"
-#include "manager.h"
 #include "renderer.h"
-#include "scene.h"
-#include "camara.h"
-#include "explosion.h"
+#include "score.h"
 
-void Explosion::Init()
+void Score::Init()
 {
 	VERTEX_3D vertex[4];
 
-	vertex[0].Position = XMFLOAT3(-1.0f, 1.0f, 0.0f);
-	vertex[0].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
-	vertex[0].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-	vertex[0].TexCoord = XMFLOAT2(0.0f, 0.0f);
+	vertex[0].Position	= XMFLOAT3(0.0f, 0.0f, 0.0f);
+	vertex[0].Normal	= XMFLOAT3(0.0f, 0.0f, 0.0f);
+	vertex[0].Diffuse	= XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	vertex[0].TexCoord	= XMFLOAT2(0.0f, 0.0f);
 
-	vertex[1].Position = XMFLOAT3(1.0f, 1.0f, 0.0f);
-	vertex[1].Normal = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	vertex[1].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-	vertex[1].TexCoord = XMFLOAT2(1.0f, 0.0f);
+	vertex[1].Position	= XMFLOAT3(200.0f, 0.0f, 0.0f);
+	vertex[1].Normal	= XMFLOAT3(0.0f, 0.0f, 0.0f);
+	vertex[1].Diffuse	= XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	vertex[1].TexCoord	= XMFLOAT2(1.0f, 0.0f);
 
-	vertex[2].Position = XMFLOAT3(-1.0f, 0.0f, 0.0f);
-	vertex[2].Normal = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	vertex[2].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-	vertex[2].TexCoord = XMFLOAT2(0.0f, 1.0f);
+	vertex[2].Position	= XMFLOAT3(0.0f, 200.0f, 0.0f);
+	vertex[2].Normal	= XMFLOAT3(0.0f, 0.0f, 0.0f);
+	vertex[2].Diffuse	= XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	vertex[2].TexCoord	= XMFLOAT2(0.0f, 1.0f);
 
-	vertex[3].Position = XMFLOAT3(1.0f, 0.0f, 0.0f);
-	vertex[3].Normal = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	vertex[3].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-	vertex[3].TexCoord = XMFLOAT2(1.0f, 1.0f);
+	vertex[3].Position	= XMFLOAT3(200.0f, 200.0f, 0.0f);
+	vertex[3].Normal	= XMFLOAT3(0.0f, 0.0f, 0.0f);
+	vertex[3].Diffuse	= XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	vertex[3].TexCoord	= XMFLOAT2(1.0f, 1.0f);
 
 
 	// 頂点バッファ生成
@@ -47,17 +44,17 @@ void Explosion::Init()
 	// テクスチャ読み込み
 	TexMetadata metadata;
 	ScratchImage image;
-	LoadFromWICFile(L"asset\\texture\\explosion.png", WIC_FLAGS_NONE, &metadata, image);
+	LoadFromWICFile(L"asset\\texture\\number.png", WIC_FLAGS_NONE, &metadata, image);
 	CreateShaderResourceView(Renderer::GetDevice(), image.GetImages(), image.GetImageCount(), metadata, &m_Texture);
 	assert(m_Texture);
 
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout,
 		"shader\\unlitTextureVS.cso");
 	Renderer::CreatePixelShader(&m_PixelShader,
-		"shader\\unlitTexturePS.cso");	
+		"shader\\unlitTexturePS.cso");
 }
 
-void Explosion::UnInit()
+void Score::UnInit()
 {
 	m_VertexBuffer->Release();
 	m_Texture->Release();
@@ -69,50 +66,45 @@ void Explosion::UnInit()
 
 }
 
-void Explosion::Update()
+void Score::Update()
 {
-	m_Count++;
 
-	if (m_Count >= 16) {
-		SetDestroy();
-		return;
-	}
 }
 
-void Explosion::Draw()
+void Score::Draw()
 {
 	// テクスチャ座標を算出
-	float x = m_Count % 4 * (1.0f / 4);
-	float y = m_Count / 4 * (1.0f / 4);
+	float x = m_score % 5 * (1.0f / 5);
+	float y = m_score / 5 * (1.0f / 5);
 
 	// 頂点データの書き換え
 	D3D11_MAPPED_SUBRESOURCE msr;
 	Renderer::GetDeviceContext()->Map(m_VertexBuffer, 0,
-			D3D11_MAP_WRITE_DISCARD, 0, &msr);
+		D3D11_MAP_WRITE_DISCARD, 0, &msr);
 
 	VERTEX_3D* vertex = (VERTEX_3D*)msr.pData;
 
-	vertex[0].Position = XMFLOAT3(-1.0f, 1.0f, 0.0f);
+	vertex[0].Position = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	vertex[0].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
 	vertex[0].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	vertex[0].TexCoord = XMFLOAT2(x, y);
 
-	vertex[1].Position = XMFLOAT3(1.0f, 1.0f, 0.0f);
+	vertex[1].Position = XMFLOAT3(200.0f, 0.0f, 0.0f);
 	vertex[1].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
 	vertex[1].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-	vertex[1].TexCoord = XMFLOAT2(x + 0.25f, y);
+	vertex[1].TexCoord = XMFLOAT2(x + 0.2f, y);
 
-	vertex[2].Position = XMFLOAT3(-1.0f, -1.0f, 0.0f);
+	vertex[2].Position = XMFLOAT3(0.0f, 200.0f, 0.0f);
 	vertex[2].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
 	vertex[2].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-	vertex[2].TexCoord = XMFLOAT2(x, y + 0.25f);
+	vertex[2].TexCoord = XMFLOAT2(x, y + 0.2f);
 
-	vertex[3].Position = XMFLOAT3(1.0f, -1.0f, 0.0f);
+	vertex[3].Position = XMFLOAT3(200.0f, 200.0f, 0.0f);
 	vertex[3].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
 	vertex[3].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-	vertex[3].TexCoord = XMFLOAT2(x + 0.25f, y + 0.25f);
-	
-	Renderer::GetDeviceContext()->Unmap(m_VertexBuffer,0);
+	vertex[3].TexCoord = XMFLOAT2(x + 0.2f, y + 0.2f);
+
+	Renderer::GetDeviceContext()->Unmap(m_VertexBuffer, 0);
 
 	// 入力レイアウト設定
 	Renderer::GetDeviceContext()->IASetInputLayout(m_VertexLayout);
@@ -121,25 +113,8 @@ void Explosion::Draw()
 	Renderer::GetDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
 	Renderer::GetDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
 
-	// カメラのビューマトリクス取得
-	Scene* scene = Manager::GetScene();
-	Camara* camara = scene->GetGameObject<Camara>();
-	XMMATRIX view = camara->GetViewMatrix();
-
-	// ビューの逆行列
-	XMMATRIX invView;
-	invView = XMMatrixInverse(nullptr, view);	// 逆行列
-	invView.r[3].m128_f32[0] = 0.0f;
-	invView.r[3].m128_f32[1] = 0.0f;
-	invView.r[3].m128_f32[2] = 0.0f;
-
-	// ワールドマトリクス設定
-	XMMATRIX world, scale, rot, trans;
-	scale = XMMatrixScaling(m_Scale.x, m_Scale.y, m_Scale.z);
-	// rot = XMMatrixRotationRollPitchYaw(m_Rotation.x, m_Rotation.y, m_Rotation.z);
-	trans = XMMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
-	world = scale * invView * trans;
-	Renderer::SetWorldMatrix(world);
+	// マトリックス設定
+	Renderer::SetWorldViewProjection2D();
 
 	// マテリアル設定
 	MATERIAL material;

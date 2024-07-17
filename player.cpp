@@ -9,6 +9,7 @@
 #include "cylinder.h"
 #include "explosion.h"
 #include "result.h"
+#include "camara.h"
 
 Input* input;
 
@@ -40,10 +41,14 @@ void Player::UnInit()
 
 void Player::Update()
 {
-	XMFLOAT3 forward = GetForward();
 
 	Scene* scene;
 	scene = Manager::GetScene();
+
+	Camara* camera = scene->GetGameObject<Camara>();
+	XMFLOAT3 forward = camera->GetForward();
+	XMFLOAT3 right = camera->GetRight();
+
 	float speed = 0.3f;
 	float rot = 0.1f;
 
@@ -52,7 +57,7 @@ void Player::Update()
 	if (Input::GetKeyPress(VK_LSHIFT))speed *= 1.5;
 
 	if (Input::GetKeyPress('F')) {
-		Bullet* bullet = scene->AddGameObject<Bullet>(2);
+		Bullet* bullet = scene->AddGameObject<Bullet>(1);
 		bullet->SetPosition(m_Position);
 	}
 	if (Input::GetKeyTrigger('R')) {
@@ -71,28 +76,27 @@ void Player::Update()
 		m_Position.x += forward.x * speed;
 		m_Position.y += forward.y * speed;
 		m_Position.z += forward.z * speed;
+		m_Rot = 0.0f;
 	}
 	if (Input::GetKeyPress('S')) {
 		m_Position.x -= forward.x * speed;
 		m_Position.y -= forward.y * speed;
 		m_Position.z -= forward.z * speed;
+		m_Rot = XM_PI;
 	}
 	if (Input::GetKeyPress('D')) {
-		m_Position.x += forward.z * speed;
-		m_Position.y += forward.y * speed;
-		m_Position.z += forward.x * speed;
+		m_Position.x += right.z * speed;
+		m_Position.y += right.y * speed;
+		m_Position.z += right.x * speed;
+		m_Rot = XM_PI / 2;
 	}
 	if (Input::GetKeyPress('A')) {
-		m_Position.x -= forward.z * speed;
-		m_Position.y -= forward.y * speed;
-		m_Position.z -= forward.x * speed;
+		m_Position.x -= right.z * speed;
+		m_Position.y -= right.y * speed;
+		m_Position.z -= right.x * speed;
+		m_Rot = -XM_PI / 2;
 	}
-	if (Input::GetKeyPress('E')){
-		m_Rotation.y += rot;
-	}
-	if (Input::GetKeyPress('Q')) {
-		m_Rotation.y -= rot;
-	}
+
 	if (Input::GetKeyTrigger(VK_SPACE)) {
 		m_Velocity.y = 1.5f;
 	}
@@ -102,12 +106,14 @@ void Player::Update()
 		m_Position.y += m_Velocity.y;
 	}
 
+	// groundHeight = 0.0f;
+	PlayerCollision();
+
 	// ’n–Ê‚Æ‚Ì“–‚½‚è”»’è
 	if (m_Position.y < groundHeight) {
 		m_Position.y = groundHeight;
 		m_Velocity.y = 0.0f;
 	}
-	PlayerCollision();
 }
 
 void Player::PlayerCollision() {

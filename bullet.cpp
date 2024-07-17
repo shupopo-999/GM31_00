@@ -4,6 +4,7 @@
 #include "scene.h"
 #include "bullet.h"
 #include "player.h"
+#include "score.h"
 #include "modelRenderer.h"
 
 
@@ -34,19 +35,8 @@ void Bullet::UnInit()
 
 void Bullet::Update()
 {
-	Player player;
-	m_Rotation = player.GetRotation();
-
-	XMFLOAT3 forward = GetForward();
-
-
-	m_Position.x += forward.x * m_Speed;
-	m_Position.y += forward.y * m_Speed;
-	m_Position.z += forward.z * m_Speed;
-
-
-	if (m_Position.x || m_Position.y || m_Position.z > 10.0f) {
-		
+	m_Position.z++;
+	if (m_Position.z > 10.0f) {
 		
 		SetDestroy();
 	}
@@ -76,6 +66,7 @@ void Bullet::BulletCollision() {
 		if (length < 3.0f) {
 			Explosion* explosion = scene->AddGameObject<Explosion>(1);
 			explosion->SetPosition(m_Position);
+			scene->GetGameObject<Score>()->AddCount(1);
 
 			enemy->SetDestroy();
 			SetDestroy();
