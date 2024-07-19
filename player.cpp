@@ -11,6 +11,7 @@
 #include "result.h"
 #include "camara.h"
 #include "audio.h"
+#include "particleemitter.h"
 
 Input* input;
 
@@ -61,6 +62,11 @@ void Player::Update()
 	float rot = 0.1f;
 
 	m_Component->Update();
+
+	if (Input::GetKeyTrigger('P')) {
+		ParticleEmitter* particle = scene->AddGameObject<ParticleEmitter>(1);
+		particle->SetPosition(m_Position);
+	}
 
 	if (Input::GetKeyPress(VK_LSHIFT))speed *= 1.5;
 
