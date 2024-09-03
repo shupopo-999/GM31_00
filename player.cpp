@@ -28,9 +28,15 @@ void Player::Init()
 	m_Position.x = 5.0f;
 	groundFlag = true;
 
-	// ���ʉ������[�h
+	// サウンドロード
 	m_SE = new Audio(this);
 	m_SE->Load("asset\\audio\\wan.wav");
+
+	// Quaternion 初期化
+	m_Quaternion.x = 0.0f;
+	m_Quaternion.y = 0.0f;
+	m_Quaternion.z = 0.0f;
+	m_Quaternion.w = 1.0f;
 }
 
 void Player::UnInit()
@@ -82,28 +88,32 @@ void Player::Update()
 	}
 
 	if (Input::GetKeyPress('W')) {
-		m_Position.x += forward.x * speed;
-		m_Position.y += forward.y * speed;
-		m_Position.z += forward.z * speed;
-		m_Rot = 0.0f;
+		m_Position.z += speed;
+
+		XMVECTOR quat = XMQuaternionRotationRollPitchYaw(0.1f, 0.0f, 0.0f);
+		quat = XMQuaternionMultiply(XMLoadFloat4(&m_Quaternion), quat);
+		XMStoreFloat4(&m_Quaternion, quat);
 	}
 	if (Input::GetKeyPress('S')) {
-		m_Position.x -= forward.x * speed;
-		m_Position.y -= forward.y * speed;
-		m_Position.z -= forward.z * speed;
-		m_Rot = XM_PI;
+		m_Position.z += -speed;
+
+		XMVECTOR quat = XMQuaternionRotationRollPitchYaw(-0.1f, 0.0f, 0.0f);
+		quat = XMQuaternionMultiply(XMLoadFloat4(&m_Quaternion), quat);
+		XMStoreFloat4(&m_Quaternion, quat);
 	}
 	if (Input::GetKeyPress('D')) {
-		m_Position.x += forward.z * speed;
-		m_Position.y += forward.y * speed;
-		m_Position.z += forward.x * speed;
-		m_Rot = XM_PI / 2;
+		m_Position.x += speed;
+
+		XMVECTOR quat = XMQuaternionRotationRollPitchYaw(0.0f, 0.0f, -0.1f);
+		quat = XMQuaternionMultiply(XMLoadFloat4(&m_Quaternion),quat);
+		XMStoreFloat4(&m_Quaternion,quat);
 	}
 	if (Input::GetKeyPress('A')) {
-		m_Position.x -= forward.z * speed;
-		m_Position.y -= forward.y * speed;
-		m_Position.z -= forward.x * speed;
-		m_Rot = -XM_PI / 2;
+		m_Position.x += -speed;
+
+		XMVECTOR quat = XMQuaternionRotationRollPitchYaw(0.0f, 0.0f, 0.1f);
+		quat = XMQuaternionMultiply(XMLoadFloat4(&m_Quaternion), quat);
+		XMStoreFloat4(&m_Quaternion, quat);
 	}
 
 	if (Input::GetKeyTrigger(VK_SPACE)) {
@@ -169,7 +179,8 @@ void Player::Draw()
 	// ���[���h�}�g���N�X�ݒ�
 	XMMATRIX world, scale, rot, trans;
 	scale = XMMatrixScaling(m_Scale.x,m_Scale.y,m_Scale.z);
-	rot = XMMatrixRotationRollPitchYaw(m_Rotation.x, m_Rotation.y + XM_PI, m_Rotation.z);
+	// rot = XMMatrixRotationRollPitchYaw(m_Rotation.x, m_Rotation.y + XM_PI, m_Rotation.z);
+	rot = XMMatrixRotationQuaternion(XMLoadFloat4(&m_Quaternion));
 	trans = XMMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
 	world = scale * rot * trans;
 	Renderer::SetWorldMatrix(world);

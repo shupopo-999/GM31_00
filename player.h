@@ -12,6 +12,8 @@ private:
 	ID3D11InputLayout*			m_VertexLayout{};
 
 	XMFLOAT3					m_Velocity{};
+	XMFLOAT4					m_Quaternion{};
+
 	float						groundHeight = 0.0f;
 	bool						groundFlag;
 	float						m_Rot;
