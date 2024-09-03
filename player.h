@@ -14,6 +14,8 @@ private:
 	XMFLOAT3					m_Velocity{};
 	XMFLOAT4					m_Quaternion{};
 
+	XMFLOAT3 m_Scale = { 0.1f,0.1f,0.1f };
+
 	float						groundHeight = 0.0f;
 	bool						groundFlag;
 	float						m_Rot;

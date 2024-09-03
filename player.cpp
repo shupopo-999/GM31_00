@@ -2,7 +2,7 @@
 #include "manager.h"
 #include "renderer.h"
 #include "player.h"
-#include "modelRenderer.h"
+#include "animationModel.h"
 #include "input.h"
 #include "camara.h"
 #include "enemy.h"
@@ -16,8 +16,8 @@ Input* input;
 
 void Player::Init()
 {
-	m_Component = new ModelRenderer(this);
-	((ModelRenderer*)m_Component)->Load("asset\\model\\player.obj");
+	m_Component = new AnimationModel(this);
+	((AnimationModel*)m_Component)->Load("asset\\model\\Akai.fbx");
 
 
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout,
