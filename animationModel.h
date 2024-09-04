@@ -48,5 +48,9 @@ public:
 
 	void Load( const char *FileName );
 	void UnInit() override;
+	void LoadAnimation(const char* FileName, const char* Name);
+	void CreateBone(aiNode* node);
+	void Update(const char* AnimationName1, int Frame1);
+	void UpdateBoneMatrix(aiNode* node, aiMatrix4x4 matrix);
 	void Draw() override;
 };

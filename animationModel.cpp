@@ -74,7 +74,8 @@ void AnimationModel::Load( const char *FileName )
 	m_DeformVertex = new std::vector<DEFORM_VERTEX>[m_AiScene->mNumMeshes];
 
 
-
+	//再帰的にポ ー ン生成
+	CreateBone(m_AiScene->mRootNode);
 
 	for (unsigned int m = 0; m < m_AiScene->mNumMeshes; m++)
 	{
@@ -241,4 +242,69 @@ void AnimationModel::UnInit()
 
 }
 
+void AnimationModel::LoadAnimation(const char* FileName, const char* Name) {
+	m_Animation[Name] = aiImportFile(FileName, aiProcess_ConvertToLeftHanded);
+	assert(m_Animation[Name]);
+}
 
+void AnimationModel::CreateBone(aiNode* node) {
+	BONE bone;
+	m_Bone[node->mName.C_Str()] = bone;
+	for (unsigned int n = 0; n < node->mNumChildren; n++) {
+		CreateBone(node->mChildren[n]);
+	}
+}
+
+void AnimationModel::Update(const char* AnimationName1, int Frame1) {
+	if (m_Animation.count(AnimationName1) == 0) return;
+
+	if (!m_Animation[AnimationName1]->HasAnimations()) return;
+
+	// アニメーションデータからボーンマトリクスを算出
+	aiAnimation* animation1 = m_Animation[AnimationName1]->mAnimations[0];
+
+	for (auto pair : m_Bone) {
+		BONE* bone = &m_Bone[pair.first];
+		aiNodeAnim* nodeAnim1 = nullptr;
+
+		for (unsigned int c = 0; c < animation1->mNumChannels;c++) {
+			if (animation1->mChannels[c]->mNodeName == aiString(pair.first)) {
+				nodeAnim1 = animation1->mChannels[c];
+				break;
+			}
+		}
+		int f;
+
+		aiQuaternion rot1;
+		aiVector3D pos1;
+		if (nodeAnim1) {
+			f = Frame1 % nodeAnim1->mNumRotationKeys;	// 簡易実装
+			rot1 = nodeAnim1->mRotationKeys[f].mValue;
+			
+			f = Frame1 % nodeAnim1->mNumRotationKeys;	// 簡易実装
+			rot1 = nodeAnim1->mRotationKeys[f].mValue;
+		}
+
+		bone->AnimationMatrix = aiMatrix4x4(aiVector3D(1.0f, 1.0f, 1.0f), rot1, pos1);
+
+	}
+
+	// 再帰的にボーンマトリクスを更新
+	aiMatrix4x4 rootMatrix = aiMatrix4x4(aiVector3D(1.0f, 1.0f, 1.0f), aiQuaternion((float)AI_MATH_PI, 0.0f, 0.0f), aiVector3D(0.0f, 0.0f, 0.0f));
+	UpdateBoneMatrix(m_AiScene->mRootNode,rootMatrix);
+}
+void AnimationModel::UpdateBoneMatrix(aiNode* node,aiMatrix4x4 matrix) {
+	BONE* bone = &m_Bone[node->mName.C_Str()];
+
+	aiMatrix4x4 worldMatrix;
+
+	worldMatrix *= matrix;
+	worldMatrix *= bone->AnimationMatrix;
+
+	bone->Matrix = worldMatrix;
+	bone->Matrix *= bone->OffsetMatrix;
+
+	for (unsigned int n = 0; n < node->mNumChildren; n++) {
+		UpdateBoneMatrix(node->mChildren[n],worldMatrix);
+	}
+}
