@@ -50,7 +50,7 @@ public:
 	void UnInit() override;
 	void LoadAnimation(const char* FileName, const char* Name);
 	void CreateBone(aiNode* node);
-	void Update(const char* AnimationName1, int Frame1);
+	void Update(const char* AnimationName1, int Frame1,const char* AnimationName2, int Frame2,float Blend);
 	void UpdateBoneMatrix(aiNode* node, aiMatrix4x4 matrix);
 	void Draw() override;
 };

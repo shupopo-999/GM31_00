@@ -18,6 +18,11 @@ void Player::Init()
 {
 	m_Component = new AnimationModel(this);
 	((AnimationModel*)m_Component)->Load("asset\\model\\Akai.fbx");
+	((AnimationModel*)m_Component)->LoadAnimation("asset\\model\\Akai_Idle.fbx", "Idle");
+	((AnimationModel*)m_Component)->LoadAnimation("asset\\model\\Akai_Run.fbx", "Run");
+
+	m_AnimationName1 = "Idle";
+	m_AnimationName2 = "Run";
 
 
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout,
@@ -88,32 +93,36 @@ void Player::Update()
 	}
 
 	if (Input::GetKeyPress('W')) {
-		m_Position.z += speed;
-
-		XMVECTOR quat = XMQuaternionRotationRollPitchYaw(0.1f, 0.0f, 0.0f);
-		quat = XMQuaternionMultiply(XMLoadFloat4(&m_Quaternion), quat);
-		XMStoreFloat4(&m_Quaternion, quat);
+		m_Position.x += forward.x * speed;
+		m_Position.y += forward.y * speed;
+		m_Position.z += forward.z * speed;
+		//QuaternionRot(0.1f,0.0f,0.0f);
+		Blender("Run");
+	}
+	else {
+		Blender("Idle");
+	}
+	m_AnimationBlend += 0.1f;
+	if (m_AnimationBlend > 1.0f) {
+		m_AnimationBlend = 1.0f;
 	}
 	if (Input::GetKeyPress('S')) {
-		m_Position.z += -speed;
-
-		XMVECTOR quat = XMQuaternionRotationRollPitchYaw(-0.1f, 0.0f, 0.0f);
-		quat = XMQuaternionMultiply(XMLoadFloat4(&m_Quaternion), quat);
-		XMStoreFloat4(&m_Quaternion, quat);
+		m_Position.x -= forward.x * speed;
+		m_Position.y -= forward.y * speed;
+		m_Position.z -= forward.z * speed;
+		//QuaternionRot(-0.1f,0.0f,0.0f);
 	}
 	if (Input::GetKeyPress('D')) {
-		m_Position.x += speed;
-
-		XMVECTOR quat = XMQuaternionRotationRollPitchYaw(0.0f, 0.0f, -0.1f);
-		quat = XMQuaternionMultiply(XMLoadFloat4(&m_Quaternion),quat);
-		XMStoreFloat4(&m_Quaternion,quat);
+		m_Position.x += forward.z * speed;
+		m_Position.y += forward.y * speed;
+		m_Position.z += forward.x * speed;
+		//QuaternionRot(0.0f, 0.0f, -0.1f);
 	}
 	if (Input::GetKeyPress('A')) {
-		m_Position.x += -speed;
-
-		XMVECTOR quat = XMQuaternionRotationRollPitchYaw(0.0f, 0.0f, 0.1f);
-		quat = XMQuaternionMultiply(XMLoadFloat4(&m_Quaternion), quat);
-		XMStoreFloat4(&m_Quaternion, quat);
+		m_Position.x -= forward.z * speed;
+		m_Position.y -= forward.y * speed;
+		m_Position.z -= forward.x * speed;
+		//QuaternionRot(0.0f, 0.0f, 0.1f);
 	}
 
 	if (Input::GetKeyTrigger(VK_SPACE)) {
@@ -167,9 +176,27 @@ void Player::PlayerCollision() {
 	}
 }
 
+void Player::QuaternionRot(float x,float y, float z) {
+	XMVECTOR quat = XMQuaternionRotationRollPitchYaw(x, y, z);
+	quat = XMQuaternionMultiply(XMLoadFloat4(&m_Quaternion), quat);
+	XMStoreFloat4(&m_Quaternion, quat);
+}
+
+void Player::Blender(std::string AnimationName) {
+	if (m_AnimationName2 != AnimationName) {
+		m_AnimationName1 = m_AnimationName2;
+		m_AnimationName2 = AnimationName;
+		m_AnimationBlend = 0.0f;
+	}
+}
+
 void Player::Draw()
 {
-	// ���̓��C�A�E�g�ݒ�
+	((AnimationModel*)m_Component)->Update(m_AnimationName1.c_str(), m_AnimationFrame,
+		m_AnimationName2.c_str(), m_AnimationFrame, 0.5f);
+	m_AnimationFrame++;
+
+	// 入力レイアウト設定
 	Renderer::GetDeviceContext()->IASetInputLayout(m_VertexLayout);
 
 	// �V�F�[�_�ݒ�
