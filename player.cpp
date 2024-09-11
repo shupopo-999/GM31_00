@@ -14,6 +14,7 @@
 
 Input* input;
 
+
 void Player::Init()
 {
 	m_Component = new AnimationModel(this);
@@ -22,7 +23,7 @@ void Player::Init()
 	((AnimationModel*)m_Component)->LoadAnimation("asset\\model\\Akai_Run.fbx", "Run");
 
 	m_AnimationName1 = "Idle";
-	m_AnimationName2 = "Run";
+	m_AnimationName2 = "Idle";
 
 
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout,
@@ -31,6 +32,7 @@ void Player::Init()
 		"shader\\unlitTexturePS.cso");
 
 	m_Position.x = 5.0f;
+	m_Position.y = 1.0f;
 	groundFlag = true;
 
 	// サウンドロード
@@ -66,7 +68,6 @@ void Player::Update()
 
 	Camara* camera = scene->GetGameObject<Camara>();
 	XMFLOAT3 forward = camera->GetForward();
-	XMFLOAT3 right = camera->GetRight();
 
 	float speed = 0.3f;
 	float rot = 0.1f;
@@ -111,18 +112,23 @@ void Player::Update()
 		m_Position.y -= forward.y * speed;
 		m_Position.z -= forward.z * speed;
 		//QuaternionRot(-0.1f,0.0f,0.0f);
+		Blender("Run");
 	}
 	if (Input::GetKeyPress('D')) {
 		m_Position.x += forward.z * speed;
 		m_Position.y += forward.y * speed;
 		m_Position.z += forward.x * speed;
 		//QuaternionRot(0.0f, 0.0f, -0.1f);
+		Blender("Run");
+
 	}
 	if (Input::GetKeyPress('A')) {
 		m_Position.x -= forward.z * speed;
 		m_Position.y -= forward.y * speed;
 		m_Position.z -= forward.x * speed;
 		//QuaternionRot(0.0f, 0.0f, 0.1f);
+		Blender("Run");
+
 	}
 
 	if (Input::GetKeyTrigger(VK_SPACE)) {
@@ -199,11 +205,11 @@ void Player::Draw()
 	// 入力レイアウト設定
 	Renderer::GetDeviceContext()->IASetInputLayout(m_VertexLayout);
 
-	// �V�F�[�_�ݒ�
+	// シェーダー設定
 	Renderer::GetDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
 	Renderer::GetDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
 
-	// ���[���h�}�g���N�X�ݒ�
+	// ワールドマトリクス設定
 	XMMATRIX world, scale, rot, trans;
 	scale = XMMatrixScaling(m_Scale.x,m_Scale.y,m_Scale.z);
 	// rot = XMMatrixRotationRollPitchYaw(m_Rotation.x, m_Rotation.y + XM_PI, m_Rotation.z);

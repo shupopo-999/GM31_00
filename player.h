@@ -14,7 +14,7 @@ private:
 	XMFLOAT3					m_Velocity{};
 	XMFLOAT4					m_Quaternion{};
 
-	XMFLOAT3 m_Scale = { 0.05f,0.05f,0.05f };
+	XMFLOAT3 m_Scale = { 0.01f,0.01f,0.01f };
 
 	float						groundHeight = 0.0f;
 	bool						groundFlag;
@@ -25,7 +25,6 @@ private:
 	std::string					m_AnimationName2;
 	float						m_AnimationBlend;
 	int 						m_AnimationFrame;
-
 
 	class Audio* m_SE{};
 

@@ -294,8 +294,8 @@ void AnimationModel::Update(const char* AnimationName1, int Frame1,
 		aiQuaternion rot1;
 		aiVector3D pos1;
 		if (nodeAnim1) {
-			f = Frame1 % nodeAnim1->mNumRotationKeys;	// ŠÈˆÕŽÀ‘•
-			rot1 = nodeAnim1->mRotationKeys[f].mValue;
+			f = Frame1 % nodeAnim1->mNumPositionKeys;	// ŠÈˆÕŽÀ‘•
+			pos1 = nodeAnim1->mPositionKeys[f].mValue;
 			
 			f = Frame1 % nodeAnim1->mNumRotationKeys;	// ŠÈˆÕŽÀ‘•
 			rot1 = nodeAnim1->mRotationKeys[f].mValue;
@@ -306,8 +306,8 @@ void AnimationModel::Update(const char* AnimationName1, int Frame1,
 		aiQuaternion rot2;
 		aiVector3D pos2;
 		if (nodeAnim2) {
-			f = Frame2 % nodeAnim2->mNumRotationKeys;	// ŠÈˆÕŽÀ‘•
-			rot2 = nodeAnim2->mRotationKeys[f].mValue;
+			f = Frame2 % nodeAnim2->mNumPositionKeys;	// ŠÈˆÕŽÀ‘•
+			pos2 = nodeAnim2->mPositionKeys[f].mValue;
 			
 			f = Frame1 % nodeAnim2->mNumRotationKeys;	// ŠÈˆÕŽÀ‘•
 			rot2 = nodeAnim2->mRotationKeys[f].mValue;
@@ -320,7 +320,7 @@ void AnimationModel::Update(const char* AnimationName1, int Frame1,
 		aiQuaternion::Interpolate(rot,rot1,rot2,Blend);		// üŒ`•âŠ®
 
 
-		bone->AnimationMatrix = aiMatrix4x4(aiVector3D(1.0f, 1.0f, 1.0f), rot2, pos2);
+		bone->AnimationMatrix = aiMatrix4x4(aiVector3D(1.0f, 1.0f, 1.0f), rot, pos);
 
 	}
 
