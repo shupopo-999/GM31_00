@@ -20,8 +20,8 @@ public:
 	XMFLOAT3 GetScale() { return m_Scale; }
 
 	void SetPosition(XMFLOAT3 pos) { m_Position = pos; }
-	void SetRotation(XMFLOAT3 rot) { m_Position = rot; }
-	void SetScale(XMFLOAT3 sca) { m_Position = sca; }
+	void SetRotation(XMFLOAT3 rot) { m_Rotation = rot; }
+	void SetScale(XMFLOAT3 sca) { m_Scale = sca; }
 
 	void SetDestroy() { m_Destroy = true; }
 

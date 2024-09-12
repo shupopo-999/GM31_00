@@ -12,9 +12,19 @@ private:
 	ID3D11InputLayout*			m_VertexLayout{};
 
 	XMFLOAT3					m_Velocity{};
+	XMFLOAT4					m_Quaternion{};
+
+	XMFLOAT3 m_Scale = { 0.01f,0.01f,0.01f };
+
 	float						groundHeight = 0.0f;
 	bool						groundFlag;
 	float						m_Rot;
+
+
+	std::string					m_AnimationName1;
+	std::string					m_AnimationName2;
+	float						m_AnimationBlend;
+	int 						m_AnimationFrame;
 
 	class Audio* m_SE{};
 
@@ -25,5 +35,9 @@ public:
 	void Draw()override;
 
 	void PlayerCollision();
+
+	void QuaternionRot(float x, float y, float z);
+
+	void Blender(std::string AnimationName);
 
 };

@@ -2,7 +2,7 @@
 #include "manager.h"
 #include "renderer.h"
 #include "player.h"
-#include "modelRenderer.h"
+#include "animationModel.h"
 #include "input.h"
 #include "camara.h"
 #include "enemy.h"
@@ -14,10 +14,16 @@
 
 Input* input;
 
+
 void Player::Init()
 {
-	m_Component = new ModelRenderer(this);
-	((ModelRenderer*)m_Component)->Load("asset\\model\\player.obj");
+	m_Component = new AnimationModel(this);
+	((AnimationModel*)m_Component)->Load("asset\\model\\Akai.fbx");
+	((AnimationModel*)m_Component)->LoadAnimation("asset\\model\\Akai_Idle.fbx", "Idle");
+	((AnimationModel*)m_Component)->LoadAnimation("asset\\model\\Akai_Run.fbx", "Run");
+
+	m_AnimationName1 = "Idle";
+	m_AnimationName2 = "Idle";
 
 
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout,
@@ -26,11 +32,18 @@ void Player::Init()
 		"shader\\unlitTexturePS.cso");
 
 	m_Position.x = 5.0f;
+	m_Position.y = 1.0f;
 	groundFlag = true;
 
-	// ���ʉ������[�h
+	// サウンドロード
 	m_SE = new Audio(this);
 	m_SE->Load("asset\\audio\\wan.wav");
+
+	// Quaternion 初期化
+	m_Quaternion.x = 0.0f;
+	m_Quaternion.y = 0.0f;
+	m_Quaternion.z = 0.0f;
+	m_Quaternion.w = 1.0f;
 }
 
 void Player::UnInit()
@@ -55,7 +68,6 @@ void Player::Update()
 
 	Camara* camera = scene->GetGameObject<Camara>();
 	XMFLOAT3 forward = camera->GetForward();
-	XMFLOAT3 right = camera->GetRight();
 
 	float speed = 0.3f;
 	float rot = 0.1f;
@@ -85,25 +97,38 @@ void Player::Update()
 		m_Position.x += forward.x * speed;
 		m_Position.y += forward.y * speed;
 		m_Position.z += forward.z * speed;
-		m_Rot = 0.0f;
+		//QuaternionRot(0.1f,0.0f,0.0f);
+		Blender("Run");
+	}
+	else {
+		Blender("Idle");
+	}
+	m_AnimationBlend += 0.1f;
+	if (m_AnimationBlend > 1.0f) {
+		m_AnimationBlend = 1.0f;
 	}
 	if (Input::GetKeyPress('S')) {
 		m_Position.x -= forward.x * speed;
 		m_Position.y -= forward.y * speed;
 		m_Position.z -= forward.z * speed;
-		m_Rot = XM_PI;
+		//QuaternionRot(-0.1f,0.0f,0.0f);
+		Blender("Run");
 	}
 	if (Input::GetKeyPress('D')) {
 		m_Position.x += forward.z * speed;
 		m_Position.y += forward.y * speed;
 		m_Position.z += forward.x * speed;
-		m_Rot = XM_PI / 2;
+		//QuaternionRot(0.0f, 0.0f, -0.1f);
+		Blender("Run");
+
 	}
 	if (Input::GetKeyPress('A')) {
 		m_Position.x -= forward.z * speed;
 		m_Position.y -= forward.y * speed;
 		m_Position.z -= forward.x * speed;
-		m_Rot = -XM_PI / 2;
+		//QuaternionRot(0.0f, 0.0f, 0.1f);
+		Blender("Run");
+
 	}
 
 	if (Input::GetKeyTrigger(VK_SPACE)) {
@@ -157,19 +182,38 @@ void Player::PlayerCollision() {
 	}
 }
 
+void Player::QuaternionRot(float x,float y, float z) {
+	XMVECTOR quat = XMQuaternionRotationRollPitchYaw(x, y, z);
+	quat = XMQuaternionMultiply(XMLoadFloat4(&m_Quaternion), quat);
+	XMStoreFloat4(&m_Quaternion, quat);
+}
+
+void Player::Blender(std::string AnimationName) {
+	if (m_AnimationName2 != AnimationName) {
+		m_AnimationName1 = m_AnimationName2;
+		m_AnimationName2 = AnimationName;
+		m_AnimationBlend = 0.0f;
+	}
+}
+
 void Player::Draw()
 {
-	// ���̓��C�A�E�g�ݒ�
+	((AnimationModel*)m_Component)->Update(m_AnimationName1.c_str(), m_AnimationFrame,
+		m_AnimationName2.c_str(), m_AnimationFrame, 0.5f);
+	m_AnimationFrame++;
+
+	// 入力レイアウト設定
 	Renderer::GetDeviceContext()->IASetInputLayout(m_VertexLayout);
 
-	// �V�F�[�_�ݒ�
+	// シェーダー設定
 	Renderer::GetDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
 	Renderer::GetDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
 
-	// ���[���h�}�g���N�X�ݒ�
+	// ワールドマトリクス設定
 	XMMATRIX world, scale, rot, trans;
 	scale = XMMatrixScaling(m_Scale.x,m_Scale.y,m_Scale.z);
-	rot = XMMatrixRotationRollPitchYaw(m_Rotation.x, m_Rotation.y + XM_PI, m_Rotation.z);
+	// rot = XMMatrixRotationRollPitchYaw(m_Rotation.x, m_Rotation.y + XM_PI, m_Rotation.z);
+	rot = XMMatrixRotationQuaternion(XMLoadFloat4(&m_Quaternion));
 	trans = XMMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
 	world = scale * rot * trans;
 	Renderer::SetWorldMatrix(world);
