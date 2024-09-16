@@ -60,7 +60,7 @@ void Title::Init()
 		"shader\\unlitTexturePS.cso");
 
 	m_BGM = new Audio(this);
-	m_BGM->Load("asset\\audio\\bgm.wav");
+	m_BGM->Load("asset\\audio\\title.wav");
 	m_BGM->Play(true);
 }
 

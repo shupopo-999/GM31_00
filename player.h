@@ -2,6 +2,7 @@
 
 #include "gameobject.h"
 #include "component.h"
+#include <string>
 
 class Player : public GameObject{
 private:
@@ -32,6 +33,7 @@ public:
 	void Init()override;
 	void UnInit()override;
 	void Update()override;
+	void Movement();
 	void Draw()override;
 
 	void PlayerCollision();
