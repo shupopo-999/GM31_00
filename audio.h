@@ -20,11 +20,11 @@ private:
 
 public:
 	static void InitMaster();
-	static void UninitMaster();
+	static void UnInitMaster();
 
 	using Component::Component;
 
-	void Uninit();
+	void UnInit();
 
 	void Load(const char *FileName);
 	void Play(bool Loop = false);

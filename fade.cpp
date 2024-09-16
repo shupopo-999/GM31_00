@@ -8,10 +8,8 @@
 #include "fade.h"
 
 
-void Title::Init()
+void Fade::Init(void)
 {
-	// AddGameObject<Polygon2D>(2);
-
 	VERTEX_3D vertex[4];
 
 	vertex[0].Position = XMFLOAT3(0.0f, 0.0f, 0.0f);
@@ -52,7 +50,7 @@ void Title::Init()
 	// テクスチャ読み込み
 	TexMetadata metadata;
 	ScratchImage image;
-	LoadFromWICFile(L"asset\\texture\\title.png", WIC_FLAGS_NONE, &metadata, image);
+	LoadFromWICFile(L"asset\\texture\\fade_white.png", WIC_FLAGS_NONE, &metadata, image);
 	CreateShaderResourceView(Renderer::GetDevice(), image.GetImages(), image.GetImageCount(), metadata, &m_Texture);
 	assert(m_Texture);
 
@@ -60,35 +58,48 @@ void Title::Init()
 		"shader\\unlitTextureVS.cso");
 	Renderer::CreatePixelShader(&m_PixelShader,
 		"shader\\unlitTexturePS.cso");
-
-	m_BGM = new Audio(this);
-	m_BGM->Load("asset\\audio\\title.wav");
-	m_BGM->Play(true);
 }
 
-void Title::UnInit() 
+void Fade::UnInit(void)
 {
-	m_BGM->UnInit();
-	delete m_BGM;
-
-	m_VertexBuffer->Release();
-	m_Texture->Release();
-
-	m_VertexLayout->Release();
-	m_VertexShader->Release();
-	m_PixelShader->Release();
+	
 }
 
-void Title::Update()
+void Fade::Update(void)
 {
-	Scene::Update();
+	switch (m_FadeSteat)
+	{
+	case FADE_NONE:	// 何もしない
+		break;
 
-	if (Input::GetKeyTrigger(VK_RETURN)) {
-		Manager::SetScene<Game>();
+	case FADE_IN:	// フェードイン処理
+		m_FadeAlpha -= 0.01f;
+
+		// フェードインの終了チェック
+		if (m_FadeAlpha <= 0.0f)
+		{
+			// フェードイン終了
+			m_FadeSteat = FADE_NONE;
+		}
+		break;
+
+	case FADE_OUT:	// フェードアウト処理
+		m_FadeAlpha += 0.01f;
+
+		// フェードアウトの終了チェック
+		if (m_FadeAlpha >= 1.0f)
+		{
+			// フェードアウト終了
+			m_FadeSteat = FADE_IN;
+				
+		}
+		break;
+
+	default:break;
 	}
 }
 
-void Title::Draw()
+void Fade::Draw(void)
 {
 	// 入力レイアウト設定
 	Renderer::GetDeviceContext()->IASetInputLayout(m_VertexLayout);
@@ -120,4 +131,20 @@ void Title::Draw()
 
 	// ポリゴン描画
 	Renderer::GetDeviceContext()->Draw(4, 0);
+}
+
+void Fade::SetFade(MODE_FADE state)
+{
+	// フェードステートのセット
+	m_FadeSteat = state;
+
+	// アルファ値の初期化
+	if (state == FADE_IN)
+	{// フェードインの時
+		m_FadeAlpha = 1.0f;
+	}
+	else if (state == FADE_OUT)
+	{// フェードアウトの時
+		m_FadeAlpha = 0.0f;
+	}
 }

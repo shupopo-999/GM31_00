@@ -19,6 +19,5 @@ public:
 	
 	static void SetScene() {
 		m_NextScene = new T();
-		
 	}
 };

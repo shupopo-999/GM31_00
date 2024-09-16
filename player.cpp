@@ -50,7 +50,7 @@ void Player::UnInit()
 {
 	delete m_Component;
 
-	m_SE->Uninit();
+	m_SE->UnInit();
 	delete m_SE;
 
 	m_VertexLayout->Release();
