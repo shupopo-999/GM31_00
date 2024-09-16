@@ -65,8 +65,8 @@ void Player::Update()
 	Scene* scene;
 	scene = Manager::GetScene();
 
-	Camara* camera = scene->GetGameObject<Camara>();
-	XMFLOAT3 forward = camera->GetForward();
+	Camara* camara = scene->GetGameObject<Camara>();
+	XMFLOAT3 forward = camara->GetForward();
 
 	float speed = 0.3f;
 	float rot = 0.1f;
@@ -95,6 +95,8 @@ void Player::Update()
 
 	Movement();
 
+	m_Position.x += sinf(m_Rotation.y) * speed;
+	m_Position.z += cosf(m_Rotation.y) * speed;
 
 	if (!groundFlag) {
 		m_Velocity.y -= 0.1f;

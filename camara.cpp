@@ -30,10 +30,20 @@ void Camara::Update()
 	m_Target.y += 1.0f;
 
 	if (Input::GetKeyPress('E')) {
-		m_Rotation.y += m_Rot;
+		m_Rotation.y += CAMARA_ROTATE;
+		if (m_Rotation.y > XM_PI) {
+			m_Rotation.y -= XM_PI * 2.0f;
+		}
+		m_Position.x = m_Target.x + sinf(m_Rotation.y) * m_Len;
+		m_Position.z = m_Target.z + cosf(m_Rotation.y) * m_Len;
 	}
 	if (Input::GetKeyPress('Q')) {
-		m_Rotation.y -= m_Rot;
+		m_Rotation.y -= CAMARA_ROTATE;
+		if (m_Rotation.y < -XM_PI) {
+			m_Rotation.y += XM_PI * 2.0f;
+		}
+		m_Position.x = m_Target.x + sinf(m_Rotation.y) * m_Len;
+		m_Position.z = m_Target.z + cosf(m_Rotation.y) * m_Len;
 	}
 
 	m_Position.x = m_Target.x - sinf(m_Rotation.y) * 6.0f;
@@ -55,4 +65,14 @@ void Camara::Draw()
 	XMMATRIX projectionMatrix;
 	projectionMatrix = XMMatrixPerspectiveFovLH(1.0f, (float)SCREEN_WIDTH / SCREEN_HEIGHT, 1.0f, 1000.0f);
 	Renderer::SetProjectionMatrix(projectionMatrix);
+}
+// カメラの視点と注視点をセット
+void Camara::SetCameraAT(XMFLOAT3 pos)
+{
+	// カメラの注視点をプレイヤーの座標にしてみる
+	m_Target = pos;
+
+	// カメラの視点をカメラのY軸回転に対応させている
+	m_Position.x = m_Target.x - sinf(m_Rotation.y) * m_Len;
+	m_Position.z = m_Target.z - cosf(m_Rotation.y) * m_Len;
 }
