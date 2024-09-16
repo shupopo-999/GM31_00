@@ -62,7 +62,6 @@ void Player::UnInit()
 
 void Player::Update()
 {
-
 	Scene* scene;
 	scene = Manager::GetScene();
 
@@ -92,6 +91,35 @@ void Player::Update()
 	if (Input::GetKeyTrigger(VK_RETURN)) {
 		Manager::SetScene<Result>();
 	}
+	Blender("Idle");
+
+	Movement();
+
+
+	if (!groundFlag) {
+		m_Velocity.y -= 0.1f;
+		m_Position.y += m_Velocity.y;
+	}
+
+	// groundHeight = 0.0f;
+	PlayerCollision();
+
+	// �n�ʂƂ̓����蔻��
+	if (m_Position.y < groundHeight) {
+		m_Position.y = groundHeight;
+		m_Velocity.y = 0.0f;
+	}
+}
+
+void Player::Movement() {
+	Scene* scene;
+	scene = Manager::GetScene();
+
+	Camara* camera = scene->GetGameObject<Camara>();
+	XMFLOAT3 forward = camera->GetForward();
+
+	float speed = 0.3f;
+	float rot = 0.1f;
 
 	if (Input::GetKeyPress('W')) {
 		m_Position.x += forward.x * speed;
@@ -100,9 +128,7 @@ void Player::Update()
 		//QuaternionRot(0.1f,0.0f,0.0f);
 		Blender("Run");
 	}
-	else {
-		Blender("Idle");
-	}
+
 	m_AnimationBlend += 0.1f;
 	if (m_AnimationBlend > 1.0f) {
 		m_AnimationBlend = 1.0f;
@@ -120,7 +146,6 @@ void Player::Update()
 		m_Position.z += forward.x * speed;
 		//QuaternionRot(0.0f, 0.0f, -0.1f);
 		Blender("Run");
-
 	}
 	if (Input::GetKeyPress('A')) {
 		m_Position.x -= forward.z * speed;
@@ -128,25 +153,9 @@ void Player::Update()
 		m_Position.z -= forward.x * speed;
 		//QuaternionRot(0.0f, 0.0f, 0.1f);
 		Blender("Run");
-
 	}
-
 	if (Input::GetKeyTrigger(VK_SPACE)) {
 		m_Velocity.y = 1.5f;
-	}
-
-	if (!groundFlag) {
-		m_Velocity.y -= 0.1f;
-		m_Position.y += m_Velocity.y;
-	}
-
-	// groundHeight = 0.0f;
-	PlayerCollision();
-
-	// �n�ʂƂ̓����蔻��
-	if (m_Position.y < groundHeight) {
-		m_Position.y = groundHeight;
-		m_Velocity.y = 0.0f;
 	}
 }
 

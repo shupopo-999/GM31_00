@@ -11,8 +11,15 @@
 
 void Game::Init()
 {
+	int m_FieldX = 25;
+	int m_FieldZ = 25;
+
 	AddGameObject<Camara>(0);
-	AddGameObject<Field>(1);
+	for (int x = -25; x < m_FieldX;x++) {
+		for (int z = -25; z < m_FieldZ; z++) {
+			AddGameObject<Field>(1)->SetPosition(XMFLOAT3(x, 0, z));
+		}
+	}
 	AddGameObject<Player>(1);
 	AddGameObject<Score>(2);
 
