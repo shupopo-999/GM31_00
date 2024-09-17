@@ -7,6 +7,7 @@
 #include "title.h"
 #include "score.h"
 #include "particleemitter.h"
+#include "mashfield.h"
 
 
 void Game::Init()
@@ -15,11 +16,7 @@ void Game::Init()
 	int m_FieldZ = 25;
 
 	AddGameObject<Camara>(0);
-	for (int x = -25; x < m_FieldX;x++) {
-		for (int z = -25; z < m_FieldZ; z++) {
-			AddGameObject<Field>(1)->SetPosition(XMFLOAT3(x, 0, z));
-		}
-	}
+	AddGameObject<MashField>(1);
 	AddGameObject<Player>(1);
 	AddGameObject<Score>(2);
 

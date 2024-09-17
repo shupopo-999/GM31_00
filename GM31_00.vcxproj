@@ -151,6 +151,7 @@
     <ClInclude Include="input.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="manager.h" />
+    <ClInclude Include="mashfield.h" />
     <ClInclude Include="modelRenderer.h" />
     <ClInclude Include="particleemitter.h" />
     <ClInclude Include="player.h" />
@@ -181,6 +182,7 @@
     <ClCompile Include="input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="manager.cpp" />
+    <ClCompile Include="mashfield.cpp" />
     <ClCompile Include="modelRenderer.cpp" />
     <ClCompile Include="particleemitter.cpp" />
     <ClCompile Include="player.cpp" />
