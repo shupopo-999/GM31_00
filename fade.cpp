@@ -58,6 +58,9 @@ void Fade::Init(void)
 		"shader\\unlitTextureVS.cso");
 	Renderer::CreatePixelShader(&m_PixelShader,
 		"shader\\unlitTexturePS.cso");
+
+	m_FadeSteat = FADE_NONE;
+	m_FadeAlpha = 0.0f;
 }
 
 void Fade::UnInit(void)
@@ -131,20 +134,4 @@ void Fade::Draw(void)
 
 	// ポリゴン描画
 	Renderer::GetDeviceContext()->Draw(4, 0);
-}
-
-void Fade::SetFade(MODE_FADE state)
-{
-	// フェードステートのセット
-	m_FadeSteat = state;
-
-	// アルファ値の初期化
-	if (state == FADE_IN)
-	{// フェードインの時
-		m_FadeAlpha = 1.0f;
-	}
-	else if (state == FADE_OUT)
-	{// フェードアウトの時
-		m_FadeAlpha = 0.0f;
-	}
 }

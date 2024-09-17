@@ -95,8 +95,8 @@ void Player::Update()
 
 	Movement();
 
-	m_Position.x += sinf(m_Rotation.y) * speed;
-	m_Position.z += cosf(m_Rotation.y) * speed;
+	/*m_Position.x += sinf(m_Rotation.y) * speed;
+	m_Position.z += cosf(m_Rotation.y) * speed;*/
 
 	if (!groundFlag) {
 		m_Velocity.y -= 0.1f;

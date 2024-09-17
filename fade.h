@@ -3,7 +3,7 @@
 #include "gameobject.h"
 
 
-class Fade : public Scene, GameObject {
+class Fade : public GameObject {
 public:
 	typedef enum {	// フェードのステート
 		FADE_NONE = 0,	// 何もしない
@@ -17,11 +17,6 @@ public:
 	void Update()override;
 	void Draw()override;
 
-	void SetFade(MODE_FADE state);
-	MODE_FADE* GetFade() {
-		return &m_FadeSteat;
-	}
-
 private:
 	ID3D11Buffer* m_VertexBuffer = nullptr;
 	ID3D11ShaderResourceView* m_Texture = nullptr;
@@ -32,9 +27,6 @@ private:
 
 	MODE_FADE	m_FadeSteat;
 	float		m_FadeAlpha = 0.0f;
-
-	class Audio* m_BGM{};
-
 
 };
 

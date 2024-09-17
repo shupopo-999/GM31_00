@@ -81,9 +81,11 @@ void Title::UnInit()
 
 void Title::Update()
 {
+	Scene* scene;
 	Scene::Update();
 
 	if (Input::GetKeyTrigger(VK_RETURN)) {
+		scene->AddGameObject<Fade>(0);
 		Manager::SetScene<Game>();
 	}
 }
