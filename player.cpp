@@ -23,9 +23,8 @@ void Player::Init()
 	((AnimationModel*)m_Component)->LoadAnimation("asset\\model\\Akai_Idle.fbx", "Idle");
 	((AnimationModel*)m_Component)->LoadAnimation("asset\\model\\Akai_Run.fbx", "Run");
 
-	// m_AnimationName1 = "Idle";
-	// m_AnimationName2 = "Idle";
-
+	m_AnimationName1 = "Idle";
+	m_AnimationName2 = "Idle";
 
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout,
 		"shader\\unlitTextureVS.cso");
@@ -100,13 +99,16 @@ void Player::Update()
 	if (Input::GetKeyTrigger(VK_RETURN)) {
 		Manager::SetScene<Result>();
 	}
-	// Blender("Idle");
 
 	Movement();
 
 	/*m_Position.x += sinf(m_Rotation.y) * speed;
 	m_Position.z += cosf(m_Rotation.y) * speed;*/
 
+	m_AnimationBlend += 0.1f;
+	if (m_AnimationBlend > 1.0f) {
+		m_AnimationBlend = 1.0f;
+	}
 
 	PlayerCollision();
 
@@ -142,33 +144,30 @@ void Player::Movement() {
 		m_Position.y += forward.y * speed;
 		m_Position.z += forward.z * speed;
 		//QuaternionRot(0.1f,0.0f,0.0f);
-		// Blender("Run");
+		Blender("Run");
 	}
+	else Blender("Idle");
 
-	m_AnimationBlend += 0.1f;
-	if (m_AnimationBlend > 1.0f) {
-		m_AnimationBlend = 1.0f;
-	}
 	if (Input::GetKeyPress('S')) {
 		m_Position.x -= forward.x * speed;
 		m_Position.y -= forward.y * speed;
 		m_Position.z -= forward.z * speed;
 		//QuaternionRot(-0.1f,0.0f,0.0f);
-		// Blender("Run");
+		Blender("Run");
 	}
 	if (Input::GetKeyPress('D')) {
 		m_Position.x += forward.z * speed;
 		m_Position.y += forward.y * speed;
 		m_Position.z += forward.x * speed;
 		//QuaternionRot(0.0f, 0.0f, -0.1f);
-		// Blender("Run");
+		Blender("Run");
 	}
 	if (Input::GetKeyPress('A')) {
 		m_Position.x -= forward.z * speed;
 		m_Position.y -= forward.y * speed;
 		m_Position.z -= forward.x * speed;
 		//QuaternionRot(0.0f, 0.0f, 0.1f);
-		// Blender("Run");
+		Blender("Run");
 	}
 	if (Input::GetKeyTrigger(VK_SPACE)) {
 		m_Position.y += 10.0f;
@@ -224,10 +223,7 @@ void Player::Blender(std::string AnimationName) {
 
 void Player::Draw()
 {
-	m_AnimationBlend += 0.1f;
-	if (m_AnimationBlend > 1.0f) {
-		m_AnimationBlend = 1.0f;
-	}
+
 	((AnimationModel*)m_Component)->Update(m_AnimationName1.c_str(), m_AnimationFrame,
 		m_AnimationName2.c_str(), m_AnimationFrame, m_AnimationBlend);
 	m_AnimationFrame++;
