@@ -20,6 +20,8 @@ public:
 	void Update()override;
 	void Draw()override;
 
+	float GetHeight(XMFLOAT3 Position);
+
 
 
 };
