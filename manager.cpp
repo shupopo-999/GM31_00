@@ -31,7 +31,7 @@ void Manager::UnInit()
 
 	ModelRenderer::UnloadAll();
 
-	Audio::UninitMaster();
+	Audio::UnInitMaster();
 	Input::UnInit();
 	Renderer::UnInit();
 }

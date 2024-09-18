@@ -14,6 +14,7 @@ private:
 
 	class Audio*	m_BGM{};
 
+	bool			m_check;
 public:
 	void Init()override;
 	void UnInit()override;

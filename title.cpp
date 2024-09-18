@@ -5,6 +5,8 @@
 #include "input.h"
 #include "game.h"
 #include "audio.h"
+#include "fade.h"
+
 
 void Title::Init()
 {
@@ -62,11 +64,13 @@ void Title::Init()
 	m_BGM = new Audio(this);
 	m_BGM->Load("asset\\audio\\title.wav");
 	m_BGM->Play(true);
+
+	m_check = false;
 }
 
 void Title::UnInit() 
 {
-	m_BGM->Uninit();
+	m_BGM->UnInit();
 	delete m_BGM;
 
 	m_VertexBuffer->Release();
@@ -84,6 +88,7 @@ void Title::Update()
 	if (Input::GetKeyTrigger(VK_RETURN)) {
 		Manager::SetScene<Game>();
 	}
+
 }
 
 void Title::Draw()

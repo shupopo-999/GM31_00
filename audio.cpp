@@ -22,7 +22,7 @@ void Audio::InitMaster()
 }
 
 
-void Audio::UninitMaster()
+void Audio::UnInitMaster()
 {
 	m_MasteringVoice->DestroyVoice();
 	m_Xaudio->Release();
@@ -100,7 +100,7 @@ void Audio::Load(const char *FileName)
 }
 
 
-void Audio::Uninit()
+void Audio::UnInit()
 {
 	m_SourceVoice->Stop();
 	m_SourceVoice->DestroyVoice();

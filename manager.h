@@ -1,5 +1,6 @@
 #pragma once
 #include "scene.h"
+#include "fade.h"
 
 class Manager
 {
@@ -19,6 +20,5 @@ public:
 	
 	static void SetScene() {
 		m_NextScene = new T();
-		
 	}
 };
