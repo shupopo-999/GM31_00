@@ -8,11 +8,7 @@
 #include "score.h"
 #include "skydome.h"
 #include "particleemitter.h"
-<<<<<<< HEAD
-#include "audio.h"
-=======
 #include "mashfield.h"
->>>>>>> origin/add_mashfield
 
 
 void Game::Init()
@@ -21,16 +17,8 @@ void Game::Init()
 	int m_FieldZ = 50;
 
 	AddGameObject<Camara>(0);
-<<<<<<< HEAD
-	for (int x = -50; x < m_FieldX;x++) {
-		for (int z = -50; z < m_FieldZ; z++) {
-			AddGameObject<Field>(1)->SetPosition(XMFLOAT3(x, 0, z));
-		}
-	}
-	AddGameObject<SkyDome>(1);
-=======
 	AddGameObject<MashField>(1);
->>>>>>> origin/add_mashfield
+	AddGameObject<SkyDome>(1);
 	AddGameObject<Player>(1);
 	AddGameObject<Score>(2);
 
