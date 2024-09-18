@@ -64,6 +64,8 @@ void Title::Init()
 	m_BGM = new Audio(this);
 	m_BGM->Load("asset\\audio\\title.wav");
 	m_BGM->Play(true);
+
+	m_check = false;
 }
 
 void Title::UnInit() 
@@ -81,13 +83,12 @@ void Title::UnInit()
 
 void Title::Update()
 {
-	Scene* scene;
 	Scene::Update();
 
 	if (Input::GetKeyTrigger(VK_RETURN)) {
-		scene->AddGameObject<Fade>(0);
 		Manager::SetScene<Game>();
 	}
+
 }
 
 void Title::Draw()

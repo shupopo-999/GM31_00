@@ -12,6 +12,8 @@ private:
 	ID3D11InputLayout*			m_VertexLayout{};
 
 	float						m_Speed = 1.0f;
+	XMFLOAT3					m_PlayerPos;
+
 
 public:
 	void Init()override;

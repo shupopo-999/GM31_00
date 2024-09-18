@@ -27,7 +27,7 @@ private:
 	float						m_AnimationBlend;
 	int 						m_AnimationFrame;
 
-	class Audio* m_SE{};
+	class Audio* m_SE[2]{};
 
 public:
 	void Init()override;

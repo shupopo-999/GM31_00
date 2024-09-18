@@ -37,7 +37,7 @@ void Bullet::Update()
 {
 	m_Position.z += 1.0f;
 	
-	if (m_Position.z > 10.0f) {
+	if (m_Position.z > 25.0f) {
 		
 		SetDestroy();
 	}

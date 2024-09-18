@@ -8,7 +8,7 @@
 
 void Camara::Init()
 {
-	m_Position = XMFLOAT3(0.0f, 5.0f, -10.0f);
+	m_Position = XMFLOAT3(0.0f, 2.0f, -10.0f);
 	m_Target = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_Rot = 0.1f;
 }

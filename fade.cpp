@@ -1,10 +1,7 @@
 #include "main.h"
 #include "manager.h"
 #include "renderer.h"
-#include "title.h"
-#include "input.h"
 #include "game.h"
-#include "audio.h"
 #include "fade.h"
 
 
@@ -59,46 +56,31 @@ void Fade::Init(void)
 	Renderer::CreatePixelShader(&m_PixelShader,
 		"shader\\unlitTexturePS.cso");
 
-	m_FadeSteat = FADE_NONE;
 	m_FadeAlpha = 0.0f;
 }
 
 void Fade::UnInit(void)
 {
-	
+	m_VertexBuffer->Release();
+	m_Texture->Release();
+
+	m_VertexLayout->Release();
+	m_VertexShader->Release();
+	m_PixelShader->Release();
 }
 
 void Fade::Update(void)
 {
-	switch (m_FadeSteat)
-	{
-	case FADE_NONE:	// 何もしない
-		break;
+	Scene::Update();
 
-	case FADE_IN:	// フェードイン処理
-		m_FadeAlpha -= 0.01f;
-
-		// フェードインの終了チェック
-		if (m_FadeAlpha <= 0.0f)
-		{
-			// フェードイン終了
-			m_FadeSteat = FADE_NONE;
-		}
-		break;
-
-	case FADE_OUT:	// フェードアウト処理
+	for (float i = 0.0f; i >= 1.0f; i += 0.01f) {
 		m_FadeAlpha += 0.01f;
 
-		// フェードアウトの終了チェック
-		if (m_FadeAlpha >= 1.0f)
-		{
-			// フェードアウト終了
-			m_FadeSteat = FADE_IN;
-				
+	}
+	if (m_FadeAlpha >= 1.0f) {
+		for (float j = 0.0f; j >= 1.0f; j += 0.01f) {
+			m_FadeAlpha -= 0.01f;
 		}
-		break;
-
-	default:break;
 	}
 }
 
@@ -117,7 +99,7 @@ void Fade::Draw(void)
 	// マテリアル設定
 	MATERIAL material;
 	ZeroMemory(&material, sizeof(material));
-	material.Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	material.Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, m_FadeAlpha);
 	material.TextureEnable = true;
 	Renderer::SetMaterial(material);
 
