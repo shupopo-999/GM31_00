@@ -11,6 +11,7 @@
 #include "result.h"
 #include "camera.h"
 #include "audio.h"
+#include "mashfield.h"
 
 Input* input;
 bool   rotation;
@@ -99,7 +100,9 @@ void Player::Update()
 	if (m_AnimationBlend > 1.0f) {
 		m_AnimationBlend = 1.0f;
 	}
-
+	MashField* meshField =
+		Manager::GetScene()->GetGameObject<MashField>();
+	groundHeight = meshField->GetHeight(m_Position);
 	PlayerCollision();
 
 	// 重力
@@ -113,7 +116,6 @@ void Player::Update()
 	
 	if (m_Position.y < groundHeight) {
 		m_Position.y = groundHeight;
-		m_Position.y = 0.0f;
 		rotation = false;
 	}
 	else rotation = true;

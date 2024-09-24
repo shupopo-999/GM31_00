@@ -32,7 +32,6 @@ void Camera::UnInit()
 void Camera::Update()
 {
 	GetCursorPos(m_po);
-	ClipCursor(&rect);
 
 	Scene* scene = Manager::GetScene();
 
