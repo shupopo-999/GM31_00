@@ -16,7 +16,7 @@ void Game::Init()
 	int m_FieldX = 50;
 	int m_FieldZ = 50;
 
-	AddGameObject<Camara>(0);
+	AddGameObject<Camera>(0);
 	AddGameObject<MashField>(1);
 	AddGameObject<SkyDome>(1);
 	AddGameObject<Player>(1);

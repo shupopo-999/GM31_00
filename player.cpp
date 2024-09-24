@@ -4,12 +4,12 @@
 #include "player.h"
 #include "animationModel.h"
 #include "input.h"
-#include "camara.h"
+#include "camera.h"
 #include "enemy.h"
 #include "cylinder.h"
 #include "explosion.h"
 #include "result.h"
-#include "camara.h"
+#include "camera.h"
 #include "audio.h"
 
 Input* input;
@@ -71,8 +71,8 @@ void Player::Update()
 	Scene* scene;
 	scene = Manager::GetScene();
 
-	Camara* camara = scene->GetGameObject<Camara>();
-	XMFLOAT3 forward = camara->GetForward();
+	Camera* camera = scene->GetGameObject<Camera>();
+	XMFLOAT3 forward = camera->GetForward();
 
 	float speed = 0.3f;
 	float rot = 0.1f;
@@ -88,22 +88,12 @@ void Player::Update()
 		bullet->SetPosition(m_Position);
 		m_SE[0]->Play();
 	}
-	/*if (Input::GetKeyTrigger('I')) {
-		Enemy* ene = scene->AddGameObject<Enemy>(1);
-		ene->SetPosition(m_Position);
-	}*/
-	/*if (Input::GetKeyTrigger('J')) {
-		Cylinder* cy = scene->AddGameObject<Cylinder>(1);
-		cy->SetPosition(m_Position);
-	}*/
 	if (Input::GetKeyTrigger(VK_RETURN)) {
 		Manager::SetScene<Result>();
 	}
 
 	Movement();
 
-	/*m_Position.x += sinf(m_Rotation.y) * speed;
-	m_Position.z += cosf(m_Rotation.y) * speed;*/
 
 	m_AnimationBlend += 0.1f;
 	if (m_AnimationBlend > 1.0f) {
@@ -133,7 +123,7 @@ void Player::Movement() {
 	Scene* scene;
 	scene = Manager::GetScene();
 
-	Camara* camera = scene->GetGameObject<Camara>();
+	Camera* camera = scene->GetGameObject<Camera>();
 	XMFLOAT3 forward = camera->GetForward();
 
 	float speed = 0.3f;

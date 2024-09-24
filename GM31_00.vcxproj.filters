@@ -30,7 +30,7 @@
     <ClInclude Include="field.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="camara.h">
+    <ClInclude Include="camera.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="gameobject.h">
@@ -114,6 +114,9 @@
     <ClInclude Include="skydome.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="mashfield.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="manager.cpp">
@@ -128,7 +131,7 @@
     <ClCompile Include="field.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="camara.cpp">
+    <ClCompile Include="camera.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="modelRenderer.cpp">
@@ -209,6 +212,9 @@
     <ClCompile Include="skydome.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="mashfield.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="shader\common.hlsl">
@@ -220,5 +226,7 @@
     <FxCompile Include="shader\unlitTextureVS.hlsl">
       <Filter>リソース ファイル</Filter>
     </FxCompile>
+    <FxCompile Include="shader\vertexLightingPS.hlsl" />
+    <FxCompile Include="shader\vertexLightingVS.hlsl" />
   </ItemGroup>
 </Project>

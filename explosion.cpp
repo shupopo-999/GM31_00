@@ -2,7 +2,7 @@
 #include "manager.h"
 #include "renderer.h"
 #include "scene.h"
-#include "camara.h"
+#include "camera.h"
 #include "explosion.h"
 
 void Explosion::Init()
@@ -123,8 +123,8 @@ void Explosion::Draw()
 
 	// カメラのビューマトリクス取得
 	Scene* scene = Manager::GetScene();
-	Camara* camara = scene->GetGameObject<Camara>();
-	XMMATRIX view = camara->GetViewMatrix();
+	Camera* camera = scene->GetGameObject<Camera>();
+	XMMATRIX view = camera->GetViewMatrix();
 
 	// ビューの逆行列
 	XMMATRIX invView;
