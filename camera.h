@@ -19,6 +19,8 @@ private:
 	POINT m_MousePoint_a;//マウス位置
 	POINT m_MousePoint_b;//マウス位置
 
+	HWND	m_Window;
+
 public:
 	void Init()override;
 	void UnInit()override;

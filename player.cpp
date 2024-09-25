@@ -13,9 +13,8 @@
 #include "audio.h"
 #include "mashfield.h"
 
-Input* input;
-bool   rotation;
-int count = 2;
+bool	rotation;
+int		count = 2;
 
 void Player::Init()
 {
@@ -80,18 +79,17 @@ void Player::Update()
 
 	m_Component->Update();
 
-	m_Rotation.y += rot;
+	m_Rotation.y = m_Rot + camera->GetRotation().y;
 
-	if (Input::GetKeyPress(VK_LSHIFT))speed *= 1.5;
+	if (Input::GetKeyPress(VK_LSHIFT)) speed *= 1.5;
 
 	if (Input::GetKeyPress('U')) {
 		Bullet* bullet = scene->AddGameObject<Bullet>(1);
 		bullet->SetPosition(m_Position);
 		m_SE[0]->Play();
 	}
-	if (Input::GetKeyTrigger(VK_RETURN)) {
-		Manager::SetScene<Result>();
-	}
+
+	if (Input::GetKeyTrigger(VK_RETURN)) Manager::SetScene<Result>();
 
 	Movement();
 

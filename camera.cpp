@@ -21,6 +21,8 @@ void Camera::Init()
 	m_Position.y = m_Distance * sin(m_Delta);//カメラの位置Y座標
 	m_Position.z = m_Distance * cos(m_Delta) * sin(m_Theta);//カメラの位置Z座標
 
+
+	m_Window = GetWindow();
 }
 
 void Camera::UnInit()
@@ -92,6 +94,8 @@ void Camera::Update()
 	m_Position.x = m_Target.x + m_Distance * cos(m_Delta) * cos(m_Theta);
 	m_Position.y = m_Target.y + m_Distance * sin(m_Delta);
 	m_Position.z = m_Target.z + m_Distance * cos(m_Delta) * sin(m_Theta);
+	
+
 }
 
 void Camera::Draw()
