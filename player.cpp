@@ -135,7 +135,6 @@ void Player::Movement() {
 		m_Position.x += forward.x * speed;
 		m_Position.y += forward.y * speed;
 		m_Position.z += forward.z * speed;
-		//QuaternionRot(0.1f,0.0f,0.0f);
 		Blender("Run");
 	}
 	else Blender("Idle");
@@ -144,21 +143,18 @@ void Player::Movement() {
 		m_Position.x -= forward.x * speed;
 		m_Position.y -= forward.y * speed;
 		m_Position.z -= forward.z * speed;
-		//QuaternionRot(-0.1f,0.0f,0.0f);
 		Blender("Run");
 	}
 	if (Input::GetKeyPress('D')) {
 		m_Position.x += forward.z * speed;
 		m_Position.y += forward.y * speed;
 		m_Position.z += forward.x * speed;
-		//QuaternionRot(0.0f, 0.0f, -0.1f);
 		Blender("Run");
 	}
 	if (Input::GetKeyPress('A')) {
 		m_Position.x -= forward.z * speed;
 		m_Position.y -= forward.y * speed;
 		m_Position.z -= forward.x * speed;
-		//QuaternionRot(0.0f, 0.0f, 0.1f);
 		Blender("Run");
 	}
 	if (Input::GetKeyTrigger(VK_SPACE)) {
