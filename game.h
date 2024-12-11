@@ -11,7 +11,9 @@ private:
 
 public:
 	void Init()override;
+	void UnInit()override;
 	void Update()override;
+
 
 
 };

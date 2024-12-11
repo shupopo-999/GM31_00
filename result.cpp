@@ -9,8 +9,6 @@
 
 void Result::Init()
 {
-	// AddGameObject<Polygon2D>(2);
-
 	VERTEX_3D vertex[4];
 
 	vertex[0].Position = XMFLOAT3(0.0f, 0.0f, 0.0f);
@@ -60,15 +58,15 @@ void Result::Init()
 	Renderer::CreatePixelShader(&m_PixelShader,
 		"shader\\unlitTexturePS.cso");
 
-	m_BGM = new Audio(this);
-	m_BGM->Load("asset\\audio\\result.wav");
-	m_BGM->Play(true);
+	// m_BGM = new Audio(this);
+	// m_BGM->Load("asset\\audio\\result.wav");
+	// m_BGM->Play(true);
 }
 
 void Result::UnInit() 
 {
-	m_BGM->UnInit();
-	delete m_BGM;
+	// m_BGM->UnInit();
+	// delete m_BGM;
 
 	m_VertexBuffer->Release();
 	m_Texture->Release();

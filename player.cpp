@@ -36,10 +36,10 @@ void Player::Init()
 	groundFlag = true;
 
 	// サウンドロード
-	m_SE[0] = new Audio(this);
-	m_SE[0]->Load("asset\\audio\\bullet.wav");
-	m_SE[1] = new Audio(this);
-	m_SE[1]->Load("asset\\audio\\game.wav");
+	// m_SE[0] = new Audio(this);
+	// m_SE[0]->Load("asset\\audio\\bullet.wav");
+	// m_SE[1] = new Audio(this);
+	// m_SE[1]->Load("asset\\audio\\game.wav");
 
 	// Quaternion 初期化
 	m_Quaternion.x = 0.0f;
@@ -47,17 +47,17 @@ void Player::Init()
 	m_Quaternion.z = 0.0f;
 	m_Quaternion.w = 1.0f;
 
-	m_SE[1]->Play();
+	// m_SE[1]->Play();
 }
 
 void Player::UnInit()
 {
 	delete m_Component;
 
-	for (int i = 0; i < count;i++) {
-		m_SE[i]->UnInit();
-		delete m_SE[i];
-	}
+	// for (int i = 0; i < count;i++) {
+	// 	m_SE[i]->UnInit();
+	// 	delete m_SE[i];
+	// }
 
 	m_VertexLayout->Release();
 	m_VertexShader->Release();
@@ -98,6 +98,8 @@ void Player::Update()
 	if (m_AnimationBlend > 1.0f) {
 		m_AnimationBlend = 1.0f;
 	}
+
+
 	MashField* meshField =
 		Manager::GetScene()->GetGameObject<MashField>();
 	groundHeight = meshField->GetHeight(m_Position);

@@ -21,9 +21,12 @@ private:
 
 public:
 	static void Init();
-	HRESULT InitializeMouse(HINSTANCE hInst, HWND hWindow);
 	static void UnInit();
 	static void Update();
+
+	HRESULT InitializeMouse(HINSTANCE hInst, HWND hWindow);
+	HRESULT UpdateMouse();
+	void UnInitMouse();
 
 	static bool GetKeyPress( BYTE KeyCode );
 	static bool GetKeyTrigger( BYTE KeyCode );

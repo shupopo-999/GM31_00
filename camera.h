@@ -11,7 +11,7 @@ private:
 	POINT*		m_po;
 	XMFLOAT3	m_Target = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	float		m_Len = 6.0f;
-	bool		m_Flag = true;
+	bool		m_Flag = FALSE;
 
 	FLOAT m_Theta;//カメラ横方向角度
 	FLOAT m_Delta;//カメラ縦方向角度

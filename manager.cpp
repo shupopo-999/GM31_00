@@ -6,6 +6,7 @@
 #include "scene.h"
 #include "game.h"
 #include "title.h"
+#include "NewTitle.h"
 #include "input.h"
 
 Scene* Manager::m_Scene{};
@@ -19,7 +20,7 @@ void Manager::Init()
 
 	Audio::InitMaster();
 
-	m_Scene = new Title;
+	m_Scene = new NewTitle;
 	m_Scene->Init();
 }
 

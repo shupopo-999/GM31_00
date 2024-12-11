@@ -10,8 +10,6 @@
 
 void Title::Init()
 {
-	// AddGameObject<Polygon2D>(2);
-
 	VERTEX_3D vertex[4];
 
 	vertex[0].Position = XMFLOAT3(0.0f, 0.0f, 0.0f);
@@ -61,17 +59,17 @@ void Title::Init()
 	Renderer::CreatePixelShader(&m_PixelShader,
 		"shader\\unlitTexturePS.cso");
 
-	m_BGM = new Audio(this);
-	m_BGM->Load("asset\\audio\\title.wav");
-	m_BGM->Play(true);
+	// m_BGM = new Audio(this);
+	// m_BGM->Load("asset\\audio\\title.wav");
+	// m_BGM->Play(true);
 
 	m_check = false;
 }
 
 void Title::UnInit() 
 {
-	m_BGM->UnInit();
-	delete m_BGM;
+	// m_BGM->UnInit();
+	// delete m_BGM;
 
 	m_VertexBuffer->Release();
 	m_Texture->Release();
@@ -88,7 +86,6 @@ void Title::Update()
 	if (Input::GetKeyTrigger(VK_RETURN)) {
 		Manager::SetScene<Game>();
 	}
-
 }
 
 void Title::Draw()

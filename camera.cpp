@@ -43,23 +43,21 @@ void Camera::Update()
 
 	if (Input::GetKeyPress('E')) {
 		m_Rotation.y += CAMARA_ROTATE;
-		
-		m_Position.x = m_Target.x + sinf(m_Rotation.y) * m_Len;
-		m_Position.z = m_Target.z + cosf(m_Rotation.y) * m_Len;
+		/*if (m_Rotation.y < -XM_PI) {
+			m_Rotation.y += XM_PI * 2.0f;
+		}*/
+		/*m_Position.x = m_Target.x + sinf(m_Rotation.y) * m_Len;
+		m_Position.z = m_Target.z + cosf(m_Rotation.y) * m_Len;*/
 	}
 	if (Input::GetKeyPress('Q')) {
 		m_Rotation.y -= CAMARA_ROTATE;
-		
-		m_Position.x = m_Target.x + sinf(m_Rotation.y) * m_Len;
-		m_Position.z = m_Target.z + cosf(m_Rotation.y) * m_Len;
+		/*if (m_Rotation.y > XM_PI) {
+			m_Rotation.y -= XM_PI * 2.0f;
+		}*/
+		/*m_Position.x = m_Target.x + sinf(m_Rotation.y) * m_Len;
+		m_Position.z = m_Target.z + cosf(m_Rotation.y) * m_Len;*/
 	}
 
-	if (m_Rotation.y < -XM_PI) {
-		m_Rotation.y += XM_PI * 2.0f;
-	}
-	if (m_Rotation.y > XM_PI) {
-		m_Rotation.y -= XM_PI * 2.0f;
-	}
 
 	if (Input::GetKeyTrigger(VK_CONTROL)) {
 		m_Flag = !m_Flag;
@@ -68,10 +66,12 @@ void Camera::Update()
 	if (m_Flag) {
 		SetCursorPos(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 	}
-
+	
 	/*m_Position.x = m_Target.x - sinf(m_Rotation.y) * 6.0f;
 	m_Position.y = m_Target.y + 4.0f;
 	m_Position.z = m_Target.z - cosf(m_Rotation.y) * 6.0f;*/
+
+
 
 	GetCursorPos(&m_MousePoint_b);//マウスのスクリーン座標取得
 

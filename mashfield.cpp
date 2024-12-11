@@ -88,7 +88,7 @@ void MashField::Init()
 
 	}
 	{
-		//インデックスばふっぁ生成
+		//インデックスバッファ生成
 		unsigned int index[((21 + 1) * 2) * 20 - 2];
 
 		int i = 0;

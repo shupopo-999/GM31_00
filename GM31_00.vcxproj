@@ -30,14 +30,14 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -154,6 +154,7 @@
     <ClInclude Include="manager.h" />
     <ClInclude Include="mashfield.h" />
     <ClInclude Include="modelRenderer.h" />
+    <ClInclude Include="NewTitle.h" />
     <ClInclude Include="particleemitter.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="polygon2D.h" />
@@ -187,6 +188,7 @@
     <ClCompile Include="manager.cpp" />
     <ClCompile Include="mashfield.cpp" />
     <ClCompile Include="modelRenderer.cpp" />
+    <ClCompile Include="NewTitle.cpp" />
     <ClCompile Include="particleemitter.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="polygon2D.cpp" />
