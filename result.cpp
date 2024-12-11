@@ -1,7 +1,7 @@
 #include "main.h"
 #include "manager.h"
 #include "renderer.h"
-#include "title.h"
+#include "NewTitle.h"
 #include "result.h"
 #include "game.h"
 #include "audio.h"
@@ -81,7 +81,7 @@ void Result::Update()
 	Scene::Update();
 
 	if (Input::GetKeyTrigger(VK_RETURN)) {
-		Manager::SetScene<Title>();
+		Manager::SetScene<NewTitle>();
 	}
 }
 

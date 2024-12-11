@@ -30,6 +30,7 @@ void NewTitle::Init()
 }
 
 void NewTitle::UnInit() {
+
 	Scene::UnInit();
 }
 
