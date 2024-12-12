@@ -59,18 +59,11 @@ void Title::Init()
 	Renderer::CreatePixelShader(&m_PixelShader,
 		"shader\\unlitTexturePS.cso");
 
-	// m_BGM = new Audio(this);
-	// m_BGM->Load("asset\\audio\\title.wav");
-	// m_BGM->Play(true);
-
-	m_check = false;
+	m_Position = { 0.0f, 1080.0f, 0.0f };
 }
 
 void Title::UnInit() 
 {
-	// m_BGM->UnInit();
-	// delete m_BGM;
-
 	m_VertexBuffer->Release();
 	m_Texture->Release();
 
@@ -81,11 +74,10 @@ void Title::UnInit()
 
 void Title::Update()
 {
-	Scene::Update();
-
-	if (Input::GetKeyTrigger(VK_RETURN)) {
-		Manager::SetScene<Game>();
+	if (m_alpha < 1.0f) {
+		m_alpha += 0.01f;
 	}
+	SetPosition(SCREEN_WIDTH / 2,SCREEN_HEIGHT / 2,500.0f,500.0f);
 }
 
 void Title::Draw()
@@ -103,7 +95,7 @@ void Title::Draw()
 	// マテリアル設定
 	MATERIAL material;
 	ZeroMemory(&material, sizeof(material));
-	material.Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	material.Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, m_alpha);
 	material.TextureEnable = true;
 	Renderer::SetMaterial(material);
 
@@ -120,4 +112,43 @@ void Title::Draw()
 
 	// ポリゴン描画
 	Renderer::GetDeviceContext()->Draw(4, 0);
+}
+
+void Title::SetPosition(float posX,float posY,float sizeX, float sizeY) {
+	VERTEX_3D vertex[4];
+
+	vertex[0].Position = XMFLOAT3(posX - sizeX, posY - sizeY, 0.0f);
+	vertex[0].Normal = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	vertex[0].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	vertex[0].TexCoord = XMFLOAT2(0.0f, 0.0f);
+
+	vertex[1].Position = XMFLOAT3(posX + sizeX, posY - sizeY, 0.0f);
+	vertex[1].Normal = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	vertex[1].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	vertex[1].TexCoord = XMFLOAT2(1.0f, 0.0f);
+
+	vertex[2].Position = XMFLOAT3(posX - sizeX, posY + sizeY,  0.0f);
+	vertex[2].Normal = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	vertex[2].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	vertex[2].TexCoord = XMFLOAT2(0.0f, 1.0f);
+
+	vertex[3].Position = XMFLOAT3(posX + sizeX, posY + sizeY, 0.0f);
+	vertex[3].Normal = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	vertex[3].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	vertex[3].TexCoord = XMFLOAT2(1.0f, 1.0f);
+
+
+
+	// 頂点バッファ生成
+	D3D11_BUFFER_DESC bd{};
+	bd.Usage = D3D11_USAGE_DEFAULT;
+	bd.ByteWidth = sizeof(VERTEX_3D) * 4;
+	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	bd.CPUAccessFlags = 0;
+
+	D3D11_SUBRESOURCE_DATA sd{};
+	sd.pSysMem = vertex;
+
+	Renderer::GetDevice()->CreateBuffer(&bd, &sd, &m_VertexBuffer);
+
 }

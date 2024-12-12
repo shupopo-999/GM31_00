@@ -3,7 +3,7 @@
 #include "gameobject.h"
 
 
-class Title : public Scene ,GameObject{
+class Title : public GameObject{
 private:
 	ID3D11Buffer* m_VertexBuffer = nullptr;
 	ID3D11ShaderResourceView* m_Texture = nullptr;
@@ -14,10 +14,11 @@ private:
 
 	class Audio*	m_BGM{};
 
-	bool			m_check;
+	float			m_alpha = 0.0f;
 public:
 	void Init()override;
 	void UnInit()override;
 	void Update()override;
 	void Draw()override;
+	void SetPosition(float posX, float posY, float sizeX, float sizeY);
 };
