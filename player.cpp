@@ -3,6 +3,7 @@
 #include "renderer.h"
 #include "player.h"
 #include "animationModel.h"
+#include "modelRenderer.h"
 #include "input.h"
 #include "camera.h"
 #include "enemy.h"
@@ -48,6 +49,9 @@ void Player::Init()
 	m_Quaternion.w = 1.0f;
 
 	m_SE[1]->Play();
+
+	m_ChildModel = new ModelRenderer(this);
+
 }
 
 void Player::UnInit()
@@ -58,6 +62,9 @@ void Player::UnInit()
 		m_SE[i]->UnInit();
 		delete m_SE[i];
 	}
+
+	m_ChildModel->UnInit();
+	delete m_ChildModel;
 
 	m_VertexLayout->Release();
 	m_VertexShader->Release();
@@ -231,4 +238,15 @@ void Player::Draw()
 	Renderer::SetWorldMatrix(world);
 
 	m_Component->Draw();
+	
+	// ワールドマトリクス設定
+	XMMATRIX childWorld, childScale, childRot, childTrans;
+	childScale = XMMatrixScaling(1.0f / m_Scale.x,1.0f / m_Scale.y,1.0f / m_Scale.z);
+	childRot = XMMatrixRotationRollPitchYaw(0.0f,0.0f,0.0f);
+	childTrans = XMMatrixTranslation(0.0f,2.0f,0.0f);
+	childWorld = childRot * childTrans * childScale * world;
+
+	Renderer::SetWorldMatrix(childWorld);
+
+	m_ChildModel->Draw();
 }

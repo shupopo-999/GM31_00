@@ -7,6 +7,7 @@
 class Player : public GameObject{
 private:
 	Component*					m_Component{ };
+	Component*					m_ChildModel{ };
 
 	ID3D11VertexShader*			m_VertexShader{};
 	ID3D11PixelShader*			m_PixelShader{};

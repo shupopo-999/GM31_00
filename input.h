@@ -20,8 +20,10 @@ private:
 	static DIMOUSESTATE2			mouseTrigger;	// âüÇ≥ÇÍÇΩèuä‘ÇæÇØON
 
 public:
-	static void Init();
 	HRESULT InitializeMouse(HINSTANCE hInst, HWND hWindow);
+	HRESULT UpdateMouse();
+
+	static void Init();
 	static void UnInit();
 	static void Update();
 

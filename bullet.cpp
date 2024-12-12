@@ -50,6 +50,7 @@ void Bullet::BulletCollision() {
 	scene = Manager::GetScene();
 
 	auto enemyList = scene->GetGameObjects<Enemy>();
+	auto boxList = scene->GetGameObject<Box>();
 
 	for (Enemy* enemy : enemyList) {
 		XMFLOAT3 enemyPosition = enemy->GetPosition();
@@ -73,6 +74,37 @@ void Bullet::BulletCollision() {
 			SetDestroy();
 
 			return;
+		}
+	}
+
+	for (Box* box : boxList) {
+		XMFLOAT3 boxPosition = box->GetPosition();
+		XMFLOAT3 boxScale = box->GetScale();
+
+		// OBB
+		XMFLOAT3 direction;		// ボックスの中心から弾までのベクトル
+		direction.x = m_Position.x - boxPosition.x;
+		direction.y = m_Position.y - boxPosition.y;
+		direction.z = m_Position.z - boxPosition.z;
+
+		// X分離軸
+		XMFLOAT3 axisX = box->GetRight();
+		float dotX = direction.x * axisX.x
+				+ direction.y * axisX.y
+				+ direction.z * axisX.z;
+
+		// Z分離軸
+		XMFLOAT3 axisZ = box->GetForward();
+		float dotZ = direction.x * axisZ.x
+				+ direction.y * axisZ.y
+				+ direction.z * axisZ.z;
+
+		if (-boxScale.x < dotX && dotX < boxScale.x && 
+			-boxScale.z < dotZ && dotZ < boxScale.z) {
+			Explosion* explosion = scene->AddGameObject<Explosion>(1);
+			explosion->SetPosition(m_Position);
+
+			SetDestroy();
 		}
 	}
 }

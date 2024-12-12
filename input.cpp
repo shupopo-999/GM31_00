@@ -20,10 +20,60 @@ void Input::Init()
 	memset( m_KeyState, 0, 256 );
 }
 
+HRESULT Input::InitializeMouse(HINSTANCE hInst, HWND hWindow)
+{
+	HRESULT result;
+	// デバイス作成
+	result = g_pDInput->CreateDevice(GUID_SysMouse, &pMouse, NULL);
+	if (FAILED(result) || pMouse == NULL)
+	{
+		MessageBox(hWindow, "No mouse", "Warning", MB_OK | MB_ICONWARNING);
+		return result;
+	}
+	// データフォーマット設定
+	result = pMouse->SetDataFormat(&c_dfDIMouse2);
+	if (FAILED(result))
+	{
+		MessageBox(hWindow, "Can't setup mouse", "Warning", MB_OK | MB_ICONWARNING);
+		return result;
+	}
+	// 他のアプリと協調モードに設定
+	result = pMouse->SetCooperativeLevel(hWindow, (DISCL_FOREGROUND | DISCL_NONEXCLUSIVE));
+	if (FAILED(result))
+	{
+		MessageBox(hWindow, "Mouse mode error", "Warning", MB_OK | MB_ICONWARNING);
+		return result;
+	}
+
+	// デバイスの設定
+	DIPROPDWORD prop;
+
+	prop.diph.dwSize = sizeof(prop);
+	prop.diph.dwHeaderSize = sizeof(prop.diph);
+	prop.diph.dwObj = 0;
+	prop.diph.dwHow = DIPH_DEVICE;
+	prop.dwData = DIPROPAXISMODE_REL;		// マウスの移動値　相対値
+
+	result = pMouse->SetProperty(DIPROP_AXISMODE, &prop.diph);
+	if (FAILED(result))
+	{
+		MessageBox(hWindow, "Mouse property error", "Warning", MB_OK | MB_ICONWARNING);
+		return result;
+	}
+
+	// アクセス権を得る
+	pMouse->Acquire();
+	return result;
+}
 
 void Input::UnInit()
 {
-
+	if (pMouse)
+	{
+		pMouse->Unacquire();
+		pMouse->Release();
+		pMouse = NULL;
+	}
 
 }
 
@@ -34,6 +84,10 @@ void Input::Update()
 
 	GetKeyboardState( m_KeyState );
 
+}
+
+HRESULT Input::UpdateMouse()
+{
 	HRESULT result;
 	// 前回の値保存
 	DIMOUSESTATE2 lastMouseState = mouseState;
@@ -56,7 +110,7 @@ void Input::Update()
 		// アクセス権を得てみる
 		result = pMouse->Acquire();
 	}
-	return (void)result;
+	return result;
 }
 
 bool Input::GetKeyPress(BYTE KeyCode)
