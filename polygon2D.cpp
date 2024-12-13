@@ -1,6 +1,8 @@
 #include "main.h"
 #include "renderer.h"
 #include "polygon2D.h"
+#include "camera.h"
+#include "manager.h"
 
 void Polygon2D::Init()
 {
@@ -83,6 +85,11 @@ void Polygon2D::Draw()
 	// マトリックス設定
 	Renderer::SetWorldViewProjection2D();
 
+	// 頂点バッファ設定
+	UINT stride = sizeof(VERTEX_3D);
+	UINT offset = 0;
+	Renderer::GetDeviceContext()->IASetVertexBuffers(0, 1, &m_VertexBuffer, &stride, &offset);
+
 	// マテリアル設定
 	MATERIAL material;
 	ZeroMemory(&material, sizeof(material));
@@ -90,17 +97,23 @@ void Polygon2D::Draw()
 	material.TextureEnable = true;
 	Renderer::SetMaterial(material);
 
-	// 頂点バッファ設定
-	UINT stride = sizeof(VERTEX_3D);
-	UINT offset = 0;
-	Renderer::GetDeviceContext()->IASetVertexBuffers(0, 1, &m_VertexBuffer, &stride, &offset);
-
 	// テクスチャ設定
 	Renderer::GetDeviceContext()->PSSetShaderResources(0, 1, &m_Texture);
 
 	// プリミティブトポロジ設定
 	Renderer::GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
+	// ステンシル読み込み有効
+	Renderer::SetStencilEnable(true);
+
 	// ポリゴン描画
 	Renderer::GetDeviceContext()->Draw(4, 0);
+
+	// ステンシル無効
+	Renderer::SetDepthEnable(true);
+
+	Camera* camera = Manager::GetScene()->GetGameObject<Camera>();
+	if (camera != nullptr) {
+		camera->Draw();
+	}
 }

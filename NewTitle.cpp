@@ -20,9 +20,13 @@ void NewTitle::Init()
 	AddGameObject<Camera>(0);
 	AddGameObject<MashField>(1);
 	AddGameObject<SkyDome>(1);
-	AddGameObject<Player>(1);
 	AddGameObject<Title>(2);
 	AddGameObject<Enter_Image>(2);
+
+
+	AddGameObject<Cylinder>(1);
+	AddGameObject<Polygon2D>(1);
+	AddGameObject<Player>(1);
 
 	AddGameObject<ParticleEmitter>(1)->SetPosition(XMFLOAT3(0.0f, 0.1f, 5.0f));
 	// AddGameObject<Cylinder>(1)->SetPosition(XMFLOAT3(0.0f, 0.1f, 5.0f));

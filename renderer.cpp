@@ -68,21 +68,21 @@ void Renderer::Init()
 
 
 
-	// �����_�[�^�[�Q�b�g�r���[�쐬
+	// レンダーターゲットビューの作成
 	ID3D11Texture2D* renderTarget{};
 	m_SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&renderTarget);
 	m_Device->CreateRenderTargetView(renderTarget, NULL, &m_RenderTargetView);
 	renderTarget->Release();
 
 
-	// �f�v�X�X�e���V���o�b�t�@�쐬
+	// デプスステンシルバッファの作成
 	ID3D11Texture2D* depthStencile{};
 	D3D11_TEXTURE2D_DESC textureDesc{};
 	textureDesc.Width = swapChainDesc.BufferDesc.Width;
 	textureDesc.Height = swapChainDesc.BufferDesc.Height;
 	textureDesc.MipLevels = 1;
 	textureDesc.ArraySize = 1;
-	textureDesc.Format = DXGI_FORMAT_D16_UNORM;
+	textureDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;	
 	textureDesc.SampleDesc = swapChainDesc.SampleDesc;
 	textureDesc.Usage = D3D11_USAGE_DEFAULT;
 	textureDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
@@ -90,7 +90,7 @@ void Renderer::Init()
 	textureDesc.MiscFlags = 0;
 	m_Device->CreateTexture2D(&textureDesc, NULL, &depthStencile);
 
-	// �f�v�X�X�e���V���r���[�쐬
+	// デプスステンシルビューの作成
 	D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc{};
 	depthStencilViewDesc.Format = textureDesc.Format;
 	depthStencilViewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
@@ -114,25 +114,25 @@ void Renderer::Init()
 	viewport.TopLeftX = 0;
 	viewport.TopLeftY = 0;
 	m_DeviceContext->RSSetViewports(1, &viewport);
+		
 
 
-
-	// ���X�^���C�U�X�e�[�g�ݒ�
+	// ラスタライザステートの設定
 	D3D11_RASTERIZER_DESC rasterizerDesc{};
 	rasterizerDesc.FillMode = D3D11_FILL_SOLID;
-	rasterizerDesc.CullMode = D3D11_CULL_BACK;
+	rasterizerDesc.CullMode = D3D11_CULL_BACK;		// バックフェースカリング
 	rasterizerDesc.DepthClipEnable = TRUE;
 	rasterizerDesc.MultisampleEnable = FALSE;
+	m_Device->CreateRasterizerState(&rasterizerDesc, &m_RasterizerStateCullBack);
 
-	ID3D11RasterizerState* rs;
-	m_Device->CreateRasterizerState(&rasterizerDesc, &rs);
+	rasterizerDesc.CullMode = D3D11_CULL_NONE;		// カリングなし
+	m_Device->CreateRasterizerState(&rasterizerDesc, &m_RasterizerStateCullNone);
 
-	m_DeviceContext->RSSetState(rs);
-
-
+	m_DeviceContext->RSSetState(m_RasterizerStateCullBack);
 
 
-	// �u�����h�X�e�[�g�ݒ�
+
+	// ブレンドステートの設定
 	D3D11_BLEND_DESC blendDesc{};
 	blendDesc.AlphaToCoverageEnable = FALSE;
 	blendDesc.IndependentBlendEnable = FALSE;
@@ -148,7 +148,12 @@ void Renderer::Init()
 	m_Device->CreateBlendState(&blendDesc, &m_BlendState);
 
 	blendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_ONE;
-	m_Device->CreateBlendState()
+	m_Device->CreateBlendState(&blendDesc, &m_BlendState);
+	blendDesc.RenderTarget[0].BlendEnable = D3D11_BLEND_INV_SRC_ALPHA;
+
+	blendDesc.RenderTarget[0].RenderTargetWriteMask = 0;
+	m_Device->CreateBlendState(&blendDesc, &m_BlendStateMask);
+	blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 
 	blendDesc.AlphaToCoverageEnable = TRUE;
 	m_Device->CreateBlendState(&blendDesc, &m_BlendStateATC);
@@ -160,23 +165,45 @@ void Renderer::Init()
 
 
 
-	// �f�v�X�X�e���V���X�e�[�g�ݒ�
+	// デプスステンシルステートの設定
 	D3D11_DEPTH_STENCIL_DESC depthStencilDesc{};
 	depthStencilDesc.DepthEnable = TRUE;
 	depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
 	depthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
 	depthStencilDesc.StencilEnable = FALSE;
 
-	m_Device->CreateDepthStencilState(&depthStencilDesc, &m_DepthStateEnable);//�[�x�L���X�e�[�g
+	m_Device->CreateDepthStencilState(&depthStencilDesc, &m_DepthStateEnable);//深度有効ステート
 
 	//depthStencilDesc.DepthEnable = FALSE;
 	depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
-	m_Device->CreateDepthStencilState(&depthStencilDesc, &m_DepthStateDisable);//�[�x�����X�e�[�g
+	m_Device->CreateDepthStencilState(&depthStencilDesc, &m_DepthStateDisable);//深度無効ステート
 
 	m_DeviceContext->OMSetDepthStencilState(m_DepthStateEnable, NULL);
 
 
+	depthStencilDesc.DepthEnable = TRUE;
+	depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+	depthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
 
+	depthStencilDesc.StencilEnable = TRUE;
+	depthStencilDesc.StencilReadMask = D3D11_DEFAULT_STENCIL_READ_MASK;
+	depthStencilDesc.StencilWriteMask = D3D11_DEFAULT_STENCIL_WRITE_MASK;
+
+	depthStencilDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	depthStencilDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+	depthStencilDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_INCR;
+	depthStencilDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+	depthStencilDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	depthStencilDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+	depthStencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_DECR;
+	depthStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+	m_Device->CreateDepthStencilState(&depthStencilDesc, &m_StencilWrite);
+
+	depthStencilDesc.FrontFace.StencilFunc = D3D11_COMPARISON_LESS;
+
+	m_Device->CreateDepthStencilState(&depthStencilDesc, &m_StencilRead);
 
 	// �T���v���[�X�e�[�g�ݒ�
 	D3D11_SAMPLER_DESC samplerDesc{};
@@ -278,7 +305,7 @@ void Renderer::Begin()
 {
 	float clearColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
 	m_DeviceContext->ClearRenderTargetView(m_RenderTargetView, clearColor);
-	m_DeviceContext->ClearDepthStencilView(m_DepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
+	m_DeviceContext->ClearDepthStencilView(m_DepthStencilView, D3D11_CLEAR_STENCIL, 1.0f, 0);
 }
 
 
@@ -311,6 +338,42 @@ void Renderer::SetATCEnable(bool Enable)
 	else
 		m_DeviceContext->OMSetBlendState(m_BlendState, blendFactor, 0xffffffff);
 
+}
+
+void Renderer::SetStencilEnable(bool Enable)
+{
+	if (Enable)
+		m_DeviceContext->OMSetDepthStencilState(m_StencilWrite, NULL);
+	else
+		m_DeviceContext->OMSetDepthStencilState(m_StencilRead, NULL);
+}
+
+void Renderer::SetBlendAddEnable(bool Enable)
+{
+	float blendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+
+	if (Enable)
+		m_DeviceContext->OMSetBlendState(m_BlendStateAdd, blendFactor, 0xffffffff);
+	else
+		m_DeviceContext->OMSetBlendState(m_BlendState, blendFactor, 0xffffffff);
+}
+
+void Renderer::SetBlendMaskEnable(bool Enable)
+{
+	float blendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+
+	if (Enable)
+		m_DeviceContext->OMSetBlendState(m_BlendStateMask, blendFactor, 0xffffffff);
+	else
+		m_DeviceContext->OMSetBlendState(m_BlendState, blendFactor, 0xffffffff);
+}
+
+void Renderer::SetCullEnable(bool Enable)
+{
+	if (Enable)
+		m_DeviceContext->RSSetState(m_RasterizerStateCullBack);
+	else
+		m_DeviceContext->RSSetState(m_RasterizerStateCullNone);
 }
 
 void Renderer::SetWorldViewProjection2D()

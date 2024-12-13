@@ -53,5 +53,26 @@ void Cylinder::Draw()
 	world = scale * rot * trans;
 	Renderer::SetWorldMatrix(world);
 
+	// テクスチャ設定
+	Renderer::GetDeviceContext()->PSSetShaderResources(0, 1, &m_EnvTexture);
+
+	// カラーバッファマスク有効
+	Renderer::SetBlendMaskEnable(true);
+
+	// ステンシル書き込み有効
+	Renderer::SetStencilEnable(true);
+
+	// カリング無効
+	Renderer::SetCullEnable(false);
+
 	m_Component->Draw();
+
+	// カラーバッファマスク無効
+	Renderer::SetBlendMaskEnable(false);
+
+	// ステンシル書き込み無効
+	Renderer::SetDepthEnable(true);
+
+	// カリング有効
+	Renderer::SetCullEnable(true);
 }

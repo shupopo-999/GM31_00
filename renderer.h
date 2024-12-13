@@ -80,12 +80,18 @@ public:
 
 	static void SetDepthEnable(bool Enable);
 	static void SetATCEnable(bool Enable);
+	static void SetStencilEnable(bool Enable);
+	static void SetBlendAddEnable(bool Enable);
+	static void SetBlendMaskEnable(bool Enable);
+	static void SetCullEnable(bool Enable);
+
 	static void SetWorldViewProjection2D();
 	static void SetWorldMatrix(XMMATRIX WorldMatrix);
 	static void SetViewMatrix(XMMATRIX ViewMatrix);
 	static void SetProjectionMatrix(XMMATRIX ProjectionMatrix);
 	static void SetMaterial(MATERIAL Material);
 	static void SetLight(LIGHT Light);
+	static void SetCameraPosition(XMFLOAT3 CameraPosition);
 
 	static ID3D11Device* GetDevice( void ){ return m_Device; }
 	static ID3D11DeviceContext* GetDeviceContext( void ){ return m_DeviceContext; }
