@@ -17,14 +17,23 @@ ID3D11Buffer* Renderer::m_ViewBuffer{};
 ID3D11Buffer* Renderer::m_ProjectionBuffer{};
 ID3D11Buffer* Renderer::m_MaterialBuffer{};
 ID3D11Buffer* Renderer::m_LightBuffer{};
+ID3D11Buffer* Renderer::m_CameraBuffer{};
+
 
 
 ID3D11DepthStencilState* Renderer::m_DepthStateEnable{};
 ID3D11DepthStencilState* Renderer::m_DepthStateDisable{};
 
+ID3D11DepthStencilState* Renderer::m_StencilWrite{};
+ID3D11DepthStencilState* Renderer::m_StencilRead{};
 
 ID3D11BlendState* Renderer::m_BlendState{};
 ID3D11BlendState* Renderer::m_BlendStateATC{};
+ID3D11BlendState* Renderer::m_BlendStateAdd{};
+ID3D11BlendState* Renderer::m_BlendStateMask{};
+
+ID3D11RasterizerState* Renderer::m_RasterizerStateCullBack{};
+ID3D11RasterizerState* Renderer::m_RasterizerStateCullNone{};
 
 
 
