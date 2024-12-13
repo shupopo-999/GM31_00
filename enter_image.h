@@ -3,7 +3,7 @@
 #include "gameobject.h"
 
 
-class Title : public GameObject{
+class Enter_Image : public GameObject{
 private:
 	ID3D11Buffer* m_VertexBuffer = nullptr;
 	ID3D11ShaderResourceView* m_Texture = nullptr;
@@ -17,15 +17,10 @@ private:
 	float			m_PositionY = 540.0f;
 	float			m_alpha = 0.0f;
 	bool			m_flag = false;
-
 public:
 	void Init()override;
 	void UnInit()override;
 	void Update()override;
 	void Draw()override;
 	void SetTitle(float posX, float posY, float sizeX, float sizeY);
-
-	bool GetTitle() {
-		return m_flag;
-	}
 };

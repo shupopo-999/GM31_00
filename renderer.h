@@ -55,13 +55,18 @@ private:
 	static ID3D11Buffer*			m_ProjectionBuffer;
 	static ID3D11Buffer*			m_MaterialBuffer;
 	static ID3D11Buffer*			m_LightBuffer;
+	static ID3D11Buffer*			m_CameraBuffer;
 
 
 	static ID3D11DepthStencilState* m_DepthStateEnable;
 	static ID3D11DepthStencilState* m_DepthStateDisable;
+	static ID3D11DepthStencilState* m_StencilWrite;
+	static ID3D11DepthStencilState* m_StencilRead;
 
 	static ID3D11BlendState*		m_BlendState;
 	static ID3D11BlendState*		m_BlendStateATC;
+	static ID3D11BlendState*		m_BlendStateAdd;
+	static ID3D11BlendState*		m_BlendStateMask;
 
 
 

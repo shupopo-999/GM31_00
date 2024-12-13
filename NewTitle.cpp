@@ -6,8 +6,9 @@
 #include "skydome.h"
 #include "particleemitter.h"
 #include "mashfield.h"
-#include "score.h"
+#include "cylinder.h"
 #include "title.h"
+#include "enter_image.h"
 #include "game.h"
 
 
@@ -21,8 +22,10 @@ void NewTitle::Init()
 	AddGameObject<SkyDome>(1);
 	AddGameObject<Player>(1);
 	AddGameObject<Title>(2);
+	AddGameObject<Enter_Image>(2);
 
 	AddGameObject<ParticleEmitter>(1)->SetPosition(XMFLOAT3(0.0f, 0.1f, 5.0f));
+	// AddGameObject<Cylinder>(1)->SetPosition(XMFLOAT3(0.0f, 0.1f, 5.0f));
 }
 
 void NewTitle::UnInit() {

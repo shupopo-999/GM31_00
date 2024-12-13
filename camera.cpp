@@ -41,6 +41,7 @@ void Camera::Update()
 	m_Target = player->GetPosition();
 	m_Target.y += 1.0f;
 
+
 	if (Input::GetKeyPress('E')) {
 		m_Rotation.y += CAMARA_ROTATE;
 		/*if (m_Rotation.y < -XM_PI) {
