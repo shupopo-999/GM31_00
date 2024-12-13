@@ -136,6 +136,7 @@
     <ClInclude Include="component.h" />
     <ClInclude Include="cylinder.h" />
     <ClInclude Include="enemy.h" />
+    <ClInclude Include="enter_image.h" />
     <ClInclude Include="explosion.h" />
     <ClInclude Include="fade.h" />
     <ClInclude Include="field.h" />
@@ -164,6 +165,7 @@
     <ClInclude Include="score.h" />
     <ClInclude Include="skydome.h" />
     <ClInclude Include="title.h" />
+    <ClInclude Include="wave.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="animationModel.cpp" />
@@ -172,6 +174,7 @@
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="cylinder.cpp" />
     <ClCompile Include="enemy.cpp" />
+    <ClCompile Include="enter_image.cpp" />
     <ClCompile Include="explosion.cpp" />
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="field.cpp" />
@@ -197,6 +200,7 @@
     <ClCompile Include="score.cpp" />
     <ClCompile Include="skydome.cpp" />
     <ClCompile Include="title.cpp" />
+    <ClCompile Include="wave.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="shader\common.hlsl">

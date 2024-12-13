@@ -1,14 +1,11 @@
-#include "main.h"
+Ôªø#include "main.h"
 #include "manager.h"
 #include "renderer.h"
+#include "enter_image.h"
 #include "title.h"
 #include "input.h"
-#include "game.h"
-#include "audio.h"
-#include "fade.h"
 
-
-void Title::Init()
+void Enter_Image::Init()
 {
 	VERTEX_3D vertex[4];
 
@@ -34,7 +31,7 @@ void Title::Init()
 
 
 
-	// í∏ì_ÉoÉbÉtÉ@ê∂ê¨
+	// ÔøΩÔøΩÔøΩ_ÔøΩoÔøΩbÔøΩtÔøΩ@ÔøΩÔøΩÔøΩÔøΩ
 	D3D11_BUFFER_DESC bd{};
 	bd.Usage = D3D11_USAGE_DEFAULT;
 	bd.ByteWidth = sizeof(VERTEX_3D) * 4;
@@ -47,10 +44,10 @@ void Title::Init()
 	Renderer::GetDevice()->CreateBuffer(&bd, &sd, &m_VertexBuffer);
 
 
-	// ÉeÉNÉXÉ`ÉÉì«Ç›çûÇ›
+	// ÔøΩeÔøΩNÔøΩXÔøΩ`ÔøΩÔøΩÔøΩ«Ç›çÔøΩÔøΩÔøΩ
 	TexMetadata metadata;
 	ScratchImage image;
-	LoadFromWICFile(L"asset\\texture\\title.png", WIC_FLAGS_NONE, &metadata, image);
+	LoadFromWICFile(L"asset\\texture\\enter.png", WIC_FLAGS_NONE, &metadata, image);
 	CreateShaderResourceView(Renderer::GetDevice(), image.GetImages(), image.GetImageCount(), metadata, &m_Texture);
 	assert(m_Texture);
 
@@ -58,10 +55,9 @@ void Title::Init()
 		"shader\\unlitTextureVS.cso");
 	Renderer::CreatePixelShader(&m_PixelShader,
 		"shader\\unlitTexturePS.cso");
-
 }
 
-void Title::UnInit() 
+void Enter_Image::UnInit()
 {
 	m_VertexBuffer->Release();
 	m_Texture->Release();
@@ -71,57 +67,56 @@ void Title::UnInit()
 	m_PixelShader->Release();
 }
 
-void Title::Update()
+void Enter_Image::Update()
 {
-	if (m_alpha < 1.0f) {
-		m_alpha += 0.0025f;
-	}
-	if (m_PositionY > 240.0f) {
-		m_PositionY -= 1.0f;
-	}
+	Title title;
+	if (m_flag == false)
+		m_flag = title.GetTitle();
 
-	if (m_alpha > 1.0f) {
-		m_flag = true;
-	}
+	if (m_flag) {
+		if (m_alpha < 1.0f) {
+			m_alpha += 0.0025f;
+		}
 
-	SetTitle(SCREEN_WIDTH / 2, m_PositionY, 500.0f, 250.0f);
+		SetTitle(SCREEN_WIDTH / 2, m_PositionY, 150.0f, 50.0f);
+	}
 }
 
-void Title::Draw()
+void Enter_Image::Draw()
 {
-	// ì¸óÕÉåÉCÉAÉEÉgê›íË
+	// ÔøΩÔøΩÔøΩÕÉÔøΩÔøΩCÔøΩAÔøΩEÔøΩgÔøΩ›íÔøΩ
 	Renderer::GetDeviceContext()->IASetInputLayout(m_VertexLayout);
 
-	// ÉVÉFÅ[É_ê›íË
+	// ÔøΩVÔøΩFÔøΩ[ÔøΩ_ÔøΩ›íÔøΩ
 	Renderer::GetDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
 	Renderer::GetDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
 
-	// É}ÉgÉäÉbÉNÉXê›íË
+	// ÔøΩ}ÔøΩgÔøΩÔøΩÔøΩbÔøΩNÔøΩXÔøΩ›íÔøΩ
 	Renderer::SetWorldViewProjection2D();
 
-	// É}ÉeÉäÉAÉãê›íË
+	// ÔøΩ}ÔøΩeÔøΩÔøΩÔøΩAÔøΩÔøΩÔøΩ›íÔøΩ
 	MATERIAL material;
 	ZeroMemory(&material, sizeof(material));
 	material.Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, m_alpha);
 	material.TextureEnable = true;
 	Renderer::SetMaterial(material);
 
-	// í∏ì_ÉoÉbÉtÉ@ê›íË
+	// ÔøΩÔøΩÔøΩ_ÔøΩoÔøΩbÔøΩtÔøΩ@ÔøΩ›íÔøΩ
 	UINT stride = sizeof(VERTEX_3D);
 	UINT offset = 0;
 	Renderer::GetDeviceContext()->IASetVertexBuffers(0, 1, &m_VertexBuffer, &stride, &offset);
 
-	// ÉeÉNÉXÉ`ÉÉê›íË
+	// ÔøΩeÔøΩNÔøΩXÔøΩ`ÔøΩÔøΩÔøΩ›íÔøΩ
 	Renderer::GetDeviceContext()->PSSetShaderResources(0, 1, &m_Texture);
 
-	// ÉvÉäÉ~ÉeÉBÉuÉgÉ|ÉçÉWê›íË
+	// ÔøΩvÔøΩÔøΩÔøΩ~ÔøΩeÔøΩBÔøΩuÔøΩgÔøΩ|ÔøΩÔøΩÔøΩWÔøΩ›íÔøΩ
 	Renderer::GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
-	// É|ÉäÉSÉìï`âÊ
+	// ÔøΩ|ÔøΩÔøΩÔøΩSÔøΩÔøΩÔøΩ`ÔøΩÔøΩ
 	Renderer::GetDeviceContext()->Draw(4, 0);
 }
 
-void Title::SetTitle(float posX,float posY,float sizeX, float sizeY) {
+void Enter_Image::SetTitle(float posX, float posY, float sizeX, float sizeY) {
 	VERTEX_3D vertex[4];
 
 	vertex[0].Position = XMFLOAT3(posX - sizeX, posY - sizeY, 0.0f);
@@ -134,7 +129,7 @@ void Title::SetTitle(float posX,float posY,float sizeX, float sizeY) {
 	vertex[1].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	vertex[1].TexCoord = XMFLOAT2(1.0f, 0.0f);
 
-	vertex[2].Position = XMFLOAT3(posX - sizeX, posY + sizeY,  0.0f);
+	vertex[2].Position = XMFLOAT3(posX - sizeX, posY + sizeY, 0.0f);
 	vertex[2].Normal = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	vertex[2].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	vertex[2].TexCoord = XMFLOAT2(0.0f, 1.0f);
@@ -146,7 +141,7 @@ void Title::SetTitle(float posX,float posY,float sizeX, float sizeY) {
 
 
 
-	// í∏ì_ÉoÉbÉtÉ@ê∂ê¨
+	// ÔøΩÔøΩÔøΩ_ÔøΩoÔøΩbÔøΩtÔøΩ@ÔøΩÔøΩÔøΩÔøΩ
 	D3D11_BUFFER_DESC bd{};
 	bd.Usage = D3D11_USAGE_DEFAULT;
 	bd.ByteWidth = sizeof(VERTEX_3D) * 4;

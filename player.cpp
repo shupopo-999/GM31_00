@@ -31,7 +31,7 @@ void Player::Init()
 	Renderer::CreatePixelShader(&m_PixelShader,
 		"shader\\unlitTexturePS.cso");
 
-	m_Position.x = 5.0f;
+	m_Position.x = 20.0f;
 	m_Position.y = 1.0f;
 	groundFlag = true;
 

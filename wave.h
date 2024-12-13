@@ -2,29 +2,30 @@
 
 #include "gameobject.h"
 
-
-class Title : public GameObject{
+class Wave : public GameObject {
 private:
 	ID3D11Buffer* m_VertexBuffer = nullptr;
+	ID3D11Buffer* m_IndexBuffer = nullptr;
 	ID3D11ShaderResourceView* m_Texture = nullptr;
 
 	ID3D11VertexShader* m_VertexShader;
 	ID3D11PixelShader* m_PixelShader;
 	ID3D11InputLayout* m_VertexLayout;
 
-	class Audio*	m_BGM{};
+	VERTEX_3D m_Vertex[21][21]{};
+	float		m_time{};
+	float		amplitude = 0.5f;		// êUïù
+	float		waveLength = 3.0f;	// îgí∑
+	float		waveCycle = 0.5f;	// îgí∑
 
-	float			m_PositionY = 540.0f;
-	float			m_alpha = 0.0f;
-	bool			m_flag = false;
 public:
 	void Init()override;
 	void UnInit()override;
 	void Update()override;
 	void Draw()override;
-	void SetTitle(float posX, float posY, float sizeX, float sizeY);
 
-	bool GetTitle() {
-		return m_flag;
-	}
+	float GetHeight(XMFLOAT3 Position);
+
+
+
 };

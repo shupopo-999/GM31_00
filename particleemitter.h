@@ -20,7 +20,7 @@ private:
 		XMFLOAT3	Position;
 		XMFLOAT3	Velocity;
 	};
-	static const int PARTICLE_MAX = 1000;
+	static const int PARTICLE_MAX = 50000;
 	PARTICLE m_Particle[PARTICLE_MAX]{};
 
 public:

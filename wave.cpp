@@ -1,21 +1,21 @@
 #include "main.h"
 #include "renderer.h"
-#include "mashfield.h"
+#include "wave.h"
 
-float g_FieldHeight[21][21] = {
+float g_WaveHeight[21][21] = {
 	{0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f},
 	{0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f},
-	{0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,-3.0f,-3.0f,-3.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f},
-	{0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,-3.0f,-3.0f,-3.0f,-3.0f,-3.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f},
-	{0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,-3.0f,-3.0f,-3.0f,-3.0f,-3.0f,-3.0f,-3.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f},
-	{0.0f,0.0f,0.0f,0.0f,0.0f,-3.0f,-3.0f,-3.0f,-3.0f,-3.0f,-3.0f,-3.0f,-3.0f,-3.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f},
-	{0.0f,0.0f,0.0f,0.0f,-3.0f,-3.0f,-3.0f,-3.0f,-3.0f,-3.0f,-3.0f,-3.0f,-3.0f,-3.0f,-3.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f},
-	{0.0f,0.0f,0.0f,0.0f,-3.0f,-3.0f,-3.0f,-3.0f,-3.0f,-3.0f,-3.0f,-3.0f,-3.0f,-3.0f,-3.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f},
-	{0.0f,0.0f,0.0f,0.0f,-3.0f,-3.0f,-3.0f,-3.0f,-3.0f,-3.0f,-3.0f,-3.0f,-3.0f,-3.0f,-3.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f},
-	{0.0f,0.0f,0.0f,0.0f,0.0f,-3.0f,-3.0f,-3.0f,-3.0f,-3.0f,-3.0f,-3.0f,-3.0f,-3.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f},
-	{0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,-3.0f,-3.0f,-3.0f,-3.0f,-3.0f,-3.0f,-3.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f},
-	{0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,-3.0f,-3.0f,-3.0f,-3.0f,-3.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f},
-	{0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,-3.0f,-3.0f,-3.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f},
+	{0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f},
+	{0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f},
+	{0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f},
+	{0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f},
+	{0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f},
+	{0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f},
+	{0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f},
+	{0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f},
+	{0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f},
+	{0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f},
+	{0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f},
 	{0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f},
 	{0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f},
 	{0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f},
@@ -26,16 +26,16 @@ float g_FieldHeight[21][21] = {
 	{0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f},
 };
 
-void MashField::Init()
-{	
-	//頂点バッファ
+void Wave::Init()
+{
+	//頂点バッファ生成
 	{
 		for (int x = 0; x < 21; x++)
 		{
 			for (int z = 0; z < 21; z++)
 			{
 				m_Vertex[x][z].Position = XMFLOAT3((x - 10.0f) * 5.0f,
-					g_FieldHeight[x][z],
+					g_WaveHeight[x][z],
 					(z - 10) * -5.0f);
 				m_Vertex[x][z].Normal = XMFLOAT3(0.0f, 0.1f, 0.0f);
 				m_Vertex[x][z].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -43,6 +43,7 @@ void MashField::Init()
 			}
 		}
 
+		// 法線ベクトル算出
 		for (int x = 1; x <= 19; x++)
 		{
 			for (int z = 1; z <= 19; z++)
@@ -74,10 +75,10 @@ void MashField::Init()
 		// 頂点バッファ生成
 		D3D11_BUFFER_DESC bd{};
 		ZeroMemory(&bd, sizeof(bd));
-		bd.Usage = D3D11_USAGE_DEFAULT;
+		bd.Usage = D3D11_USAGE_DYNAMIC;
 		bd.ByteWidth = sizeof(VERTEX_3D) * 21 * 21;
 		bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-		bd.CPUAccessFlags = 0;
+		bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 
 
 		D3D11_SUBRESOURCE_DATA sd;
@@ -131,7 +132,7 @@ void MashField::Init()
 	// テクスチャ読み込み
 	TexMetadata metadata;
 	ScratchImage image;
-	LoadFromWICFile(L"asset\\texture\\grass.jpg", WIC_FLAGS_NONE, &metadata, image);
+	LoadFromWICFile(L"asset\\texture\\sea.png", WIC_FLAGS_NONE, &metadata, image);
 	CreateShaderResourceView(Renderer::GetDevice(), image.GetImages(), image.GetImageCount(), metadata, &m_Texture);
 	assert(m_Texture);
 
@@ -142,7 +143,7 @@ void MashField::Init()
 
 }
 
-void MashField::UnInit()
+void Wave::UnInit()
 {
 	m_VertexBuffer->Release();
 	m_Texture->Release();
@@ -154,12 +155,37 @@ void MashField::UnInit()
 
 }
 
-void MashField::Update()
+void Wave::Update()
 {
+	for (int x = 0; x < 21; x++)
+	{
+		for (int z = 0; z < 21; z++)
+		{
+			float dx = m_Vertex[z][x].Position.x - m_Vertex[0][0].Position.x;
+			float dz = m_Vertex[z][x].Position.z - m_Vertex[0][0].Position.z;
+			float length = sqrtf(dx * dx + dz * dz);
 
+			m_Vertex[x][z].Position.y = amplitude * sinf(2.0f * XM_PI * (length / waveLength - m_time / waveCycle));	// 波の計算
+		}
+	}
+
+	m_time += 0.1f / 60.0f;
+
+	// 頂点データの書き換え
+	D3D11_MAPPED_SUBRESOURCE msr;
+	Renderer::GetDeviceContext()->Map(m_VertexBuffer, 0,
+		D3D11_MAP_WRITE_DISCARD, 0, &msr);
+
+	VERTEX_3D* vertex = (VERTEX_3D*)msr.pData;
+
+
+	memcpy(vertex, m_Vertex, sizeof(VERTEX_3D) * 21 * 21);
+
+	// 頂点データの変更
+	Renderer::GetDeviceContext()->Unmap(m_VertexBuffer, 0);
 }
 
-void MashField::Draw()
+void Wave::Draw()
 {
 	// 入力レイアウト設定
 	Renderer::GetDeviceContext()->IASetInputLayout(m_VertexLayout);
@@ -170,7 +196,7 @@ void MashField::Draw()
 
 	// ワールドマトリクス設定
 	XMMATRIX world, scale, rot, trans;
-	scale = XMMatrixScaling(m_Scale.x,m_Scale.y,m_Scale.z);
+	scale = XMMatrixScaling(m_Scale.x, m_Scale.y, m_Scale.z);
 	rot = XMMatrixRotationRollPitchYaw(m_Rotation.x, m_Rotation.y, m_Rotation.z);
 	trans = XMMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
 	world = scale * rot * trans;
@@ -182,12 +208,12 @@ void MashField::Draw()
 	Renderer::GetDeviceContext()->IASetVertexBuffers(0, 1, &m_VertexBuffer, &stride, &offset);
 
 	// インデックスバッファ設定
-	Renderer::GetDeviceContext()->IASetIndexBuffer(m_IndexBuffer,DXGI_FORMAT_R32_UINT,0);
+	Renderer::GetDeviceContext()->IASetIndexBuffer(m_IndexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
 	// マテリアル設定
 	MATERIAL material;
-	ZeroMemory(&material,sizeof(material));
-	material.Diffuse = XMFLOAT4(1.0f,1.0f,1.0f,1.0f);
+	ZeroMemory(&material, sizeof(material));
+	material.Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	material.TextureEnable = true;
 	Renderer::SetMaterial(material);
 
@@ -198,10 +224,10 @@ void MashField::Draw()
 	Renderer::GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
 	// ポリゴン描画
-	Renderer::GetDeviceContext()->DrawIndexed((22 * 2) * 20 - 2, 0,0);
+	Renderer::GetDeviceContext()->DrawIndexed((22 * 2) * 20 - 2, 0, 0);
 }
 
-float MashField::GetHeight(XMFLOAT3 Position) {
+float Wave::GetHeight(XMFLOAT3 Position) {
 	int x, z;
 	// ブロック番号算出
 	x = Position.x / 5.0f + 10.0f;
