@@ -36,7 +36,7 @@ void Renderer::Init()
 
 
 
-	// ƒfƒoƒCƒXAƒXƒƒbƒvƒ`ƒF[ƒ“ì¬
+	// ï¿½fï¿½oï¿½Cï¿½Xï¿½Aï¿½Xï¿½ï¿½ï¿½bï¿½vï¿½`ï¿½Fï¿½[ï¿½ï¿½ï¿½ì¬
 	DXGI_SWAP_CHAIN_DESC swapChainDesc{};
 	swapChainDesc.BufferCount = 1;
 	swapChainDesc.BufferDesc.Width = SCREEN_WIDTH;
@@ -68,14 +68,14 @@ void Renderer::Init()
 
 
 
-	// ƒŒƒ“ƒ_[ƒ^[ƒQƒbƒgƒrƒ…[ì¬
+	// ï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½[ï¿½^ï¿½[ï¿½Qï¿½bï¿½gï¿½rï¿½ï¿½ï¿½[ï¿½ì¬
 	ID3D11Texture2D* renderTarget{};
 	m_SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&renderTarget);
 	m_Device->CreateRenderTargetView(renderTarget, NULL, &m_RenderTargetView);
 	renderTarget->Release();
 
 
-	// ƒfƒvƒXƒXƒeƒ“ƒVƒ‹ƒoƒbƒtƒ@ì¬
+	// ï¿½fï¿½vï¿½Xï¿½Xï¿½eï¿½ï¿½ï¿½Vï¿½ï¿½ï¿½oï¿½bï¿½tï¿½@ï¿½ì¬
 	ID3D11Texture2D* depthStencile{};
 	D3D11_TEXTURE2D_DESC textureDesc{};
 	textureDesc.Width = swapChainDesc.BufferDesc.Width;
@@ -90,7 +90,7 @@ void Renderer::Init()
 	textureDesc.MiscFlags = 0;
 	m_Device->CreateTexture2D(&textureDesc, NULL, &depthStencile);
 
-	// ƒfƒvƒXƒXƒeƒ“ƒVƒ‹ƒrƒ…[ì¬
+	// ï¿½fï¿½vï¿½Xï¿½Xï¿½eï¿½ï¿½ï¿½Vï¿½ï¿½ï¿½rï¿½ï¿½ï¿½[ï¿½ì¬
 	D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc{};
 	depthStencilViewDesc.Format = textureDesc.Format;
 	depthStencilViewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
@@ -105,7 +105,7 @@ void Renderer::Init()
 
 
 
-	// ƒrƒ…[ƒ|[ƒgİ’è
+	// ï¿½rï¿½ï¿½ï¿½[ï¿½|ï¿½[ï¿½gï¿½İ’ï¿½
 	D3D11_VIEWPORT viewport;
 	viewport.Width = (FLOAT)SCREEN_WIDTH;
 	viewport.Height = (FLOAT)SCREEN_HEIGHT;
@@ -117,7 +117,7 @@ void Renderer::Init()
 
 
 
-	// ƒ‰ƒXƒ^ƒ‰ƒCƒUƒXƒe[ƒgİ’è
+	// ï¿½ï¿½ï¿½Xï¿½^ï¿½ï¿½ï¿½Cï¿½Uï¿½Xï¿½eï¿½[ï¿½gï¿½İ’ï¿½
 	D3D11_RASTERIZER_DESC rasterizerDesc{};
 	rasterizerDesc.FillMode = D3D11_FILL_SOLID;
 	rasterizerDesc.CullMode = D3D11_CULL_BACK;
@@ -132,7 +132,7 @@ void Renderer::Init()
 
 
 
-	// ƒuƒŒƒ“ƒhƒXƒe[ƒgİ’è
+	// ï¿½uï¿½ï¿½ï¿½ï¿½ï¿½hï¿½Xï¿½eï¿½[ï¿½gï¿½İ’ï¿½
 	D3D11_BLEND_DESC blendDesc{};
 	blendDesc.AlphaToCoverageEnable = FALSE;
 	blendDesc.IndependentBlendEnable = FALSE;
@@ -147,6 +147,9 @@ void Renderer::Init()
 
 	m_Device->CreateBlendState(&blendDesc, &m_BlendState);
 
+	blendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_ONE;
+	m_Device->CreateBlendState()
+
 	blendDesc.AlphaToCoverageEnable = TRUE;
 	m_Device->CreateBlendState(&blendDesc, &m_BlendStateATC);
 
@@ -157,25 +160,25 @@ void Renderer::Init()
 
 
 
-	// ƒfƒvƒXƒXƒeƒ“ƒVƒ‹ƒXƒe[ƒgİ’è
+	// ï¿½fï¿½vï¿½Xï¿½Xï¿½eï¿½ï¿½ï¿½Vï¿½ï¿½ï¿½Xï¿½eï¿½[ï¿½gï¿½İ’ï¿½
 	D3D11_DEPTH_STENCIL_DESC depthStencilDesc{};
 	depthStencilDesc.DepthEnable = TRUE;
 	depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
 	depthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
 	depthStencilDesc.StencilEnable = FALSE;
 
-	m_Device->CreateDepthStencilState(&depthStencilDesc, &m_DepthStateEnable);//[“x—LŒøƒXƒe[ƒg
+	m_Device->CreateDepthStencilState(&depthStencilDesc, &m_DepthStateEnable);//ï¿½[ï¿½xï¿½Lï¿½ï¿½ï¿½Xï¿½eï¿½[ï¿½g
 
 	//depthStencilDesc.DepthEnable = FALSE;
 	depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
-	m_Device->CreateDepthStencilState(&depthStencilDesc, &m_DepthStateDisable);//[“x–³ŒøƒXƒe[ƒg
+	m_Device->CreateDepthStencilState(&depthStencilDesc, &m_DepthStateDisable);//ï¿½[ï¿½xï¿½ï¿½ï¿½ï¿½ï¿½Xï¿½eï¿½[ï¿½g
 
 	m_DeviceContext->OMSetDepthStencilState(m_DepthStateEnable, NULL);
 
 
 
 
-	// ƒTƒ“ƒvƒ‰[ƒXƒe[ƒgİ’è
+	// ï¿½Tï¿½ï¿½ï¿½vï¿½ï¿½ï¿½[ï¿½Xï¿½eï¿½[ï¿½gï¿½İ’ï¿½
 	D3D11_SAMPLER_DESC samplerDesc{};
 	samplerDesc.Filter = D3D11_FILTER_ANISOTROPIC;
 	samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
@@ -191,7 +194,7 @@ void Renderer::Init()
 
 
 
-	// ’è”ƒoƒbƒtƒ@¶¬
+	// ï¿½è”ï¿½oï¿½bï¿½tï¿½@ï¿½ï¿½ï¿½ï¿½
 	D3D11_BUFFER_DESC bufferDesc{};
 	bufferDesc.ByteWidth = sizeof(XMFLOAT4X4);
 	bufferDesc.Usage = D3D11_USAGE_DEFAULT;
@@ -227,7 +230,7 @@ void Renderer::Init()
 
 
 
-	// ƒ‰ƒCƒg‰Šú‰»
+	// ï¿½ï¿½ï¿½Cï¿½gï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	LIGHT light{};
 	light.Enable = true;
 	light.Direction = XMFLOAT4(0.0f, -1.0f, 0.0f, 0.0f);
@@ -237,7 +240,7 @@ void Renderer::Init()
 
 
 
-	// ƒ}ƒeƒŠƒAƒ‹‰Šú‰»
+	// ï¿½}ï¿½eï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	MATERIAL material{};
 	material.Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	material.Ambient = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
