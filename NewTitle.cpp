@@ -24,8 +24,8 @@ void NewTitle::Init()
 	AddGameObject<Enter_Image>(2);
 
 
-	AddGameObject<Cylinder>(1)->SetPosition(XMFLOAT3(10.0f, 0.1f, 5.0f));
-	AddGameObject<Polygon2D>(1);
+	AddGameObject<Cylinder>(1)->SetPosition(XMFLOAT3(20.0f, 0.1f, 5.0f));
+	AddGameObject<Polygon2D>(1)->SetPosition(XMFLOAT3(20.0f, 0.1f, 5.0f));
 	AddGameObject<Player>(1);
 
 	AddGameObject<ParticleEmitter>(1)->SetPosition(XMFLOAT3(0.0f, 0.1f, 5.0f));

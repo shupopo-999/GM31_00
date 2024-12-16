@@ -103,6 +103,7 @@ void Polygon2D::Draw()
 	// プリミティブトポロジ設定
 	Renderer::GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
+
 	// ステンシル読み込み有効
 	Renderer::SetStencilEnable(true);
 
