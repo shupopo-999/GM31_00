@@ -16,7 +16,7 @@ void SkyDome::Init()
 	Renderer::CreatePixelShader(&m_PixelShader,
 		"shader\\unlitTexturePS.cso");
 
-	m_Scale = XMFLOAT3(1000.0f, 1000.0f, 1000.0f);
+	m_Scale = XMFLOAT3(500.0f, 500.0f, 500.0f);
 }
 
 void SkyDome::UnInit()

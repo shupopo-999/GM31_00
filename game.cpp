@@ -8,7 +8,9 @@
 #include "score.h"
 #include "skydome.h"
 #include "particleemitter.h"
+#include "wave.h"
 #include "mashfield.h"
+#include "cylinder.h"
 
 
 void Game::Init()
@@ -16,11 +18,15 @@ void Game::Init()
 	int m_FieldX = 50;
 	int m_FieldZ = 50;
 
-	AddGameObject<Camara>(0);
+	AddGameObject<Camera>(0);
 	AddGameObject<MashField>(1);
+	AddGameObject<Wave>(1)->SetPosition(XMFLOAT3(0.0f, -0.5f, 0.0f));
 	AddGameObject<SkyDome>(1);
-	AddGameObject<Player>(1);
 	AddGameObject<Score>(2);
+
+	AddGameObject<Cylinder>(1);
+	AddGameObject<Polygon2D>(1);
+	AddGameObject<Player>(1);
 
 	AddGameObject<Enemy>(1)->SetPosition(XMFLOAT3(0.0f,0.0f,0.0f));
 	AddGameObject<Enemy>(1)->SetPosition(XMFLOAT3(10.0f,23.0f,4.0f));
@@ -32,6 +38,10 @@ void Game::Init()
 	AddGameObject<ParticleEmitter>(1)->SetPosition(XMFLOAT3(0.0f, 0.1f, 5.0f));
 }
 
+void Game::UnInit() {
+	Scene::UnInit();
+}
+
 void Game::Update()
 {
 	Scene::Update();
@@ -39,6 +49,9 @@ void Game::Update()
 	if (Input::GetKeyTrigger(VK_RETURN)) {
 		Manager::SetScene<Fade>();
 		Manager::SetScene<Result>();
+	}
+	if (Input::GetKeyTrigger(DIK_M)) {
+		
 	}
 
 	auto enemyList = GetGameObjects<Enemy>();

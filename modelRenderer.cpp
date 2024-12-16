@@ -107,10 +107,10 @@ void ModelRenderer::LoadModel( const char *FileName, MODEL *Model)
 	{
 		D3D11_BUFFER_DESC bd;
 		ZeroMemory( &bd, sizeof(bd) );
-		bd.Usage = D3D11_USAGE_DEFAULT;
+		bd.Usage = D3D11_USAGE_DYNAMIC;
 		bd.ByteWidth = sizeof( VERTEX_3D ) * modelObj.VertexNum;
 		bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-		bd.CPUAccessFlags = 0;
+		bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 
 		D3D11_SUBRESOURCE_DATA sd;
 		ZeroMemory( &sd, sizeof(sd) );
@@ -336,8 +336,8 @@ void ModelRenderer::LoadObj( const char *FileName, MODEL_OBJ *ModelObj )
 			//テクスチャ座標
 			fscanf( file, "%f", &texcoord->x );
 			fscanf( file, "%f", &texcoord->y );
-			texcoord->x = 1.0f - texcoord->x;
-			texcoord->y = 1.0f - texcoord->y;
+			//texcoord->x = 1.0f - texcoord->x;
+			//texcoord->y = 1.0f - texcoord->y;
 			texcoord++;
 		}
 		else if( strcmp( str, "usemtl" ) == 0 )

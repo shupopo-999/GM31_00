@@ -4,17 +4,18 @@
 #include "player.h"
 #include "animationModel.h"
 #include "input.h"
-#include "camara.h"
+#include "camera.h"
 #include "enemy.h"
 #include "cylinder.h"
 #include "explosion.h"
 #include "result.h"
-#include "camara.h"
+#include "camera.h"
 #include "audio.h"
+#include "polygon2D.h"
+#include "mashfield.h"
 
-Input* input;
-bool   rotation;
-int count = 2;
+bool	rotation;
+int		count = 2;
 
 void Player::Init()
 {
@@ -31,15 +32,15 @@ void Player::Init()
 	Renderer::CreatePixelShader(&m_PixelShader,
 		"shader\\unlitTexturePS.cso");
 
-	m_Position.x = 5.0f;
+	m_Position.x = 20.0f;
 	m_Position.y = 1.0f;
 	groundFlag = true;
 
 	// サウンドロード
-	m_SE[0] = new Audio(this);
-	m_SE[0]->Load("asset\\audio\\bullet.wav");
-	m_SE[1] = new Audio(this);
-	m_SE[1]->Load("asset\\audio\\game.wav");
+	// m_SE[0] = new Audio(this);
+	// m_SE[0]->Load("asset\\audio\\bullet.wav");
+	// m_SE[1] = new Audio(this);
+	// m_SE[1]->Load("asset\\audio\\game.wav");
 
 	// Quaternion 初期化
 	m_Quaternion.x = 0.0f;
@@ -47,17 +48,17 @@ void Player::Init()
 	m_Quaternion.z = 0.0f;
 	m_Quaternion.w = 1.0f;
 
-	m_SE[1]->Play();
+	// m_SE[1]->Play();
 }
 
 void Player::UnInit()
 {
 	delete m_Component;
 
-	for (int i = 0; i < count;i++) {
-		m_SE[i]->UnInit();
-		delete m_SE[i];
-	}
+	// for (int i = 0; i < count;i++) {
+	// 	m_SE[i]->UnInit();
+	// 	delete m_SE[i];
+	// }
 
 	m_VertexLayout->Release();
 	m_VertexShader->Release();
@@ -71,46 +72,39 @@ void Player::Update()
 	Scene* scene;
 	scene = Manager::GetScene();
 
-	Camara* camara = scene->GetGameObject<Camara>();
-	XMFLOAT3 forward = camara->GetForward();
+	Camera* camera = scene->GetGameObject<Camera>();
+	XMFLOAT3 forward = camera->GetForward();
 
 	float speed = 0.3f;
 	float rot = 0.1f;
 
 	m_Component->Update();
 
-	m_Rotation.y += rot;
+	m_Rotation.y = m_Rot + camera->GetRotation().y;
 
-	if (Input::GetKeyPress(VK_LSHIFT))speed *= 1.5;
+	if (Input::GetKeyPress(VK_LSHIFT)) speed *= 1.5;
 
 	if (Input::GetKeyPress('U')) {
 		Bullet* bullet = scene->AddGameObject<Bullet>(1);
 		bullet->SetPosition(m_Position);
 		m_SE[0]->Play();
 	}
-	/*if (Input::GetKeyTrigger('I')) {
-		Enemy* ene = scene->AddGameObject<Enemy>(1);
-		ene->SetPosition(m_Position);
-	}*/
-	/*if (Input::GetKeyTrigger('J')) {
-		Cylinder* cy = scene->AddGameObject<Cylinder>(1);
-		cy->SetPosition(m_Position);
-	}*/
-	if (Input::GetKeyTrigger(VK_RETURN)) {
-		Manager::SetScene<Result>();
-	}
+
+	if (Input::GetKeyTrigger(VK_RETURN)) Manager::SetScene<Result>();
 
 	Movement();
 
-	/*m_Position.x += sinf(m_Rotation.y) * speed;
-	m_Position.z += cosf(m_Rotation.y) * speed;*/
 
 	m_AnimationBlend += 0.1f;
 	if (m_AnimationBlend > 1.0f) {
 		m_AnimationBlend = 1.0f;
 	}
 
-	PlayerCollision();
+
+	MashField* meshField =
+		Manager::GetScene()->GetGameObject<MashField>();
+	groundHeight = meshField->GetHeight(m_Position);
+	// PlayerCollision();
 
 	// 重力
 	m_Position.y -= 0.3f;
@@ -123,7 +117,6 @@ void Player::Update()
 	
 	if (m_Position.y < groundHeight) {
 		m_Position.y = groundHeight;
-		m_Position.y = 0.0f;
 		rotation = false;
 	}
 	else rotation = true;
@@ -133,7 +126,7 @@ void Player::Movement() {
 	Scene* scene;
 	scene = Manager::GetScene();
 
-	Camara* camera = scene->GetGameObject<Camara>();
+	Camera* camera = scene->GetGameObject<Camera>();
 	XMFLOAT3 forward = camera->GetForward();
 
 	float speed = 0.3f;
@@ -143,7 +136,6 @@ void Player::Movement() {
 		m_Position.x += forward.x * speed;
 		m_Position.y += forward.y * speed;
 		m_Position.z += forward.z * speed;
-		//QuaternionRot(0.1f,0.0f,0.0f);
 		Blender("Run");
 	}
 	else Blender("Idle");
@@ -152,21 +144,18 @@ void Player::Movement() {
 		m_Position.x -= forward.x * speed;
 		m_Position.y -= forward.y * speed;
 		m_Position.z -= forward.z * speed;
-		//QuaternionRot(-0.1f,0.0f,0.0f);
 		Blender("Run");
 	}
 	if (Input::GetKeyPress('D')) {
 		m_Position.x += forward.z * speed;
 		m_Position.y += forward.y * speed;
 		m_Position.z += forward.x * speed;
-		//QuaternionRot(0.0f, 0.0f, -0.1f);
 		Blender("Run");
 	}
 	if (Input::GetKeyPress('A')) {
 		m_Position.x -= forward.z * speed;
 		m_Position.y -= forward.y * speed;
 		m_Position.z -= forward.x * speed;
-		//QuaternionRot(0.0f, 0.0f, 0.1f);
 		Blender("Run");
 	}
 	if (Input::GetKeyTrigger(VK_SPACE)) {

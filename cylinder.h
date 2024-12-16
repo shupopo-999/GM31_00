@@ -7,12 +7,13 @@ class Cylinder : public GameObject{
 private:
 	Component*					m_Component{ };
 	ID3D11Buffer* m_VertexBuffer = nullptr;
-
+	ID3D11ShaderResourceView* m_EnvTexture = nullptr;
 
 	ID3D11VertexShader*			m_VertexShader{};
 	ID3D11PixelShader*			m_PixelShader{};
 	ID3D11InputLayout*			m_VertexLayout{};
 
+	XMFLOAT3 m_PPosition;
 public:
 	void Init()override;
 	void UnInit()override;

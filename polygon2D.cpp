@@ -1,6 +1,8 @@
 #include "main.h"
 #include "renderer.h"
 #include "polygon2D.h"
+#include "camera.h"
+#include "manager.h"
 
 void Polygon2D::Init()
 {
@@ -11,17 +13,17 @@ void Polygon2D::Init()
 	vertex[0].Diffuse	= XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	vertex[0].TexCoord	= XMFLOAT2(0.0f, 0.0f);
 
-	vertex[1].Position	= XMFLOAT3(200.0f, 0.0f, 0.0f);
+	vertex[1].Position	= XMFLOAT3(SCREEN_WIDTH, 0.0f, 0.0f);
 	vertex[1].Normal	= XMFLOAT3(0.0f, 0.0f, 0.0f);
 	vertex[1].Diffuse	= XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	vertex[1].TexCoord	= XMFLOAT2(1.0f, 0.0f);
 
-	vertex[2].Position	= XMFLOAT3(0.0f, 200.0f, 0.0f);
+	vertex[2].Position	= XMFLOAT3(0.0f, SCREEN_HEIGHT, 0.0f);
 	vertex[2].Normal	= XMFLOAT3(0.0f, 0.0f, 0.0f);
 	vertex[2].Diffuse	= XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	vertex[2].TexCoord	= XMFLOAT2(0.0f, 1.0f);
 
-	vertex[3].Position	= XMFLOAT3(200.0f, 200.0f, 0.0f);
+	vertex[3].Position	= XMFLOAT3(SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f);
 	vertex[3].Normal	= XMFLOAT3(0.0f, 0.0f, 0.0f);
 	vertex[3].Diffuse	= XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	vertex[3].TexCoord	= XMFLOAT2(1.0f, 1.0f);
@@ -83,17 +85,17 @@ void Polygon2D::Draw()
 	// マトリックス設定
 	Renderer::SetWorldViewProjection2D();
 
-	// マテリアル設定
-	MATERIAL material;
-	ZeroMemory(&material, sizeof(material));
-	material.Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-	material.TextureEnable = true;
-	Renderer::SetMaterial(material);
-
 	// 頂点バッファ設定
 	UINT stride = sizeof(VERTEX_3D);
 	UINT offset = 0;
 	Renderer::GetDeviceContext()->IASetVertexBuffers(0, 1, &m_VertexBuffer, &stride, &offset);
+
+	// マテリアル設定
+	MATERIAL material;
+	ZeroMemory(&material, sizeof(material));
+	material.Diffuse = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.5f);
+	material.TextureEnable = true;
+	Renderer::SetMaterial(material);
 
 	// テクスチャ設定
 	Renderer::GetDeviceContext()->PSSetShaderResources(0, 1, &m_Texture);
@@ -101,6 +103,18 @@ void Polygon2D::Draw()
 	// プリミティブトポロジ設定
 	Renderer::GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
+
+	// ステンシル読み込み有効
+	Renderer::SetStencilEnable(false);
+
 	// ポリゴン描画
 	Renderer::GetDeviceContext()->Draw(4, 0);
+
+	// ステンシル無効
+	Renderer::SetDepthEnable(true);
+
+	Camera* camera = Manager::GetScene()->GetGameObject<Camera>();
+	if (camera != nullptr) {
+		camera->Draw();
+	}
 }

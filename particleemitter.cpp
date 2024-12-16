@@ -2,7 +2,7 @@
 #include "manager.h"
 #include "renderer.h"
 #include "scene.h"
-#include "camara.h"
+#include "camera.h"
 #include "particleemitter.h"
 
 void ParticleEmitter::Init()
@@ -75,12 +75,12 @@ void ParticleEmitter::Update()
 	for (int i = 0; i < PARTICLE_MAX;i++) {
 		if (m_Particle[i].Enable == false) {
 			m_Particle[i].Enable = true;
-			m_Particle[i].Life = 60;
+			m_Particle[i].Life = 120;
 			m_Particle[i].Position = m_Position;
 			
-			m_Particle[i].Velocity.x = (rand() % 100 - 50) / 500.0f;
-			m_Particle[i].Velocity.y = (rand() % 100 + 50) / 500.0f;
-			m_Particle[i].Velocity.z = (rand() % 100 - 50) / 500.0f;
+			m_Particle[i].Velocity.x = (rand() % 100 - 50) / 1000.0f;
+			m_Particle[i].Velocity.y = (rand() % 100 + 50) / 1000.0f;
+			m_Particle[i].Velocity.z = (rand() % 100 - 50) / 1000.0f;
 			break;
 		}
 	}
@@ -116,8 +116,8 @@ void ParticleEmitter::Draw()
 
 	// カメラのビューマトリクス取得
 	Scene* scene = Manager::GetScene();
-	Camara* camara = scene->GetGameObject<Camara>();
-	XMMATRIX view = camara->GetViewMatrix();
+	Camera* camera = scene->GetGameObject<Camera>();
+	XMMATRIX view = camera->GetViewMatrix();
 
 	// ビューの逆行列
 	XMMATRIX invView;
@@ -129,7 +129,7 @@ void ParticleEmitter::Draw()
 	// マトリックス設定
 	MATERIAL material;
 	ZeroMemory(&material, sizeof(material));
-	material.Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	material.Diffuse = XMFLOAT4(0.5f, 0.5f, 1.0f, 1.0f);
 	material.TextureEnable = true;
 	Renderer::SetMaterial(material);
 

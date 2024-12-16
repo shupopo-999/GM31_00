@@ -6,7 +6,7 @@
 #include "player.h"
 #include "polygon2D.h"
 #include "field.h"
-#include "camara.h"
+#include "camera.h"
 #include "bullet.h"
 #include "explosion.h"
 #include "enemy.h"

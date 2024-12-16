@@ -19,6 +19,11 @@ public:
 	XMFLOAT3 GetRotation() { return m_Rotation; }
 	XMFLOAT3 GetScale() { return m_Scale; }
 
+	void SetObject(XMFLOAT3 pos, XMFLOAT3 rot, XMFLOAT3 sca) {
+		m_Position = pos;
+		m_Rotation = rot;
+		m_Scale = sca;
+	}
 	void SetPosition(XMFLOAT3 pos) { m_Position = pos; }
 	void SetRotation(XMFLOAT3 rot) { m_Rotation = rot; }
 	void SetScale(XMFLOAT3 sca) { m_Scale = sca; }

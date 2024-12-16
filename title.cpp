@@ -10,8 +10,6 @@
 
 void Title::Init()
 {
-	// AddGameObject<Polygon2D>(2);
-
 	VERTEX_3D vertex[4];
 
 	vertex[0].Position = XMFLOAT3(0.0f, 0.0f, 0.0f);
@@ -36,7 +34,7 @@ void Title::Init()
 
 
 
-	// ’¸“_ƒoƒbƒtƒ@¶¬
+	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ç”Ÿæˆ
 	D3D11_BUFFER_DESC bd{};
 	bd.Usage = D3D11_USAGE_DEFAULT;
 	bd.ByteWidth = sizeof(VERTEX_3D) * 4;
@@ -49,7 +47,7 @@ void Title::Init()
 	Renderer::GetDevice()->CreateBuffer(&bd, &sd, &m_VertexBuffer);
 
 
-	// ƒeƒNƒXƒ`ƒƒ“Ç‚Ýž‚Ý
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£èª­ã¿è¾¼ã¿
 	TexMetadata metadata;
 	ScratchImage image;
 	LoadFromWICFile(L"asset\\texture\\title.png", WIC_FLAGS_NONE, &metadata, image);
@@ -61,18 +59,10 @@ void Title::Init()
 	Renderer::CreatePixelShader(&m_PixelShader,
 		"shader\\unlitTexturePS.cso");
 
-	m_BGM = new Audio(this);
-	m_BGM->Load("asset\\audio\\title.wav");
-	m_BGM->Play(true);
-
-	m_check = false;
 }
 
-void Title::UnInit() 
+void Title::UnInit()
 {
-	m_BGM->UnInit();
-	delete m_BGM;
-
 	m_VertexBuffer->Release();
 	m_Texture->Release();
 
@@ -83,44 +73,89 @@ void Title::UnInit()
 
 void Title::Update()
 {
-	Scene::Update();
-
-	if (Input::GetKeyTrigger(VK_RETURN)) {
-		Manager::SetScene<Game>();
+	if (m_alpha < 1.0f) {
+		m_alpha += 0.0025f;
+	}
+	if (m_PositionY > 240.0f) {
+		m_PositionY -= 1.0f;
 	}
 
+	if (m_alpha > 1.0f) {
+		m_flag = true;
+	}
+
+	SetTitle(SCREEN_WIDTH / 2, m_PositionY, 500.0f, 250.0f);
 }
 
 void Title::Draw()
 {
-	// “ü—ÍƒŒƒCƒAƒEƒgÝ’è
+	// å…¥åŠ›ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆè¨­å®š
 	Renderer::GetDeviceContext()->IASetInputLayout(m_VertexLayout);
 
-	// ƒVƒF[ƒ_Ý’è
+	// ã‚·ã‚§ãƒ¼ãƒ€è¨­å®š
 	Renderer::GetDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
 	Renderer::GetDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
 
-	// ƒ}ƒgƒŠƒbƒNƒXÝ’è
+	// ãƒžãƒˆãƒªãƒƒã‚¯ã‚¹è¨­å®š
 	Renderer::SetWorldViewProjection2D();
 
-	// ƒ}ƒeƒŠƒAƒ‹Ý’è
+	// ãƒžãƒ†ãƒªã‚¢ãƒ«è¨­å®š
 	MATERIAL material;
 	ZeroMemory(&material, sizeof(material));
-	material.Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	material.Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, m_alpha);
 	material.TextureEnable = true;
 	Renderer::SetMaterial(material);
 
-	// ’¸“_ƒoƒbƒtƒ@Ý’è
+	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡è¨­å®š
 	UINT stride = sizeof(VERTEX_3D);
 	UINT offset = 0;
 	Renderer::GetDeviceContext()->IASetVertexBuffers(0, 1, &m_VertexBuffer, &stride, &offset);
 
-	// ƒeƒNƒXƒ`ƒƒÝ’è
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£è¨­å®š
 	Renderer::GetDeviceContext()->PSSetShaderResources(0, 1, &m_Texture);
 
-	// ƒvƒŠƒ~ƒeƒBƒuƒgƒ|ƒƒWÝ’è
+	// ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–ãƒˆãƒãƒ­ã‚¸è¨­å®š
 	Renderer::GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
-	// ƒ|ƒŠƒSƒ“•`‰æ
+	// ãƒãƒªã‚´ãƒ³æç”»
 	Renderer::GetDeviceContext()->Draw(4, 0);
+}
+
+void Title::SetTitle(float posX, float posY, float sizeX, float sizeY) {
+	VERTEX_3D vertex[4];
+
+	vertex[0].Position = XMFLOAT3(posX - sizeX, posY - sizeY, 0.0f);
+	vertex[0].Normal = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	vertex[0].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	vertex[0].TexCoord = XMFLOAT2(0.0f, 0.0f);
+
+	vertex[1].Position = XMFLOAT3(posX + sizeX, posY - sizeY, 0.0f);
+	vertex[1].Normal = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	vertex[1].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	vertex[1].TexCoord = XMFLOAT2(1.0f, 0.0f);
+
+	vertex[2].Position = XMFLOAT3(posX - sizeX, posY + sizeY, 0.0f);
+	vertex[2].Normal = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	vertex[2].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	vertex[2].TexCoord = XMFLOAT2(0.0f, 1.0f);
+
+	vertex[3].Position = XMFLOAT3(posX + sizeX, posY + sizeY, 0.0f);
+	vertex[3].Normal = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	vertex[3].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	vertex[3].TexCoord = XMFLOAT2(1.0f, 1.0f);
+
+
+
+	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ç”Ÿæˆ
+	D3D11_BUFFER_DESC bd{};
+	bd.Usage = D3D11_USAGE_DEFAULT;
+	bd.ByteWidth = sizeof(VERTEX_3D) * 4;
+	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	bd.CPUAccessFlags = 0;
+
+	D3D11_SUBRESOURCE_DATA sd{};
+	sd.pSysMem = vertex;
+
+	Renderer::GetDevice()->CreateBuffer(&bd, &sd, &m_VertexBuffer);
+
 }
