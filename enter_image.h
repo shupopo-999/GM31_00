@@ -3,7 +3,7 @@
 #include "gameobject.h"
 
 
-class Enter_Image : public GameObject{
+class Enter_Image : public GameObject {
 private:
 	ID3D11Buffer* m_VertexBuffer = nullptr;
 	ID3D11ShaderResourceView* m_Texture = nullptr;
@@ -12,7 +12,7 @@ private:
 	ID3D11PixelShader* m_PixelShader;
 	ID3D11InputLayout* m_VertexLayout;
 
-	class Audio*	m_BGM{};
+	class Audio* m_BGM{};
 
 	float			m_PositionY = 540.0f;
 	float			m_alpha = 0.0f;

@@ -8,6 +8,7 @@
 #include "score.h"
 #include "skydome.h"
 #include "particleemitter.h"
+#include "wave.h"
 #include "mashfield.h"
 #include "cylinder.h"
 
@@ -19,6 +20,7 @@ void Game::Init()
 
 	AddGameObject<Camera>(0);
 	AddGameObject<MashField>(1);
+	AddGameObject<Wave>(1)->SetPosition(XMFLOAT3(0.0f, -0.5f, 0.0f));
 	AddGameObject<SkyDome>(1);
 	AddGameObject<Score>(2);
 

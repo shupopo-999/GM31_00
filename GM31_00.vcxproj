@@ -165,6 +165,7 @@
     <ClInclude Include="score.h" />
     <ClInclude Include="skydome.h" />
     <ClInclude Include="title.h" />
+    <ClInclude Include="wave.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="animationModel.cpp" />
@@ -199,6 +200,7 @@
     <ClCompile Include="score.cpp" />
     <ClCompile Include="skydome.cpp" />
     <ClCompile Include="title.cpp" />
+    <ClCompile Include="wave.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="shader\common.hlsl">

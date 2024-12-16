@@ -9,6 +9,7 @@
 #include "cylinder.h"
 #include "title.h"
 #include "enter_image.h"
+#include "wave.h"
 #include "game.h"
 
 
@@ -19,16 +20,15 @@ void NewTitle::Init()
 
 	AddGameObject<Camera>(0);
 	AddGameObject<MashField>(1);
+	AddGameObject<Wave>(1)->SetPosition(XMFLOAT3(0.0f,-0.5f,0.0f));
 	AddGameObject<SkyDome>(1);
 	AddGameObject<Title>(2);
 	AddGameObject<Enter_Image>(2);
 
-
+	AddGameObject<ParticleEmitter>(1)->SetPosition(XMFLOAT3(0.0f, -2.0f, 0.0f));
 	AddGameObject<Cylinder>(1)->SetPosition(XMFLOAT3(20.0f, 0.1f, 5.0f));
 	AddGameObject<Polygon2D>(1)->SetPosition(XMFLOAT3(20.0f, 0.1f, 5.0f));
 	AddGameObject<Player>(1);
-
-	AddGameObject<ParticleEmitter>(1)->SetPosition(XMFLOAT3(0.0f, 0.1f, 5.0f));
 }
 
 void NewTitle::UnInit() {

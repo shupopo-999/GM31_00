@@ -34,7 +34,7 @@ void Title::Init()
 
 
 
-	// ’¸“_ƒoƒbƒtƒ@¶¬
+	// ï¿½ï¿½ï¿½_ï¿½oï¿½bï¿½tï¿½@ï¿½ï¿½ï¿½ï¿½
 	D3D11_BUFFER_DESC bd{};
 	bd.Usage = D3D11_USAGE_DEFAULT;
 	bd.ByteWidth = sizeof(VERTEX_3D) * 4;
@@ -47,7 +47,7 @@ void Title::Init()
 	Renderer::GetDevice()->CreateBuffer(&bd, &sd, &m_VertexBuffer);
 
 
-	// ƒeƒNƒXƒ`ƒƒ“Ç‚İ‚İ
+	// ï¿½eï¿½Nï¿½Xï¿½`ï¿½ï¿½ï¿½Ç‚İï¿½ï¿½ï¿½
 	TexMetadata metadata;
 	ScratchImage image;
 	LoadFromWICFile(L"asset\\texture\\title.png", WIC_FLAGS_NONE, &metadata, image);
@@ -58,6 +58,7 @@ void Title::Init()
 		"shader\\unlitTextureVS.cso");
 	Renderer::CreatePixelShader(&m_PixelShader,
 		"shader\\unlitTexturePS.cso");
+
 }
 
 void Title::UnInit() 
@@ -78,7 +79,7 @@ void Title::Update()
 	if (m_PositionY > 240.0f) {
 		m_PositionY -= 1.0f;
 	}
-	
+
 	if (m_alpha > 1.0f) {
 		m_flag = true;
 	}
@@ -88,35 +89,35 @@ void Title::Update()
 
 void Title::Draw()
 {
-	// “ü—ÍƒŒƒCƒAƒEƒgİ’è
+	// ï¿½ï¿½ï¿½Íƒï¿½ï¿½Cï¿½Aï¿½Eï¿½gï¿½İ’ï¿½
 	Renderer::GetDeviceContext()->IASetInputLayout(m_VertexLayout);
 
-	// ƒVƒF[ƒ_İ’è
+	// ï¿½Vï¿½Fï¿½[ï¿½_ï¿½İ’ï¿½
 	Renderer::GetDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
 	Renderer::GetDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
 
-	// ƒ}ƒgƒŠƒbƒNƒXİ’è
+	// ï¿½}ï¿½gï¿½ï¿½ï¿½bï¿½Nï¿½Xï¿½İ’ï¿½
 	Renderer::SetWorldViewProjection2D();
 
-	// ƒ}ƒeƒŠƒAƒ‹İ’è
+	// ï¿½}ï¿½eï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½İ’ï¿½
 	MATERIAL material;
 	ZeroMemory(&material, sizeof(material));
 	material.Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, m_alpha);
 	material.TextureEnable = true;
 	Renderer::SetMaterial(material);
 
-	// ’¸“_ƒoƒbƒtƒ@İ’è
+	// ï¿½ï¿½ï¿½_ï¿½oï¿½bï¿½tï¿½@ï¿½İ’ï¿½
 	UINT stride = sizeof(VERTEX_3D);
 	UINT offset = 0;
 	Renderer::GetDeviceContext()->IASetVertexBuffers(0, 1, &m_VertexBuffer, &stride, &offset);
 
-	// ƒeƒNƒXƒ`ƒƒİ’è
+	// ï¿½eï¿½Nï¿½Xï¿½`ï¿½ï¿½ï¿½İ’ï¿½
 	Renderer::GetDeviceContext()->PSSetShaderResources(0, 1, &m_Texture);
 
-	// ƒvƒŠƒ~ƒeƒBƒuƒgƒ|ƒƒWİ’è
+	// ï¿½vï¿½ï¿½ï¿½~ï¿½eï¿½Bï¿½uï¿½gï¿½|ï¿½ï¿½ï¿½Wï¿½İ’ï¿½
 	Renderer::GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
-	// ƒ|ƒŠƒSƒ“•`‰æ
+	// ï¿½|ï¿½ï¿½ï¿½Sï¿½ï¿½ï¿½`ï¿½ï¿½
 	Renderer::GetDeviceContext()->Draw(4, 0);
 }
 
@@ -144,7 +145,7 @@ void Title::SetTitle(float posX,float posY,float sizeX, float sizeY) {
 	vertex[3].TexCoord = XMFLOAT2(1.0f, 1.0f);
 
 
-	// ’¸“_ƒoƒbƒtƒ@¶¬
+	// ï¿½ï¿½ï¿½_ï¿½oï¿½bï¿½tï¿½@ï¿½ï¿½ï¿½ï¿½
 	D3D11_BUFFER_DESC bd{};
 	bd.Usage = D3D11_USAGE_DEFAULT;
 	bd.ByteWidth = sizeof(VERTEX_3D) * 4;
