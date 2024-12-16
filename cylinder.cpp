@@ -32,7 +32,13 @@ void Cylinder::UnInit()
 
 void Cylinder::Update()
 {
+	Scene* scene = Manager::GetScene();
 
+	Player* player = scene->GetGameObject<Player>();
+	m_PPosition = player->GetPosition();
+
+	m_Position = m_PPosition;
+	m_Position.y -= 0.5f;
 }
 
 void Cylinder::Draw()
@@ -59,10 +65,10 @@ void Cylinder::Draw()
 	// カラーバッファマスク有効
 	Renderer::SetBlendMaskEnable(true);
 
-	// ステンシル書き込み有効
+	//ステンシル書き込み有効
 	Renderer::SetStencilEnable(true);
 
-	// カリング無効
+	//カリング無効
 	Renderer::SetCullEnable(false);
 
 	m_Component->Draw();

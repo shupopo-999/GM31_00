@@ -11,6 +11,7 @@
 #include "result.h"
 #include "camera.h"
 #include "audio.h"
+#include "polygon2D.h"
 #include "mashfield.h"
 
 bool	rotation;
@@ -103,7 +104,7 @@ void Player::Update()
 	MashField* meshField =
 		Manager::GetScene()->GetGameObject<MashField>();
 	groundHeight = meshField->GetHeight(m_Position);
-	PlayerCollision();
+	// PlayerCollision();
 
 	// 重力
 	m_Position.y -= 0.3f;
