@@ -6,6 +6,7 @@
 class Cylinder : public GameObject{
 private:
 	Component*					m_Component{ };
+
 	ID3D11Buffer* m_VertexBuffer = nullptr;
 	ID3D11ShaderResourceView* m_EnvTexture = nullptr;
 

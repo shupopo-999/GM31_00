@@ -23,6 +23,7 @@ void CleanupRenderTarget();
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 HWND g_Window;
+float g_freameCount = 0;
 
 HWND GetWindow()
 {
@@ -103,6 +104,17 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 			if((dwCurrentTime - dwExecLastTime) >= (1000 / 60))
 			{
+				// フレームレート表示
+				g_freameCount++;
+				if (g_freameCount > 60) {
+					g_freameCount = 0;
+					float fps = 1000.0f / (dwCurrentTime - dwExecLastTime);
+					std::string title;
+					title = std::string(WINDOW_NAME) + " " + std::to_string(fps) + "fps";
+					SetWindowText(g_Window,title.c_str());
+				}
+
+
 				dwExecLastTime = dwCurrentTime;
 			
 				Manager::Update();

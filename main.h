@@ -13,6 +13,7 @@
 #include <thread>
 
 #pragma comment (lib, "d3d11.lib")
+#pragma comment (lib, "DXGI.lib")
 
 // #define DIRECTINPUT_VERSION 0x0800		// Œx‘Îˆ
 #include <dinput.h>
